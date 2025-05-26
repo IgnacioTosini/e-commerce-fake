@@ -54,6 +54,8 @@
 
         .logo {
             img {
+                width: 100%;
+                max-width: 60px;
                 border-radius: 50%;
                 color: $color-text;
             }
