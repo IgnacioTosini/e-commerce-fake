@@ -1,0 +1,39 @@
+@use '../../styles/variables' as *;
+
+.customList {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 2rem 0;
+    color: $color-text;
+
+    &.row {
+        flex-direction: row;
+    }
+
+    &.column {
+        flex-direction: column;
+    }
+
+    &.scrollable {
+        overflow-x: auto;
+        scrollbar-width: thin;
+        scrollbar-color: $color-text-quaternary $primary-color;
+        padding: 2rem 1rem;
+
+        &::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: $color-text-quaternary;
+            border-radius: 4px;
+        }
+    }
+
+    &.wrap {
+        flex-wrap: wrap;
+    }
+}

@@ -1,0 +1,50 @@
+@use '../../styles/variables' as *;
+
+.categoryCard {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    border-radius: .75rem;
+    padding: 0;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    max-width: 340px;
+    min-width: 300px;
+    min-height: 220px;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+
+    .categoryCardOverlay {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to top,
+                rgba(0, 0, 0, 0.65) 0%, // Más negro abajo
+                rgba(0, 0, 0, 0.199) 60%, // Transición
+                rgba(0, 0, 0, 0.055) 100% // Casi transparente arriba
+            );
+        color: $color-text;
+        font-size: $font-size-xsmall;
+        padding: 1.2rem 1rem 1rem 1rem;
+        text-align: center;
+        left: 0;
+        bottom: 0;
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+    }
+
+    .categoryCardTitle {
+        margin: 0;
+    }
+
+    .categoryCardDescription {
+        margin: 0.3rem 0 0 0;
+    }
+}

@@ -1,0 +1,56 @@
+@use '../../styles/variables' as *;
+
+.offersPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .offersBanner {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 1rem;
+        background-color: $color-text-quaternary;
+        height: 200px;
+        color: $color-text;
+        border-radius: 1rem;
+        margin: 1rem 0;
+        padding: 2rem;
+
+        .offersIconContainer {
+            display: flex;
+            align-items: center;
+
+            .offersIcon {
+                margin-right: 0.5rem;
+            }
+        }
+
+        .offersTitle {
+            font-size: $font-size-large;
+            font-weight: $font-weight-bold;
+            color: $color-text-tertiary;
+        }
+    }
+
+    .offersList {
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .offersList,
+    .offersBanner {
+        width: 100%;
+        max-width: 1300px;
+
+        @media screen and (max-width: 768px) {
+            align-items: center;
+
+            .offersSubtitle {
+                text-align: center;
+            }
+        }
+    }
+}

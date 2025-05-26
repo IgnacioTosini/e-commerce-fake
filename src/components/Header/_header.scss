@@ -1,0 +1,62 @@
+@use '../../styles/variables' as *;
+
+.header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 1rem;
+    background-color: rgba(4, 13, 27, 0.7);
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+
+    @media (max-width: 768px) {
+        justify-content: space-between;
+    }
+
+    .headerSearch,
+    .headerLogo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .headerLogo {
+        .headerLogoLink {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: $color-text;
+            font-size: $font-size-xsmall;
+            font-weight: $font-weight-bold;
+            transition: color 0.3s ease;
+
+            &:hover {
+                color: $color-button;
+            }
+
+            img {
+                width: 60px;
+                border-radius: 50%;
+            }
+        }
+
+        .headerLogoText {
+            font-size: $font-size-normal;
+        }
+    }
+
+    .menuToggle {
+        cursor: pointer;
+        background: none;
+        border: none;
+        font-size: $font-size-normal;
+        color: $color-text;
+        transition: color 0.3s ease-in-out;
+    }
+}

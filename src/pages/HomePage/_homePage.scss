@@ -1,0 +1,8 @@
+@use '../../styles/variables' as *;
+
+.homePage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

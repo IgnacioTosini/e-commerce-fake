@@ -1,0 +1,25 @@
+@use '../../styles/variables' as *;
+
+.customIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    width: 40px;
+    height: 40px;
+    color: $color-text;
+    border: 2px solid transparent;
+    border-radius: 25%;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $color-hover-primary;
+    }
+
+    svg {
+        width: 1rem;
+        height: 1rem;
+        fill: $color-text;
+    }
+}
