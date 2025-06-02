@@ -13,12 +13,16 @@ export const HomePage = () => {
   return (
     <div className="homePage">
       <Banner />
-      <CategoriesList />
-      <CustomList direction="row" maxItems={4} wrap='wrap'>
-        {recentProducts.map((product, idx) => (
-          <ProductCard key={product.id || idx} product={product} />
-        ))}
-      </CustomList>
+      <div>
+        <CategoriesList />
+      </div>
+      <div>
+        <CustomList flexOptions={{ direction: 'row', wrap: 'wrap' }} maxItems={4} as='div' className='homePageRecentProducts'>
+          {recentProducts.map((product, idx) => (
+            <ProductCard key={product.id || idx} product={product} onClick={() => { }} />
+          ))}
+        </CustomList>
+      </div>
     </div>
   )
 }

@@ -2,12 +2,26 @@ import { FaRegClock } from "react-icons/fa";
 import { Badge } from '../../components/Badge/Badge'
 import { ProductCard } from "../../components/ProductCard/ProductCard";
 import { mockProducts } from "../../utils/mockProducts";
+import { CustomList } from "../../components/CustomList/CustomList";
+import { useEffect, useRef } from "react";
+import { useLocation } from "react-router";
+import { animateElements } from "../../hooks/gsapEffects";
 import './_offersPage.scss'
 
 export const OffersPage = () => {
     const discountedProducts = mockProducts.filter(product => product.discount && product.discount > 0);
+    const offersPageRef = useRef<HTMLDivElement | null>(null);
+    const location = useLocation();
+
+    useEffect(() => {
+        if (offersPageRef.current) {
+            const elements = Array.from(offersPageRef.current.querySelectorAll('.offersPage, .offersBanner, .offersIconContainer, .offersTitle, .offersSubtitle, .offersList, .offersListTitle, .offersList > *'));
+            animateElements(elements as HTMLElement[], 0.5, 0.2, 30);
+        }
+    }, [location]);
+
     return (
-        <div className='offersPage'>
+        <div className='offersPage' ref={offersPageRef}>
             <div className='offersBanner'>
                 <div className="offersIconContainer">
                     <FaRegClock className='offersIcon' />
@@ -20,9 +34,15 @@ export const OffersPage = () => {
             </div>
 
             <div className='offersList'>
-                {discountedProducts.map(product => (
-                    <ProductCard key={product.id} product={product} />
-                ))}
+                <CustomList flexOptions={{ direction: 'row', justify: 'start', wrap: 'wrap', align: 'startAlign' }} maxItems={12} as='div'>
+                    {discountedProducts.length > 0 ? (
+                        <>{discountedProducts.map(product => (
+                            <ProductCard key={product.id} product={product} onClick={() => { }} />
+                        ))}</>
+                    ) : (
+                        <h2 className='offersListTitle'>No hay productos con descuento actualmente</h2>
+                    )}
+                </CustomList>
             </div>
         </div>
     )

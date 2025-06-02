@@ -17,6 +17,7 @@ export interface Category {
     image?: string;
     createdAt: string; // Fecha de creación de la categoría
     updatedAt: string; // Fecha de última actualización de la categoría
+    products: Product[]; // Lista de productos asociados a la categoría
 }
 
 export interface Product {
@@ -25,7 +26,7 @@ export interface Product {
     description: string;
     price: number;
     images: string[];
-    categories: string[];         // ids de Category
+    categories: Category[];         // Cambiar de IDs a referencias completas de objetos Category
     stock: number;
     rating: number;
     sku: string; // SKU: identificador único de inventario para el producto
@@ -37,6 +38,8 @@ export interface Product {
     isActive?: boolean;
     createdAt: string; // Fecha de creación del producto
     updatedAt: string; // Fecha de última actualización del producto
+    sizes?: string[]; // Arreglo opcional de tallas disponibles para el producto
+    colors?: string[]; // Arreglo opcional de colores disponibles para el producto
 }
 
 export interface CartItem {

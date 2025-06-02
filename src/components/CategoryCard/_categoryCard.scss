@@ -40,11 +40,19 @@
         border-bottom-right-radius: 4px;
     }
 
+    img {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    &:hover img {
+        transform: scale(1.1);
+    }
+
     .categoryCardTitle {
         margin: 0;
     }
 
-    .categoryCardDescription {
+    .categoryCardContent {
         margin: 0.3rem 0 0 0;
     }
 }

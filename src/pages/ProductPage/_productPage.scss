@@ -1,0 +1,7 @@
+@use '../../styles/variables' as *;
+
+.productPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

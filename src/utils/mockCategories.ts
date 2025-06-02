@@ -1,39 +1,53 @@
+import type { Product } from '../types';
+
 // Simulando un array de categorías
 export const categories = [
     {
-        id: 1,
+        id: '1',
+        name: 'Ropa',
         image: 'https://placehold.co/340',
-        title: 'Ropa',
-        description: '120 productos'
+        createdAt: '2025-01-01T00:00:00Z',
+        updatedAt: '2025-01-01T00:00:00Z',
+        products: [] as Product[], // Especificar el tipo explícitamente
     },
     {
-        id: 2,
+        id: '2',
+        name: 'Calzado',
         image: 'https://placehold.co/340',
-        title: 'Calzado',
-        description: '10 productos'
+        createdAt: '2025-01-01T00:00:00Z',
+        updatedAt: '2025-01-01T00:00:00Z',
+        products: [] as Product[],
     },
     {
-        id: 3,
+        id: '3',
+        name: 'Accesorios',
         image: 'https://placehold.co/340',
-        title: 'Accesorios',
-        description: '30 productos'
+        createdAt: '2025-01-01T00:00:00Z',
+        updatedAt: '2025-01-01T00:00:00Z',
+        products: [] as Product[],
     },
     {
-        id: 4,
+        id: '4',
+        name: 'Electrónica',
         image: 'https://placehold.co/340',
-        title: 'Electrónica',
-        description: '50 productos'
+        createdAt: '2025-01-01T00:00:00Z',
+        updatedAt: '2025-01-01T00:00:00Z',
+        products: [] as Product[],
     },
     {
-        id: 5,
+        id: '5',
+        name: 'Hogar',
         image: 'https://placehold.co/340',
-        title: 'Hogar',
-        description: '80 productos'
+        createdAt: '2025-01-01T00:00:00Z',
+        updatedAt: '2025-01-01T00:00:00Z',
+        products: [] as Product[],
     },
     {
-        id: 6,
+        id: '6',
+        name: 'Juguetes',
         image: 'https://placehold.co/340',
-        title: 'Juguetes',
-        description: '150 productos'
+        createdAt: '2025-01-01T00:00:00Z',
+        updatedAt: '2025-01-01T00:00:00Z',
+        products: [] as Product[],
     }
 ];

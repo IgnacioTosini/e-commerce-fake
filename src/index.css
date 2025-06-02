@@ -10,4 +10,5 @@ body {
   min-height: 100dvh;
   grid-template-rows: auto 1fr auto;
   background-color: #020817;
+  color: #F8FAFC;
 }

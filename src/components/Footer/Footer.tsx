@@ -15,17 +15,16 @@ export const Footer = () => {
                 <div className='footerLinksContainer'>
                     <h2>Comprar</h2>
                     <ul className='footerLinks'>
-                        <li><Link to='/productos'>Todos los productos</Link></li>
-                        <li><Link to='/categorias'>Categorías</Link></li>
-                        <li><Link to='/ofertas'>Ofertas</Link></li>
+                        <li><Link to='/productos' onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Todos los productos</Link></li>
+                        <li><Link to='/ofertas' onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Ofertas</Link></li>
                     </ul>
                 </div>
                 <div className='footerLinksContainer'>
                     <h2>Cuenta</h2>
                     <ul className='footerLinks'>
-                        <li><Link to='/mi-cuenta'>Mi Cuenta</Link></li>
-                        <li><Link to='/mis-pedidos'>Mis Pedidos</Link></li>
-                        <li><Link to='/lista-de-deseos'>Lista de Deseos</Link></li>
+                        <li><Link to='/mi-cuenta' onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Mi Cuenta</Link></li>
+                        <li><Link to='/mis-pedidos' onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Mis Pedidos</Link></li>
+                        <li><Link to='/lista-deseos' onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Lista de Deseos</Link></li>
                     </ul>
                 </div>
             </div>
