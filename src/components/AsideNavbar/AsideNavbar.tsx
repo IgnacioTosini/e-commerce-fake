@@ -38,7 +38,7 @@ export const AsideNavbar = memo(({ isOpen, onClose }: AsideNavbarProps) => {
                 <ul className='asideNavbarList'>
                     {links.map((link) => (
                         <li key={link.label}>
-                            <Link to={link.to} className='navbarLink'>
+                            <Link to={link.to} className='navbarLink' onClick={onClose}>
                                 {link.label}
                             </Link>
                         </li>
@@ -48,7 +48,7 @@ export const AsideNavbar = memo(({ isOpen, onClose }: AsideNavbarProps) => {
                 {Object.entries(icons).length > 0 && (
                     <div className='asideNavbarIcons'>
                         {Object.entries(icons).map(([key, { icon, path, name }]) => (
-                            <Link to={path} key={key} className={`customIconAside ${key}`}>
+                            <Link to={path} key={key} className={`customIconAside ${key}`} onClick={onClose}>
                                 {icon || <span>❓</span>}
                                 <p className='categoryName'>{name}</p>
                             </Link>
