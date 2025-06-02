@@ -1,11 +1,8 @@
-import React from "react";
 import { Link } from "react-router";
-import { FaRegHeart } from "react-icons/fa";
-import { AiOutlineShoppingCart } from "react-icons/ai";
-import { MdOutlinePerson } from "react-icons/md";
 import { useFavorites } from "../../context/useFavorites";
 import { useCart } from "../../context/useCart";
 import { Badge } from "../Badge/Badge";
+import { icons } from "../../utils/accountListLinks";
 import './_customIcon.scss'
 
 type CustomIconProps = {
@@ -16,11 +13,6 @@ export const CustomIcon = ({ typeOfIcon }: CustomIconProps) => {
     const { favorites } = useFavorites();
     const { cart } = useCart();
 
-    const icons: Record<string, { icon: React.ReactNode; path: string }> = {
-        cart: { icon: <AiOutlineShoppingCart />, path: '/carrito' },
-        user: { icon: <MdOutlinePerson />, path: '/perfil' },
-        heart: { icon: <FaRegHeart />, path: '/lista-deseos' },
-    };
     return (
         <Link to={icons[typeOfIcon]?.path || '/'} className={`customIcon ${typeOfIcon}`} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
             {

@@ -4,10 +4,8 @@ import { links } from '../../types/links';
 import type { Icon } from '../../types';
 import { IoCloseSharp } from "react-icons/io5";
 import { SearchBar } from '../SearchBar/SearchBar';
-import { AiOutlineShoppingCart } from 'react-icons/ai';
-import { MdOutlinePerson } from 'react-icons/md';
-import { FaRegHeart } from 'react-icons/fa';
 import './_asideNavbar.scss';
+import { icons } from '../../utils/accountListLinks';
 
 type AsideNavbarProps = {
     isOpen: boolean;
@@ -15,7 +13,7 @@ type AsideNavbarProps = {
     icons: Icon[];
 };
 
-export const AsideNavbar = memo(({ isOpen, onClose, icons }: AsideNavbarProps) => {
+export const AsideNavbar = memo(({ isOpen, onClose }: AsideNavbarProps) => {
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
@@ -26,12 +24,6 @@ export const AsideNavbar = memo(({ isOpen, onClose, icons }: AsideNavbarProps) =
             document.body.style.overflow = '';
         };
     }, [isOpen]);
-
-    const iconsSvg: Record<string, React.ReactNode> = {
-        cart: <AiOutlineShoppingCart />,
-        user: <MdOutlinePerson />,
-        heart: <FaRegHeart />,
-    };
 
     return (
         <>
@@ -53,13 +45,13 @@ export const AsideNavbar = memo(({ isOpen, onClose, icons }: AsideNavbarProps) =
                     ))}
                 </ul>
                 <h2 className='asideNavbarTitle'>Mi Cuenta</h2>
-                {icons.length > 0 && (
+                {Object.entries(icons).length > 0 && (
                     <div className='asideNavbarIcons'>
-                        {icons.map((icon, index) => (
-                            <div key={index} className={`customIconAside ${icon.image}`}>
-                                {iconsSvg[icon.image] || <span>❓</span>}
-                                <p className='categoryName'>{icon.alt}</p>
-                            </div>
+                        {Object.entries(icons).map(([key, { icon, path, name }]) => (
+                            <Link to={path} key={key} className={`customIconAside ${key}`}>
+                                {icon || <span>❓</span>}
+                                <p className='categoryName'>{name}</p>
+                            </Link>
                         ))}
                     </div>
                 )}
