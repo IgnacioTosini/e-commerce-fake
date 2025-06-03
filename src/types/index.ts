@@ -43,7 +43,7 @@ export interface Product {
 }
 
 export interface CartItem {
-    productId: string;
+    product: Product;
     quantity: number;
 }
 

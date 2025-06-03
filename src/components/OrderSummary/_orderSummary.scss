@@ -1,0 +1,58 @@
+@use '../../styles/variables' as *;
+
+.orderSummary {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+    margin: 2rem auto;
+    border: 1px solid $color-text-tertiary;
+    border-radius: 0.5rem;
+
+    .orderSummaryTitle {
+        font-size: $font-size-medium;
+        font-weight: $font-weight-bold;
+        color: $color-text;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid $color-text-tertiary;
+        padding: 1.5rem;
+    }
+
+    .orderSummaryContent {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        padding: 1rem;
+
+        .orderSummarySubtotal,
+        .orderSummaryDiscount,
+        .orderSummaryTotal {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+        }
+
+        .orderSummaryDiscount {
+            color: green;
+            border-bottom: 1px solid $color-text-tertiary;
+        }
+    }
+
+    .orderSummaryCheckoutButton {
+        background-color: $color-button;
+        color: $color-text;
+        font-size: $font-size-xsmall;
+        font-weight: $font-weight-bold;
+        padding: 0.75rem clamp(0.75rem, 1.5rem, 5rem);
+        margin: 1rem auto;
+        border: none;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background-color: $color-hover-primary;
+        }
+    }
+}

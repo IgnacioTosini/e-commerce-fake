@@ -1,0 +1,52 @@
+@use '../../styles/variables' as *;
+
+.cartPage {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
+
+    .cartPageTitle {
+        font-size: clamp($font-size-medium, 2vw, $font-size-large);
+        font-weight: $font-weight-bold;
+        color: $color-text;
+        margin-bottom: 1rem;
+    }
+
+    .cartPageContent {
+        display: flex;
+        align-items: flex-start;
+        gap: 2rem;
+        width: 100%;
+        max-width: 1200px;
+
+        @media screen and (max-width: 768px) {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cartPageContentItems {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 1rem;
+            width: 100%;
+            max-width: 800px;
+            border: 1px solid $color-text-tertiary;
+            border-radius: 0.5rem;
+            padding: 1rem;
+
+            .cartPageSubtitle {
+                font-size: $font-size-medium;
+                font-weight: $font-weight-bold;
+                color: $color-text-secondary;
+                border-bottom: 1px solid $color-text-tertiary;
+                width: 100%;
+                padding-bottom: 0.5rem;
+            }
+        }
+    }
+}

@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 import './_counter.scss';
 
 type CounterProps = {
+    prevCant?: number;
     stock: number;
     onChange: (quantity: number) => void;
     resetSelection?: boolean;
 };
 
-export const Counter = ({ stock, onChange, resetSelection }: CounterProps) => {
-    const [cant, setCant] = useState(1);
+export const Counter = ({prevCant, stock, onChange, resetSelection }: CounterProps) => {
+    const [cant, setCant] = useState(prevCant || 1);
 
     useEffect(() => {
         if (resetSelection) {
