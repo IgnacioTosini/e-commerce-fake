@@ -6,6 +6,7 @@ import { ProductPage } from "../pages/ProductPage/ProductPage";
 import { ProductsPage } from "../pages/ProductsPage/ProductsPage";
 import { WishListPage } from "../pages/WishListPage/WishListPage";
 import { fadeInUp } from "../hooks/gsapEffects";
+import { AccountPage } from "../pages/AccountPage/AccountPage";
 
 export const AppRouter = () => {
     const pageRef = useRef<HTMLDivElement | null>(null);
@@ -26,6 +27,7 @@ export const AppRouter = () => {
                     <Route path="/productos" element={<ProductsPage />} />
                     <Route path="/productos/:id" element={<ProductPage />} />
                     <Route path="/lista-deseos" element={<WishListPage />} />
+                    <Route path="/perfil" element={<AccountPage />} />
                 </Routes>
             </div>
         </Suspense>
