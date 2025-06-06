@@ -1,0 +1,85 @@
+@use '@/styles/variables' as *;
+
+.footer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+    background-color: $primary-color;
+    color: $color-text;
+    border-top: 1px solid $color-text-tertiary;
+
+    .footerContainer {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 2rem;
+        width: 100%;
+        max-width: 1200px;
+        padding: 0 2rem;
+
+        .footerLogo {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            color: $color-text;
+            text-decoration: none;
+            max-width: 250px;
+
+            .footerLogoContent {
+                display: flex;
+                align-items: center;
+                margin-bottom: 1rem;
+
+                img {
+                    width: 100px;
+                    margin-right: 1rem;
+                    color: $color-text;
+                }
+            }
+        }
+
+        .footerLinksContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            color: $color-text;
+
+            h2 {
+                font-size: $font-size-normal;
+                font-weight: $font-weight-bold;
+                margin-bottom: 0.5rem;
+            }
+
+            .footerLinks {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                list-style: none;
+
+                a {
+                    text-decoration: none;
+                    color: $color-text-secondary;
+                    font-size: $font-size-xsmall;
+                    transition: color 0.3s;
+
+                    &:hover {
+                        color: $color-text;
+                    }
+                }
+            }
+        }
+    }
+
+    .footerReserved {
+        width: 100%;
+        margin-top: 2rem;
+        font-size: $font-size-xsmall;
+        color: $color-text-secondary;
+        text-align: center;
+        border-top: 1px solid $color-text-secondary;
+        padding-top: 1rem;
+    }
+}

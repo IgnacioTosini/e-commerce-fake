@@ -1,11 +1,11 @@
 import { FaRegClock } from "react-icons/fa";
-import { Badge } from '../../components/Badge/Badge'
-import { ProductCard } from "../../components/ProductCard/ProductCard";
+import { Badge } from '../../components/ui/Badge/Badge'
 import { mockProducts } from "../../utils/mockProducts";
-import { CustomList } from "../../components/CustomList/CustomList";
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router";
 import { animateElements } from "../../hooks/gsapEffects";
+import { CustomList } from "../../components/ui/CustomList/CustomList";
+import { ProductCard } from "../../components/ProductDisplay/ProductCard/ProductCard";
 import './_offersPage.scss'
 
 export const OffersPage = () => {

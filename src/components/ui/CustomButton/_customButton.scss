@@ -1,0 +1,52 @@
+@use '@/styles/variables' as *;
+
+.customButton {
+    background-color: $primary-color;
+    color: $color-text;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    font-size: $font-size-xsmall;
+    font-weight: $font-weight-regular;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    &--primary {
+        background-color: $color-button;
+        color: $color-text-tertiary;
+
+        &:hover {
+            background-color: $color-text-quaternary;
+        }
+    }
+
+    &--secondary {
+        background-color: $primary-color;
+        color: $color-text;
+        border: 1px solid $color-text-tertiary;
+
+        &:hover {
+            background-color: $color-hover-primary;
+        }
+    }
+
+    &--tertiary {
+        color: $color-text;
+        border: 1px solid $color-text-tertiary;
+
+        &:hover {
+            background-color: $color-hover-primary;
+        }
+    }
+
+    .customButtonIcon {
+        margin-right: 0.5rem;
+        vertical-align: middle;
+
+        svg {
+            width: 1.2rem;
+            height: 1.2rem;
+        }
+    }
+}

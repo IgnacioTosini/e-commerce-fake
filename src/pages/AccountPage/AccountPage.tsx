@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
-import { CustomAccountCard } from '../../components/CustomAccountCard/CustomAccountCard'
-import './_accountPage.scss'
+import { CustomAccountCard } from '../../components/Miscellaneous/CustomAccountCard/CustomAccountCard'
 import { useLocation } from 'react-router';
 import { animateElements } from '../../hooks/gsapEffects';
+import './_accountPage.scss'
 
 export const AccountPage = () => {
   const accountPageRef = useRef<HTMLDivElement | null>(null);
@@ -24,19 +24,19 @@ export const AccountPage = () => {
             img="user"
             title="Nombre del Usuario"
             description="Correo Electrónico: usuario@example.com"
-            path="/account"
+            path="/perfil/datos-personales"
           />
           <CustomAccountCard
             img="orders"
             title="Mis Pedidos"
             description="Gestiona tus pedidos y envíos."
-            path="/account/orders"
+            path="/perfil/mis-pedidos"
           />
           <CustomAccountCard
             img="heart"
             title="Mis Favoritos"
             description="Gestiona tus productos favoritos."
-            path="/account/favorites"
+            path="/perfil/mis-favoritos"
           />
         </section>
       </section>

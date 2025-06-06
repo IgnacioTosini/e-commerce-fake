@@ -1,0 +1,87 @@
+@use '@/styles/variables' as *;
+
+.productCard {
+    position: relative;
+    padding: 1rem;
+    transition: box-shadow 0.3s;
+    cursor: pointer;
+
+    &:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .productCardLink {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .productImage {
+        width: 100%;
+        border-radius: .5rem;
+        object-fit: cover;
+    }
+
+    .badge {
+        position: absolute;
+        top: 2rem;
+        left: 2rem;
+    }
+
+    .productInfo {
+        margin-top: .5rem;
+
+        .productCardTitle {
+            font-size: $font-size-normal;
+            font-weight: $font-weight-bold;
+            color: $color-text;
+        }
+    }
+
+    .productActions {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        opacity: 0;
+        transform: translateY(0);
+        transition: opacity 0.3s, transform 0.3s;
+        pointer-events: none;
+        padding-bottom: 1rem;
+    }
+
+    &:hover .productActions {
+        opacity: 1;
+        transform: translateY(-60px);
+        pointer-events: auto;
+    }
+
+    .favoriteButton {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 2rem;
+        right: 2rem;
+        background: $primary-color;
+        border-radius: 50%;
+        width: 2rem;
+        height: 2rem;
+        border: none;
+        cursor: pointer;
+        opacity: 0;
+        z-index: 10;
+    }
+
+    &:hover .favoriteButton {
+        opacity: 1;
+        transition: opacity 0.5s ease-in-out;
+        color: $color-text;
+    }
+
+    .favorited {
+        fill: $color-hover-primary;
+        transition: fill 0.3s ease-in-out;
+    }
+}

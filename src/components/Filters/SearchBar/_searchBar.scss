@@ -1,0 +1,54 @@
+@use '@/styles/variables' as *;
+
+.searchBarContainer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+
+    .searchBar {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+
+        .searchInput {
+            width: 100%;
+            border-radius: 4px;
+            border: 1px solid $color-text-secondary;
+            background-color: $primary-color;
+            padding: 0.5rem 2.5rem 0.5rem 2rem;
+            font-size: $font-size-xsmall;
+            color: $color-text;
+
+            &:focus {
+                border-color: $color-button;
+                outline: none;
+            }
+        }
+
+        .searchIcon {
+            position: absolute;
+            left: 0.7rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: $color-text;
+            font-size: $font-size-small;
+            pointer-events: none;
+        }
+    }
+
+    .noResults {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        padding: 0.5rem;
+        width: 100%;
+        background-color: $secondary-color;
+        color: $color-text-secondary;
+        font-size: $font-size-small;
+        text-align: center;
+    }
+}

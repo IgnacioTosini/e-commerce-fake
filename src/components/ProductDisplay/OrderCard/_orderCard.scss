@@ -1,0 +1,60 @@
+@use '@/styles/variables' as *;
+
+.orderCard {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    width: 100%;
+    max-width: 1200px;
+    padding: 1.5rem;
+    border: 1px solid $color-text-tertiary;
+    border-radius: 0.5rem;
+
+    .orderCardHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+
+        .orderCardHeaderInfo {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+
+            .orderCardTitle {
+                font-size: $font-size-medium;
+                font-weight: $font-weight-bold;
+            }
+        }
+    }
+
+    .orderCardDate,
+    .orderCardItemsInfo {
+        font-size: $font-size-small;
+        color: $color-text-secondary;
+    }
+
+    .orderCardBody {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+
+        .orderCardDetailsButton {
+            background-color: $color-text-tertiary;
+            color: $color-text;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.25rem;
+            font-size: $font-size-xsmall;
+            font-weight: $font-weight-medium;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+                background-color: $color-hover-primary;
+            }
+        }
+    }
+}

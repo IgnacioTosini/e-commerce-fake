@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
 
 /**
  * Efecto de fade-in y subida con GSAP para un solo elemento.
@@ -54,7 +55,6 @@ export function animateElements(
             stagger,
             scrollTrigger: {
                 trigger: elements[0], // Usa el primer elemento como referencia para el scroll
-                start: 'top 80%',
             },
         }
     );
@@ -78,8 +78,10 @@ export function animateOnScroll(element: HTMLElement, yOffset = 40, delay = 0) {
             ease: 'power3.out',
             scrollTrigger: {
                 trigger: element,
-                start: 'top 80%',
+                start: 'center bottom',
             },
         }
     );
 }
+
+gsap.registerPlugin(ScrollTrigger);

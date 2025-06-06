@@ -1,0 +1,25 @@
+@use '@/styles/variables' as *;
+
+.orderCardStatus {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: $font-size-xsmall;
+    font-weight: $font-weight-medium;
+    text-transform: capitalize;
+}
+
+.pending {
+    background-color: #F59E0B;
+}
+
+.shipped {
+    background-color: #14532D;
+}
+
+.delivered {
+    background-color: #1E3A8A;
+}
+
+.canceled {
+    background-color: #B91C1C;
+}

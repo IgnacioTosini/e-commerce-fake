@@ -1,0 +1,15 @@
+@use '@/styles/variables' as *;
+
+.productCardPriceDiscount {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: $font-size-normal;
+    color: $color-button;
+    font-weight: $font-weight-bold;
+
+    .productCardPrice {
+        font-size: $font-size-small;
+        color: $color-text-secondary;
+    }
+}

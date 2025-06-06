@@ -1,0 +1,75 @@
+@use '@/styles/variables' as *;
+
+@keyframes openFilter {
+    from {
+        max-height: 0;
+        opacity: 0;
+    }
+
+    to {
+        max-height: 500px; // Altura máxima suficiente para los elementos
+        opacity: 1;
+    }
+}
+
+@keyframes closeFilter {
+    from {
+        max-height: 500px;
+        opacity: 1;
+    }
+
+    to {
+        max-height: 0;
+        opacity: 0;
+    }
+}
+
+.customFilterChecked {
+    display: flex;
+    flex-direction: column;
+
+    .customFilterCheckedButton {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: none;
+        border: none;
+        width: 100%;
+        padding: 0.5rem;
+        cursor: pointer;
+        color: $color-text;
+        font-size: $font-size-xsmall;
+        font-weight: $font-weight-regular;
+        border-bottom: 1px solid $color-text-tertiary;
+
+        &:hover {
+            text-decoration: underline;
+        }
+
+        &.open {
+            border-bottom: none;
+        }
+    }
+
+    .customFilterCheckedList {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        width: 100%;
+        padding: 1rem;
+        border-bottom: 1px solid $color-text-tertiary;
+
+        overflow: hidden;
+        max-height: 0;
+        opacity: 0;
+        transition: max-height 0.5s ease, opacity 0.5s ease;
+
+        &.open {
+            animation: openFilter 0.5s ease forwards;
+        }
+
+        &.close {
+            animation: closeFilter 0.5s ease forwards;
+        }
+    }
+}

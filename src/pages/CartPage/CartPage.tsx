@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
-import { CartItemCard } from '../../components/CartItemCard/CartItemCard'
-import { OrderSummary } from '../../components/OrderSummary/OrderSummary'
+import { CartItemCard } from '../../components/ProductDisplay/CartItemCard/CartItemCard'
+import { OrderSummary } from '../../components/Miscellaneous/OrderSummary/OrderSummary'
 import { mockCartItems } from '../../utils/mockCartItems'
 import { useLocation } from 'react-router'
 import { animateElements } from '../../hooks/gsapEffects'

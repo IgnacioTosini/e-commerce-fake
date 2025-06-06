@@ -1,0 +1,22 @@
+@use '@/styles/variables' as *;
+@use '../LoginPage/_loginPage.scss' as loginPageStyles;
+
+.registerPage {
+    @extend .loginPage;
+}
+
+.registerForm {
+    @extend .loginForm;
+}
+
+.registerDescription {
+    @extend .loginDescription;
+}
+
+.formGroup {
+    @extend .formGroup;
+}
+
+button {
+    @extend .button !optional;
+}

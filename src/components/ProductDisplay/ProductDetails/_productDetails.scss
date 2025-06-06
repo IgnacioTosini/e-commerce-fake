@@ -1,0 +1,85 @@
+@use '@/styles/variables' as *;
+
+.productDetailsContainer {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    color: $color-text;
+    padding: 2rem;
+    gap: 2rem;
+    width: 100%;
+
+    .galleryProduct {
+        flex: 1;
+    }
+
+    .productDetails {
+        flex: 1;
+
+        .productDetailsActions,
+        .productDetailsInfo {
+            margin-top: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid $color-text-tertiary;
+        }
+
+        .productDetailsInfo {
+            .productDetailsTitle {
+                font-size: $font-size-large;
+                font-weight: $font-weight-bold;
+            }
+
+            .productDetailsRating {
+                display: flex;
+                align-items: center;
+                gap: .5rem;
+                margin-top: 4px;
+
+                .productDetailRating {
+                    font-size: $font-size-xsmall;
+                    font-weight: $font-weight-medium;
+                }
+            }
+
+            .productDetailsDiscount {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+
+                .productCardPriceDiscount {
+                    font-size: $font-size-medium;
+                }
+            }
+        }
+
+        .productDetailsActions {
+            .productDetailsButtons {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                margin-top: 1rem;
+            }
+        }
+
+        h3 {
+            font-size: $font-size-normal;
+            font-weight: $font-weight-bold;
+            margin-top: .5rem;
+        }
+
+        .productDetailsDescription {
+            font-size: $font-size-xsmall;
+            margin-top: 0.5rem;
+            color: $color-text-secondary;
+        }
+    }
+}
+
+.relatedProductsTitle {
+    font-size: $font-size-large;
+    font-weight: $font-weight-bold;
+    margin-top: 1rem;
+    padding: 1rem;
+    color: $color-text;
+    width: 100%;
+}

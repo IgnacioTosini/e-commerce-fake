@@ -1,0 +1,128 @@
+@use '@/styles/variables' as *;
+
+.asideNavbar {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    max-width: 250px;
+    height: 100dvh;
+    background-color: $primary-color;
+    z-index: 2000;
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 4px 0 16px -4px rgba(0, 0, 0, 0.18);
+    transform: translateX(-100%);
+    border-right: 1px solid $secondary-color;
+
+    &.open {
+        display: flex;
+        transform: translateX(0);
+    }
+
+    .headerLogoAside,
+    .searchBar,
+    .asideNavbarList {
+        border-bottom: 1px solid $secondary-color;
+    }
+
+    .navbarLink,
+    .customIconAside {
+        display: block;
+        padding: 0.5rem 1rem;
+        margin: .5rem;
+        border-radius: .5rem;
+        font-size: $font-size-xsmall;
+        text-decoration: none;
+        color: $color-text;
+        transition: background-color 0.3s;
+
+        &:hover {
+            background-color: $secondary-color;
+        }
+    }
+
+    .headerLogoAside {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem;
+        width: 100%;
+
+        .logo {
+            img {
+                width: 100%;
+                max-width: 60px;
+                border-radius: 50%;
+                color: $color-text;
+            }
+        }
+
+        svg {
+            color: $color-text-quaternary;
+        }
+    }
+
+    .searchBar {
+        padding: 1rem;
+
+        .searchIcon {
+            left: 1.5rem;
+        }
+    }
+
+    .asideNavbarList {
+        width: 100%;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .asideNavbarTitle {
+        width: 100%;
+        padding: .5rem;
+        font-size: $font-size-small;
+        color: $color-text-secondary;
+        font-weight: $font-weight-bold;
+        text-transform: uppercase;
+    }
+
+    .asideNavbarIcons {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        .customIconAside {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: .5rem;
+
+            .categoryName {
+                color: $color-text;
+                font-size: $font-size-xsmall;
+            }
+        }
+    }
+}
+
+.asideNavbarOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 1999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.asideNavbar.open~.asideNavbarOverlay {
+    opacity: 1;
+    pointer-events: auto;
+}

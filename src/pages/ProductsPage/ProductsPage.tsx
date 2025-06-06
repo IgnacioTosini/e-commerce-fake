@@ -1,11 +1,11 @@
-import { CustomList } from '../../components/CustomList/CustomList';
-import { ProductCard } from '../../components/ProductCard/ProductCard';
-import { mockProducts } from '../../utils/mockProducts';
-import { FiltersSection } from '../../components/FiltersSeccion/FiltersSection';
-import { useFilters } from '../../context/useFilters';
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router';
+import { mockProducts } from '../../utils/mockProducts';
+import { useFilters } from '../../context/useFilters';
 import { animateElements } from '../../hooks/gsapEffects';
+import { FiltersSection } from '../../components/Filters/FiltersSeccion/FiltersSection';
+import { CustomList } from '../../components/ui/CustomList/CustomList';
+import { ProductCard } from '../../components/ProductDisplay/ProductCard/ProductCard';
 import './_productsPage.scss'
 
 export const ProductsPage = () => {

@@ -1,5 +1,5 @@
-import { CustomList } from '../../components/CustomList/CustomList'
-import { ProductCard } from '../../components/ProductCard/ProductCard'
+import { ProductCard } from '../../components/ProductDisplay/ProductCard/ProductCard'
+import { CustomList } from '../../components/ui/CustomList/CustomList'
 import { useFavorites } from '../../context/useFavorites'
 import './_wishListPage.scss'
 

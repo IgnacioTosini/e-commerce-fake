@@ -1,5 +1,5 @@
 import { useParams } from 'react-router';
-import { ProductDetails } from '../../components/ProductDetails/ProductDetails';
+import { ProductDetails } from '../../components/ProductDisplay/ProductDetails/ProductDetails';
 import { mockProducts } from '../../utils/mockProducts';
 import './_productPage.scss'
 

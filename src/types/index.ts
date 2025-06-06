@@ -45,6 +45,8 @@ export interface Product {
 export interface CartItem {
     product: Product;
     quantity: number;
+    size?: string; // Nuevo campo para el talle elegido
+    color?: string; // Nuevo campo para el color elegido
 }
 
 export interface Cart {
@@ -58,6 +60,8 @@ export interface OrderItem {
     productId: string;
     quantity: number;
     price: number;
+    size?: string; // Nuevo campo para el talle elegido
+    color?: string; // Nuevo campo para el color elegido
 }
 
 export interface Order {

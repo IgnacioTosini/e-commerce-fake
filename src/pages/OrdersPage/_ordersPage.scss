@@ -1,0 +1,30 @@
+@use '@/styles/variables' as *;
+
+.ordersPage {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+
+    .ordersPageTitle {
+        font-size: $font-size-large;
+        font-weight: $font-weight-bold;
+        margin-bottom: 1rem;
+    }
+
+    .ordersPageDescription {
+        font-size: $font-size-normal;
+        color: $color-text-secondary;
+        margin-bottom: 2rem;
+    }
+
+    .ordersPageContent {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+    }
+}

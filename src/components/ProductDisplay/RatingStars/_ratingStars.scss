@@ -1,0 +1,17 @@
+@use '@/styles/variables' as *;
+
+.ratingStars {
+    display: flex;
+    align-items: center;
+    user-select: none;
+
+    span {
+        color: $color-text;
+
+
+
+        &.filled {
+            color: $color-button;
+        }
+    }
+}
