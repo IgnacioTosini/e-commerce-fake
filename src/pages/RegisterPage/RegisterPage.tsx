@@ -9,14 +9,13 @@ const formData = {
 }
 
 const formValidations = {
-    username: [(value: string) => value.length >= 3, 'El nombre de usuario debe tener al menos 3 caracteres.'],
-    email: [(value: string) => value.includes('@'), 'El email debe ser válido.'],
-    password: [(value: string) => value.length >= 6, 'La contraseña debe tener al menos 6 caracteres.'],
+    username: [(value: string) => value.length >= 3, 'El nombre de usuario debe tener al menos 3 caracteres.'] as [(value: string) => boolean, string],
+    email: [(value: string) => value.includes('@'), 'El email debe ser válido.'] as [(value: string) => boolean, string],
+    password: [(value: string) => value.length >= 6, 'La contraseña debe tener al menos 6 caracteres.'] as [(value: string) => boolean, string],
 }
 
 export const RegisterPage = () => {
-    const { onInputChange, formState, formValidation } = useForm(formData, formValidations)
-    console.log('Form Validation:', formValidation);
+    const { onInputChange, formState } = useForm(formData, formValidations)
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();

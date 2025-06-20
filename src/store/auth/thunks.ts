@@ -16,7 +16,14 @@ export const startGoogleSignIn = () => {
         if (!result.ok) {
             return dispatch(logout(result));
         }
-        console.log('Google Sign-In result:', result);
-        return dispatch(login(result.user));
+        if (!result.user || !result.user.uid || !result.user.email || !result.user.displayName || !result.user.photoURL) {
+            return dispatch(logout({ errorMessage: 'Incomplete user data from Google Sign-In' }));
+        }
+        return dispatch(login({
+            uid: result.user.uid,
+            email: result.user.email,
+            displayName: result.user.displayName,
+            photoURL: result.user.photoURL
+        }));
     }
 }

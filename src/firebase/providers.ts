@@ -8,13 +8,13 @@ export const signInWithGoogle = async () => {
         const result = await signInWithPopup(FirebaseAuth, googleProvider)
         /* const credentials = GoogleAuthProvider.credentialFromResult(result); */
         const user = result.user;
-        const { displayName, email, photoURL, uid, status } = user;
+        console.log("User signed in with Google: ", user);
+        const { displayName, email, photoURL, uid } = user;
         const userData = {
             displayName,
             email,
             photoURL,
             uid,
-            status,
         }
         return { ok: true, user: userData };
     } catch (error) {

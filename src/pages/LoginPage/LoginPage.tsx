@@ -9,6 +9,7 @@ import './_loginPage.scss'
 export const LoginPage = () => {
     const { status } = useSelector((state: RootState) => state.auth);
     const { onInputChange, formState } = useForm({
+        username: '',
         email: '',
         password: ''
     })
