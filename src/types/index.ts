@@ -1,4 +1,4 @@
-export interface User {
+export type User = {
     id: string;
     name: string;
     email: string;
@@ -8,9 +8,10 @@ export interface User {
     address?: string;
     phone?: string;
     isActive?: boolean;
+    orders?: Order[];
 }
 
-export interface Category {
+export type Category = {
     id: string;
     name: string;
     parent?: string;
@@ -20,13 +21,13 @@ export interface Category {
     products: Product[]; // Lista de productos asociados a la categoría
 }
 
-export interface Product {
+export type Product = {
     id: string;
     title: string;
     description: string;
     price: number;
     images: string[];
-    categories: Category[];         // Cambiar de IDs a referencias completas de objetos Category
+    categoryName: Pick<Category, 'name'>; // Solo incluye el atributo 'name' de Category
     stock: number;
     rating: number;
     sku: string; // SKU: identificador único de inventario para el producto
@@ -42,31 +43,32 @@ export interface Product {
     colors?: string[]; // Arreglo opcional de colores disponibles para el producto
 }
 
-export interface CartItem {
+export type CartItem = {
     product: Product;
     quantity: number;
     size?: string; // Nuevo campo para el talle elegido
     color?: string; // Nuevo campo para el color elegido
 }
 
-export interface Cart {
-    userId: string;
+export type Cart = {
+    userId: Pick<User, 'id'>['id']; // ID del usuario al que pertenece el carritoquie
     items: CartItem[];
     createdAt: string; // Fecha de creación del carrito
     updatedAt: string; // Fecha de última actualización del carrito
 }
 
-export interface OrderItem {
-    productId: string;
+export type OrderItem = {
+    productId: Pick<Product, 'id'>['id']; // ID del producto
+    userId?: Pick<User, 'id'>['id']; // ID del usuario que realizó la compra
     quantity: number;
     price: number;
     size?: string; // Nuevo campo para el talle elegido
     color?: string; // Nuevo campo para el color elegido
 }
 
-export interface Order {
+export type Order = {
     id: string;
-    userId: string;
+    userId: Pick<User, 'id'>['id']; // ID del usuario que realizó la orden
     items: OrderItem[];
     total: number;
     status: 'pending' | 'paid' | 'shipped' | 'delivered';
@@ -78,10 +80,10 @@ export interface Order {
     statusHistory?: { status: string; date: string }[];
 }
 
-export interface Review {
+export type Review = {
     id: string;
-    userId: string;
-    productId: string;
+    userId: Pick<User, 'id'>['id']; // ID del usuario que escribió la reseña
+    productId: Pick<Product, 'id'>['id']; // ID del producto reseñado
     rating: number;
     comment: string;
     createdAt: string; // Fecha de creación de la reseña

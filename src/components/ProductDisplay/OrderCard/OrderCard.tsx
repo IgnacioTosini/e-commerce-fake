@@ -15,13 +15,13 @@ export const OrderCard = ({ order }: OrderCardProps) => {
         <div className='orderCard'>
             <div className='orderCardHeader'>
                 <section className='orderCardHeaderInfo'>
-                    <h2 className='orderCardTitle'>{order.id}</h2>
+                    <h2 className='orderCardTitle'>Pedido #{order.id}</h2>
                     <p className='orderCardDate'>Pedido realizado el {new Date(order.createdAt).toLocaleDateString()}</p>
                 </section>
                 <OrderStatusCard order={order} />
             </div>
             <div className='orderCardBody'>
-                <p className='orderCardItemsInfo'>{order.items.length} artículo{order.items.length !== 1 ? 's' : ''} • Total: ${order.total}</p>
+                <p className='orderCardItemsInfo'>{order.items.length} artículo{order.items.length !== 1 ? 's' : ''} • Total: ${order.total.toFixed(2)}</p>
                 <CustomButton color='tertiary' className='orderCardDetailsButton' onClick={() => window.location.href = `/perfil/mis-pedidos/${order.id}`}>
                     Ver detalles
                 </CustomButton>

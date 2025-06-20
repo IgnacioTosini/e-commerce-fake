@@ -1,0 +1,51 @@
+@use '@/styles/variables' as *;
+
+.actionsMenu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    button {
+        background-color: transparent;
+        color: $color-text;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        font-size: $font-size-xsmall;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background-color: $color-hover-primary;
+        }
+    }
+
+    .actionsDropdown {
+        overflow: hidden;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: $secondary-color;
+        min-width: 160px;
+        border-radius: .5rem;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 100;
+
+        a,
+        button {
+            display: flex;
+            gap: 0.5rem;
+            width: 100%;
+            color: $color-text;
+            padding: 12px 1rem;
+            text-decoration: none;
+            background: none;
+            border: none;
+
+            &:hover {
+                background-color: $color-hover-primary;
+            }
+        }
+    }
+}

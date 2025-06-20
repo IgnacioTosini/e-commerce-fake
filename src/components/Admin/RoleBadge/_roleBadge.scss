@@ -1,0 +1,53 @@
+@use '@/styles/variables' as *;
+
+.role-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: $font-size-xsmall;
+    font-weight: $font-weight-medium;
+    text-transform: capitalize;
+}
+
+.role-admin {
+    background-color: #a54823;
+}
+
+.role-user {
+    background-color: #462ED0;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: $font-size-xsmall;
+    text-transform: capitalize;
+}
+
+.status-active {
+    background-color: $color-text-quaternary;
+}
+
+.status-inactive {
+    background-color: #dc3545;
+}
+
+.status-pending {
+    background-color: #ffc107;
+    color: $primary-color;
+}
+
+.status-shipped {
+    background-color: #28a745;
+    color: $primary-color;
+}
+
+.status-delivered {
+    background-color: #17a2b8;
+    color: $primary-color;
+}
+
+.status-paid {
+    background-color: #007bff;
+}

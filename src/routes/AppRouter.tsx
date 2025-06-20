@@ -12,6 +12,13 @@ import { OrdersPage } from "../pages/OrdersPage/OrdersPage";
 import { OrderPage } from "../pages/OrderPage/[id]";
 import { LoginPage } from "../pages/LoginPage/LoginPage";
 import { RegisterPage } from "../pages/RegisterPage/RegisterPage";
+import { AdminPanelPage } from "../pages/AdminPanelPage/AdminPanelPage";
+import { AdminLayout } from "../components/Layout/AdminLayout/AdminLayout";
+import { DynamicList } from "../components/Admin/DynamicList/DynamicList";
+import { ProductViewPage } from "../pages/ProductViewPage/[id]";
+import { UserViewPage } from "../pages/UserViewPage/[id]";
+import { UserEditPage } from "../pages/UserEditPage/UserEditPage";
+import { ProductEditPage } from "../pages/ProductEditPage/ProductEditPage";
 
 export const AppRouter = () => {
     const pageRef = useRef<HTMLDivElement | null>(null);
@@ -38,6 +45,13 @@ export const AppRouter = () => {
                     <Route path="/perfil/mis-pedidos/:id" element={<OrderPage />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
+                    {/* Admin Routes */}
+                    <Route path="/admin/admin-panel" element={<AdminLayout><AdminPanelPage /></AdminLayout>} />
+                    <Route path="/admin/:category" element={<AdminLayout><DynamicList /></AdminLayout>} />
+                    <Route path="/admin/productos/:id" element={<AdminLayout><ProductViewPage /></AdminLayout>} />
+                    <Route path="/admin/usuarios/:id" element={<AdminLayout><UserViewPage /></AdminLayout>} />
+                    <Route path="/admin/usuarios/:id/editar" element={<AdminLayout><UserEditPage /></AdminLayout>} />
+                    <Route path="/admin/productos/:id/editar" element={<AdminLayout><ProductEditPage /></AdminLayout>} />
                 </Routes>
             </div>
         </Suspense>

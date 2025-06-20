@@ -33,7 +33,7 @@ export const FiltersSection = () => {
 
     // Calcular categorías y sus cantidades
     const categoryCounts = categories.reduce((acc, category) => {
-        acc[category.name] = mockProducts.filter(product => product.categories?.some(cat => cat.name === category.name)).length;
+        acc[category.name] = mockProducts.filter(product => product.categoryName.name === category.name).length;
         return acc;
     }, {} as Record<string, number>);
 

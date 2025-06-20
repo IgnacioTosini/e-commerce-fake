@@ -1,0 +1,58 @@
+@use '@/styles/variables' as *;
+
+.informationCard {
+    .informationCardTitle {
+        font-size: $font-size-medium;
+        font-weight: $font-weight-bold;
+        color: $color-text;
+    }
+
+    .informationCardDescription,
+    .informationCardHeader {
+        border-bottom: 1px solid $color-text-tertiary;
+    }
+
+    .informationCardHeader {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: center;
+        gap: 1rem;
+        border-bottom: 1px solid $color-text-tertiary;
+    }
+
+    .subMenu {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.5rem 0;
+        width: 100%;
+        max-width: fit-content;
+
+        h2 {
+            font-size: $font-size-xsmall;
+            color: $color-text-secondary;
+        }
+
+        p {
+            font-size: $font-size-xsmall;
+        }
+    }
+
+    .informationCardDescription {
+        font-size: $font-size-xsmall;
+        color: $color-text-secondary;
+        line-height: 1.5;
+
+        p {
+            color: $color-text;
+            margin-bottom: 1rem;
+        }
+    }
+
+    .informationCardFooter {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: center;
+        gap: 1rem;
+    }
+}

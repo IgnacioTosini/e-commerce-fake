@@ -1,0 +1,65 @@
+@use '@/styles/variables' as *;
+
+.informationEditCard {
+    .informationEditCardTitle {
+        font-size: $font-size-medium;
+        font-weight: $font-weight-bold;
+        color: $color-text;
+    }
+
+    .informationEditCardSubtitle {
+        font-size: $font-size-xsmall;
+        font-weight: $font-weight-regular;
+        color: $color-text-secondary;
+    }
+
+    .informationEditCardForm {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .informationEditCardGroup {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .informationEditCardInputGroup {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 100%;
+            max-width: 300px;
+
+            .informationEditCardLabel {
+                font-size: $font-size-xsmall;
+                font-weight: $font-weight-medium;
+            }
+
+            .informationEditCardInput {
+                width: 100%;
+                padding: 0.5rem;
+                border: 1px solid $color-text-tertiary;
+                border-radius: 0.375rem;
+                background-color: transparent;
+                color: $color-text;
+
+                &:focus {
+                    border-color: $color-text-quaternary;
+                    outline: none;
+                }
+            }
+
+            .textArea {
+                min-height: 100px;
+                max-height: 300px;
+                max-width: clamp(100px, 100%, 450px);
+                width: 100%;
+            }
+
+            .select {
+                background-color: $color-text-tertiary;
+                cursor: pointer;
+            }
+        }
+    }
+}

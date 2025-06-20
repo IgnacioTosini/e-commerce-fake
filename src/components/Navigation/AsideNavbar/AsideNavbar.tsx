@@ -30,7 +30,7 @@ export const AsideNavbar = memo(({ isOpen, onClose }: AsideNavbarProps) => {
             <div className={`asideNavbar${isOpen ? ' open' : ''}`}>
                 <div className='headerLogoAside'>
                     <Link to='/' className='logo'>
-                        <img src="ecommerceFakeLogo.png" alt="Logo" />
+                        <img src="/ecommerceFakeLogo.png" alt="Logo" />
                     </Link>
                     <IoCloseSharp onClick={onClose} />
                 </div>

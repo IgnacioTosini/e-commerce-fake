@@ -1,0 +1,21 @@
+@use '@/styles/variables' as *;
+
+.dateInformationCard {
+    .dateInformationCardSection {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        p {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            font-size: $font-size-xsmall;
+        }
+
+        .dateInformationCardIcon {
+            color: $color-text-secondary;
+        }
+    }
+}

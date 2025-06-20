@@ -1,0 +1,100 @@
+@use '@/styles/variables' as *;
+
+.quickAccessCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 300px;
+    padding: 1rem;
+    border: 1px solid $color-text-tertiary;
+    border-radius: .5rem;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        background-color: $color-text-tertiary;
+        color: $color-text;
+        cursor: pointer;
+
+        .quickAccessCardArrow {
+            transform: translateX(5px);
+            color: $color-text;
+        }
+    }
+
+    .quickAccessCardLink {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+        text-decoration: none;
+        color: $color-text;
+        font-size: $font-size-xsmall;
+        width: 100%;
+
+        .quickAccessCardHeader,
+        .quickAccessCardFooter {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .quickAccessCardHeaderText,
+        .quickAccessCardFooterText {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.25rem;
+        }
+
+        .quickAccessCardHeader {
+            .quickAccessCardHeaderText {
+                h2 {
+                    font-size: $font-size-normal;
+                    font-weight: $font-weight-bold;
+                }
+
+                p {
+                    font-size: $font-size-small;
+                    color: $color-text-secondary;
+                }
+            }
+        }
+
+        .quickAccessCardFooter {
+            .quickAccessCardFooterText {
+                .total {
+                    font-size: $font-size-large;
+                    font-weight: $font-weight-bold;
+                    color: $color-text;
+                }
+
+                span {
+                    font-size: $font-size-small;
+                    color: $color-text-secondary;
+                }
+            }
+        }
+
+        .quickAccessCardArrow {
+            color: $color-text-secondary;
+            transition: transform 0.3s ease-in-out;
+        }
+    }
+}
+
+.userIcon {
+    color: #159F49;
+}
+
+.orderIcon {
+    color: #FFB800;
+}
+
+.productIcon {
+    color: #4D6E8D;
+}

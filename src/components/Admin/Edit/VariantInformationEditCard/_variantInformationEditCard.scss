@@ -1,0 +1,46 @@
+@use '@/styles/variables' as *;
+@use '../../../ProductDisplay/VariantInformationCard/variantInformationCard' as variantInformationCard;
+
+
+.variantInformationEditCard {
+    @extend .variantInformationCard;
+
+    .variantInformationEditCardSection {
+        @extend .variantInformationCardSection;
+
+        .variantInformationEditCardColor,
+        .variantInformationEditCardSize {
+            @extend .variantInformationCardColor;
+
+            .badge {
+                display: flex;
+                align-items: center;
+                user-select: default;
+                pointer-events: auto;
+
+                .remove {
+                    cursor: pointer;
+
+                    &:hover {
+                        color: $color-hover-primary;
+                    }
+                }
+            }
+        }
+
+        input {
+            width: 100%;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            border: 1px solid $color-text-tertiary;
+            border-radius: 0.375rem;
+            background-color: transparent;
+            color: $color-text;
+
+            &:focus {
+                border-color: $color-text-quaternary;
+                outline: none;
+            }
+        }
+    }
+}

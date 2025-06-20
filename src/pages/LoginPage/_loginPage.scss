@@ -57,18 +57,28 @@
         }
     }
 
-    button {
-        background-color: $color-button;
-        padding: 0.5rem 1rem;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: all 0.3s ease;
+    .formActions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
         width: 100%;
+        margin-top: 1rem;
 
-        &:hover {
-            background-color: $color-hover-primary;
-            color: $color-text;
+        button {
+            background-color: $color-button;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+
+            &:hover {
+                background-color: $color-hover-primary;
+                color: $color-text;
+            }
         }
     }
 }

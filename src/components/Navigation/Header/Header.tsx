@@ -18,9 +18,7 @@ export const Header = () => {
     const icons = [
         { image: 'heart', alt: 'Favoritos' },
         { image: 'cart', alt: 'Carrito' },
-        { image: 'user', alt: 'Usuario' }
     ];
-
 
     useEffect(() => {
         if (headerRef.current) {
@@ -46,7 +44,7 @@ export const Header = () => {
         <header className='header' ref={headerRef}>
             <div className='headerLogo'>
                 <Link to='/' className='headerLogoLink' onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                    <img src="ecommerceFakeLogo.png" alt="Logo" />
+                    <img src="/ecommerceFakeLogo.png" alt="Logo" />
                     {isTabletOrMobile ? null : <h1 className='headerLogoText'>EClothes</h1>}
                 </Link>
                 {isTabletOrMobile ? null : <Navbar />}

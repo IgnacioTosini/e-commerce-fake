@@ -1,0 +1,9 @@
+@use '../ProductViewPage/_productViewPage' as *;
+
+.productEditPage {
+    @extend .productViewPage;
+
+    .productEditPageContent {
+        @extend .productViewPageContent;
+    }
+}

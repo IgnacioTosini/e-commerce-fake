@@ -31,7 +31,7 @@ export const FiltersProvider = ({ children }: { children: ReactNode }): React.Re
         return mockProducts.filter(product => {
             const matchesCategory = selectedFilters.Categoria.length === 0 ||
                 selectedFilters.Categoria.some(categoryName =>
-                    product.categories.some(category => category.name === categoryName)
+                    product.categoryName.name === categoryName
                 );
 
             const matchesColor = selectedFilters.Colores.length === 0 ||

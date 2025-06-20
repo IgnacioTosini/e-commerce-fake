@@ -8,9 +8,9 @@ import { CustomButton } from '../../ui/CustomButton/CustomButton';
 import './_productCard.scss'
 
 type ProductCardProps = {
-    product: Product
-    onClick: () => void
-}
+    product: Product;
+    onClick?: () => void; // Hacer opcional el onClick
+};
 
 export const ProductCard = ({ product, onClick }: ProductCardProps) => {
     const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
@@ -25,12 +25,17 @@ export const ProductCard = ({ product, onClick }: ProductCardProps) => {
         }
     };
 
+    const handleNavigation = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (onClick) onClick();
+    };
+
     return (
         <div className="productCard">
             <div className='favoriteButton' onClick={() => handleFavorite(product)}>
                 <FaHeart className={isFavorite ? 'favorited' : ''} />
             </div>
-            <Link to={`/productos/${product.id}`} className="productCardLink" onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); onClick(); }}>
+            <Link to={`/productos/${product.id}`} className="productCardLink" onClick={handleNavigation}>
                 <img src={product.images[0]} alt={product.title} className='productImage' />
                 {product.discount && <Badge color={'primary'}>{`-${product.discount}%`}</Badge>}
                 <div className='productInfo'>
@@ -42,5 +47,5 @@ export const ProductCard = ({ product, onClick }: ProductCardProps) => {
                 </div>
             </Link>
         </div>
-    )
-}
+    );
+};

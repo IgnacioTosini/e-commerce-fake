@@ -1,8 +1,9 @@
 import { Link } from 'react-router';
 import { FaRegUser, FaBox, FaRegHeart } from "react-icons/fa6";
+import { RiGitRepositoryPrivateFill } from "react-icons/ri";
 import './_customAccountCard.scss'
 
-type ImageSvgKey = 'user' | 'orders' | 'heart';
+type ImageSvgKey = 'user' | 'orders' | 'heart' | 'admin';
 
 type CustomAccountCardProps = {
   img: ImageSvgKey;
@@ -15,8 +16,12 @@ export const CustomAccountCard = ({ img, title, description, path }: CustomAccou
   const imageSvg = {
     user: <FaRegUser />,
     orders: <FaBox />,
-    heart: <FaRegHeart />
-
+    heart: <FaRegHeart />,
+    admin: <RiGitRepositoryPrivateFill />,
+  }
+  if (!imageSvg[img]) {
+    console.error(`Image SVG for key "${img}" not found.`);
+    return null;
   }
   return (
     <Link to={path} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="customAccountCard">

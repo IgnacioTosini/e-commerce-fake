@@ -1,0 +1,114 @@
+@use '@/styles/variables' as *;
+@use '../../ui/CustomIcon/customIcon' as customIcon;
+
+.userDisplayButton {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: $color-text;
+    @extend customIcon, .customIcon !optional;
+
+    .userDisplay {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        .userDisplayAvatar {
+            font-size: 1.5rem;
+        }
+
+        .userDisplayIcons,
+        .userDisplayDetails {
+            border-bottom: 1px solid $color-text-tertiary;
+        }
+
+        .userDisplayInfo {
+            overflow: hidden;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: $primary-color;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            z-index: 10;
+
+            .userDisplayActions {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 0.5rem;
+                width: 100%;
+            }
+
+            .customIconAside,
+            .userDisplayLogout,
+            .userDisplayAction {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                color: $color-text;
+                text-decoration: none;
+                font-size: $font-size-xsmall;
+                font-weight: $font-weight-regular;
+                cursor: pointer;
+                padding: 0.5rem;
+                border-radius: 0.25rem;
+                transition: background-color 0.2s ease;
+
+                &:hover {
+                    background-color: $color-hover-primary;
+                }
+            }
+
+            .userDisplayDetails {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                color: $color-text-secondary;
+                font-size: $font-size-small;
+                max-width: clamp(100px, 100%, 300px);
+                padding: 0.5rem;
+
+                .userDisplayName {
+                    font-size: $font-size-normal;
+                    font-weight: $font-weight-bold;
+                    color: $color-text;
+                }
+            }
+
+            .userLinks {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+
+                .userDisplayIcons {
+                    display: flex;
+                    flex-direction: column;
+                    margin-top: 0.5rem;
+                    gap: 0.5rem;
+                }
+
+                .customIconAside {
+                    &:last-child {
+                        margin-bottom: 0.5rem;
+                    }
+                }
+
+                .userDisplayLogoutButton {
+                    border: none;
+                    background: none;
+                    color: $color-text;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    &.open .userDisplayInfo {
+        height: auto;
+    }
+}

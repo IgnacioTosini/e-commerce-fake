@@ -1,0 +1,44 @@
+@use '@/styles/variables' as *;
+
+.adminPanelPage {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+
+    @media screen and (max-width: 768px) {
+        align-items: center;
+    }
+
+    .adminPanelPageContent {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+
+        .adminPanelPageTitle {
+            font-size: $font-size-large;
+            font-weight: $font-weight-bold;
+        }
+
+        .adminPanelPageDescription {
+            font-size: $font-size-normal;
+            color: $color-text-secondary;
+        }
+
+        .adminPanelPageSubtitle {
+            font-size: $font-size-medium;
+            font-weight: $font-weight-bold;
+            margin-top: 1rem;
+        }
+
+        .adminPanelPageQuickAccess,
+        .adminPanelPageQuickActions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+    }
+}

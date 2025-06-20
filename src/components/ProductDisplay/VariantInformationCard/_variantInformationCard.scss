@@ -1,0 +1,16 @@
+@use '@/styles/variables' as *;
+
+.variantInformationCard {
+    .variantInformationCardSection {
+        h2 {
+            margin: 0.5rem 0;
+        }
+
+        .variantInformationCardColor,
+        .variantInformationCardSize {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    }
+}

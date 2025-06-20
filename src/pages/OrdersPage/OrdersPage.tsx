@@ -15,6 +15,7 @@ export const OrdersPage = () => {
             animateElements(elements as HTMLElement[], 0.5, 0.2, 30);
         }
     }, [location]);
+
     return (
         <div className="ordersPage" ref={ordersPageRef}>
             <h1 className="ordersPageTitle">Mis Pedidos</h1>

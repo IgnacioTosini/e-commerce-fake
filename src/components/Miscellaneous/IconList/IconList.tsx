@@ -1,5 +1,6 @@
 import type { Icon } from '../../../types';
 import { CustomIcon } from '../../ui/CustomIcon/CustomIcon'
+import { UserDisplay } from '../UserDisplay/UserDisplay';
 import './_iconList.scss'
 
 type IconListProps = {
@@ -12,6 +13,7 @@ export const IconList = ({ icons }: IconListProps) => {
             {icons.map(icon => (
                 <CustomIcon key={icon.image} typeOfIcon={icon.image} />
             ))}
+            <UserDisplay />
         </div>
     )
 }

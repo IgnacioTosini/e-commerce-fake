@@ -1,5 +1,6 @@
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { useEffect } from 'react';
 
 /**
  * Efecto de fade-in y subida con GSAP para un solo elemento.
@@ -83,5 +84,24 @@ export function animateOnScroll(element: HTMLElement, yOffset = 40, delay = 0) {
         }
     );
 }
+
+export const useMenuAnimation = (isMenuOpen: boolean, menuRef: React.RefObject<HTMLDivElement | null>) => {
+    useEffect(() => {
+        if (menuRef.current) {
+            const timeline = gsap.timeline();
+
+            if (isMenuOpen) {
+                timeline
+                    .set(menuRef.current, { display: 'block' })
+                    .fromTo(menuRef.current, { height: 0 }, { height: 'auto', duration: 0.5, ease: 'power.out' });
+
+            } else {
+                timeline
+                    .to(menuRef.current, { height: 0, duration: 0.5, ease: 'power.out' })
+                    .set(menuRef.current, { display: 'none' });
+            }
+        }
+    }, [isMenuOpen, menuRef]);
+};
 
 gsap.registerPlugin(ScrollTrigger);

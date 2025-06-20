@@ -17,6 +17,20 @@
     @extend .formGroup;
 }
 
+.formActions {
+    a {
+        color: $color-text-secondary;
+        text-decoration: none;
+        font-size: $font-size-xsmall;
+        transition: color 0.3s ease;
+
+        &:hover {
+            color: $color-hover-primary;
+            text-decoration: underline;
+        }
+    }
+}
+
 button {
     @extend .button !optional;
 }

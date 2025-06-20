@@ -5,6 +5,7 @@ import { animateElements } from '../../hooks/gsapEffects';
 import './_accountPage.scss'
 
 export const AccountPage = () => {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
   const accountPageRef = useRef<HTMLDivElement | null>(null);
   const location = useLocation();
 
@@ -38,6 +39,14 @@ export const AccountPage = () => {
             description="Gestiona tus productos favoritos."
             path="/perfil/mis-favoritos"
           />
+          {user.role === 'admin' && (
+            <CustomAccountCard
+              img="admin"
+              title="Panel de Administración"
+              description="Accede al panel de administración."
+              path="/admin-panel"
+            />
+          )}
         </section>
       </section>
     </div>
