@@ -150,8 +150,8 @@ const PORT = process.env.PORT || 3001;
 // Selección automática de URL del frontend según entorno
 const FRONTEND_URL =
     process.env.NODE_ENV === 'production'
-        ? process.env.FRONTEND_URL_PROD
-        : process.env.FRONTEND_URL;
+        ? process.env.VITE_FRONTEND_URL_PROD
+        : process.env.VITE_FRONTEND_URL;
 
 app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
