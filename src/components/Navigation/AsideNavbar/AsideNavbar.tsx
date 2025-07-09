@@ -6,6 +6,8 @@ import { IoCloseSharp } from "react-icons/io5";
 import { icons } from '../../../utils/accountListLinks';
 import { SearchBar } from '../../Filters/SearchBar/SearchBar';
 import './_asideNavbar.scss';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../../store/store';
 
 type AsideNavbarProps = {
     isOpen: boolean;
@@ -14,6 +16,7 @@ type AsideNavbarProps = {
 };
 
 export const AsideNavbar = memo(({ isOpen, onClose }: AsideNavbarProps) => {
+    const { uid } = useSelector((state: RootState) => state.auth);
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
@@ -44,16 +47,28 @@ export const AsideNavbar = memo(({ isOpen, onClose }: AsideNavbarProps) => {
                         </li>
                     ))}
                 </ul>
+
                 <h2 className='asideNavbarTitle'>Mi Cuenta</h2>
-                {Object.entries(icons).length > 0 && (
-                    <div className='asideNavbarIcons'>
-                        {Object.entries(icons).map(([key, { icon, path, name }]) => (
-                            <Link to={path} key={key} className={`customIconAside ${key}`} onClick={onClose}>
-                                {icon || <span>❓</span>}
-                                <p className='categoryName'>{name}</p>
-                            </Link>
-                        ))}
+                {!uid ? (
+                    <div className='asideNavbarUser'>
+                        <Link to='auth/login' className='navbarLink' onClick={onClose}>
+                            Iniciar Sesión
+                        </Link>
+                        <Link to='auth/register' className='navbarLink' onClick={onClose}>
+                            Registrarse
+                        </Link>
                     </div>
+                ) : (
+                    Object.entries(icons).length > 0 && (
+                        <div className='asideNavbarIcons'>
+                            {Object.entries(icons).map(([key, { icon, path, name }]) => (
+                                <Link to={path} key={key} className={`customIconAside ${key}`} onClick={onClose}>
+                                    {icon || <span>❓</span>}
+                                    <p className='categoryName'>{name}</p>
+                                </Link>
+                            ))}
+                        </div>
+                    )
                 )}
             </div>
             <div

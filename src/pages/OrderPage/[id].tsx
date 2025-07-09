@@ -1,23 +1,15 @@
 import { useNavigate, useParams } from 'react-router';
 import { FaLongArrowAltLeft } from 'react-icons/fa';
-import { mockOrders } from '../../utils/mockOrders';
 import { OrderStatusCard } from '../../components/ui/OrderStatusCard/OrderStatusCard';
-import { mockProducts } from '../../utils/mockProducts';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../store/store';
 import './_orderPage.scss';
 
 export const OrderPage = () => {
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
-    const order = mockOrders.find(order => order.id === id);
-
-    const products = order?.items.map(item => {
-        const product = mockProducts.find(p => p.id === item.productId);
-        return {
-            ...product,
-            quantity: item.quantity,
-            size: item.size,
-        };
-    }) || [];
+    const { orders } = useSelector((state: RootState) => state.orders);
+    const order = orders.find(order => order.id === id);
 
     if (!order) {
         return <p>Pedido no encontrado</p>;
@@ -42,15 +34,17 @@ export const OrderPage = () => {
                     <section className='orderPageProductsDetails'>
                         <h2>Productos ({order?.items.length || 0})</h2>
                         <ul>
-                            {products.map(product => (
-                                <li key={product.id}>
-                                    <img src={product.images?.[0]} alt={product.title} />
-                                    <section className='orderPageProductInfo'>
-                                        <span className='orderPageProductTitle'>{product.title}</span>
-                                        <span className='productSizePrice'>Talle: {product.size || 'N/A'} / ${product.price} x {product.quantity}</span>
-                                    </section>
-                                </li>
-                            ))}
+                            {order?.items.map(item => {
+                                return (
+                                    <li key={item.productId} className='orderPageProductItem'>
+                                        <img src={item.images?.[0]} alt={item.userId} />
+                                        <section className='orderPageProductInfo'>
+                                            <span className='orderPageProductTitle'>{item.title}</span>
+                                            <span className='productSizePrice'>Talle: {item.size || 'N/A'} / ${item.price} x {item.quantity}</span>
+                                        </section>
+                                    </li>
+                                );
+                            })}
                         </ul>
                     </section>
                 </section>

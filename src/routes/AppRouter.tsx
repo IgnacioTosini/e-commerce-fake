@@ -1,57 +1,96 @@
 import { Suspense, useEffect, useRef } from "react";
-import { Route, Routes, useLocation } from "react-router";
-import { HomePage } from "../pages/HomePage/HomePage";
-import { OffersPage } from "../pages/OffersPage/OffersPage";
-import { ProductPage } from "../pages/ProductPage/ProductPage";
-import { ProductsPage } from "../pages/ProductsPage/ProductsPage";
-import { WishListPage } from "../pages/WishListPage/WishListPage";
+import { Route, Routes, useLocation, useNavigate } from "react-router";
 import { fadeInUp } from "../hooks/gsapEffects";
-import { AccountPage } from "../pages/AccountPage/AccountPage";
-import { CartPage } from "../pages/CartPage/CartPage";
-import { OrdersPage } from "../pages/OrdersPage/OrdersPage";
-import { OrderPage } from "../pages/OrderPage/[id]";
-import { LoginPage } from "../pages/LoginPage/LoginPage";
-import { RegisterPage } from "../pages/RegisterPage/RegisterPage";
-import { AdminPanelPage } from "../pages/AdminPanelPage/AdminPanelPage";
-import { AdminLayout } from "../components/Layout/AdminLayout/AdminLayout";
-import { DynamicList } from "../components/Admin/DynamicList/DynamicList";
-import { ProductViewPage } from "../pages/ProductViewPage/[id]";
-import { UserViewPage } from "../pages/UserViewPage/[id]";
-import { UserEditPage } from "../pages/UserEditPage/UserEditPage";
-import { ProductEditPage } from "../pages/ProductEditPage/ProductEditPage";
+import { CheckingAuth } from "../components/ui/CheckingAuth/CheckingAuth";
+import { useCheckAuth } from "../hooks/useCheckAuth";
+import { AuthenticatedRoutes } from "./AuthenticatedRoutes";
+import { UnauthenticatedRoutes } from "./UnauthenticatedRoutes";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from 'react-redux';
+import { startLoadingProducts } from '../store/products/thunks';
+import type { AppDispatch, RootState } from "../store/store";
+import { loadUserData, loadUserFavorites, startLoadUsers } from "../store/user/thunks";
+import { loadUserCart } from "../store/cart/thunks";
+import { loadUserOrders } from "../store/orders/thunks";
 
 export const AppRouter = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
     const pageRef = useRef<HTMLDivElement | null>(null);
     const location = useLocation();
+    const { status } = useCheckAuth();
+    const authState = useSelector((state: RootState) => state.auth);
 
+    // Ref para guardar el último UID procesado
+    const lastLoadedUid = useRef<string | null>(null);
+
+    // 1. Cargar productos al inicializar (solo una vez)
+    useEffect(() => {
+        dispatch(startLoadingProducts());
+    }, [dispatch]);
+
+    // 2. Manejar autenticación y carga de datos del usuario
+    useEffect(() => {
+        if (authState.status === 'authenticated' && authState.uid &&
+            authState.uid !== lastLoadedUid.current) {
+
+            // Cargar datos específicos del usuario autenticado
+            dispatch(loadUserData(authState.uid));
+            dispatch(loadUserCart(authState.uid));
+            dispatch(loadUserOrders(authState.uid));
+            dispatch(loadUserFavorites(authState.uid));
+
+            lastLoadedUid.current = authState.uid;
+        }
+    }, [authState.status, authState.uid, dispatch]);
+
+    // 3. Cargar lista general de usuarios (solo para admins)
+    useEffect(() => {
+        if (authState.status === 'authenticated') {
+            dispatch(startLoadUsers());
+        }
+    }, [authState.status, dispatch]);
+
+    // 4. Limpiar cuando se desautentica
+    useEffect(() => {
+        if (authState.status !== 'authenticated') {
+            lastLoadedUid.current = null;
+        }
+    }, [authState.status]);
+
+    // 5. Animación de página (independiente de la lógica de negocio)
     useEffect(() => {
         if (pageRef.current) {
             fadeInUp(pageRef.current, 0.15);
         }
     }, [location]);
 
+    // 6. Redirección para usuarios autenticados
+    useEffect(() => {
+        if (status === 'authenticated' && location.pathname.startsWith('/auth')) {
+            navigate('/');
+            toast.success('Ya has iniciado sesión. Redirigiendo a la página principal.');
+        }
+    }, [status, location.pathname, navigate]);
+
+    if (status === 'checking') {
+        return <CheckingAuth />;
+    }
+
     return (
-        <Suspense fallback>
+        <Suspense fallback={<div>Cargando...</div>}>
             <div ref={pageRef}>
                 <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/ofertas" element={<OffersPage />} />
-                    <Route path="/productos" element={<ProductsPage />} />
-                    <Route path="/productos/:id" element={<ProductPage />} />
-                    <Route path="/lista-deseos" element={<WishListPage />} />
-                    <Route path="/carrito" element={<CartPage />} />
-                    <Route path="/perfil" element={<AccountPage />} />
-                    <Route path="/perfil/mis-pedidos" element={<OrdersPage />} />
-                    <Route path="/perfil/mis-pedidos/:id" element={<OrderPage />} />
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/register" element={<RegisterPage />} />
-                    {/* Admin Routes */}
-                    <Route path="/admin/admin-panel" element={<AdminLayout><AdminPanelPage /></AdminLayout>} />
-                    <Route path="/admin/:category" element={<AdminLayout><DynamicList /></AdminLayout>} />
-                    <Route path="/admin/productos/:id" element={<AdminLayout><ProductViewPage /></AdminLayout>} />
-                    <Route path="/admin/usuarios/:id" element={<AdminLayout><UserViewPage /></AdminLayout>} />
-                    <Route path="/admin/usuarios/:id/editar" element={<AdminLayout><UserEditPage /></AdminLayout>} />
-                    <Route path="/admin/productos/:id/editar" element={<AdminLayout><ProductEditPage /></AdminLayout>} />
+                    {
+                        status === 'authenticated' ? (
+                            <Route path="/*" element={<AuthenticatedRoutes />} />
+                        ) : (
+                            <>
+                                <Route path="/auth/*" element={<UnauthenticatedRoutes />} />
+                                <Route path="/*" element={<AuthenticatedRoutes />} />
+                            </>
+                        )
+                    }
                 </Routes>
             </div>
         </Suspense>

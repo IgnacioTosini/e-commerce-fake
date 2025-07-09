@@ -5,6 +5,9 @@ import { ProductPrice } from '../ProductPrice/ProductPrice';
 import { useFavorites } from '../../../context/useFavorites';
 import { Badge } from '../../ui/Badge/Badge';
 import { CustomButton } from '../../ui/CustomButton/CustomButton';
+import { useDispatch } from 'react-redux';
+import type { AppDispatch } from '../../../store/store';
+import { setSelectedProduct } from '../../../store/products/productsSlice';
 import './_productCard.scss'
 
 type ProductCardProps = {
@@ -13,15 +16,19 @@ type ProductCardProps = {
 };
 
 export const ProductCard = ({ product, onClick }: ProductCardProps) => {
-    const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
+    const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
+    const dispatch = useDispatch<AppDispatch>();
+    const isProductFavorite = isFavorite(product.id);
+    const image = product.images.length ? product.images[0] : 'https://placehold.co/300x300'; // Imagen por defecto si no hay imágenes
 
-    const isFavorite = favorites.some(fav => fav.id === product.id);
+    const handleFavorite = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
 
-    const handleFavorite = (product: Product) => {
-        if (isFavorite) {
+        if (isProductFavorite) {
             removeFromFavorites(product.id);
         } else {
-            addToFavorites(product);
+            addToFavorites(product.id);
         }
     };
 
@@ -30,20 +37,24 @@ export const ProductCard = ({ product, onClick }: ProductCardProps) => {
         if (onClick) onClick();
     };
 
+    const handleClickProduct = () => {
+        dispatch(setSelectedProduct(product));
+    }
+
     return (
-        <div className="productCard">
-            <div className='favoriteButton' onClick={() => handleFavorite(product)}>
-                <FaHeart className={isFavorite ? 'favorited' : ''} />
+        <div className="productCard" onClick={handleClickProduct}>
+            <div className='favoriteButton' onClick={handleFavorite}>
+                <FaHeart className={isProductFavorite ? 'favorited' : ''} />
             </div>
             <Link to={`/productos/${product.id}`} className="productCardLink" onClick={handleNavigation}>
-                <img src={product.images[0]} alt={product.title} className='productImage' />
+                <img src={image} alt={product.title} className='productImage' />
                 {product.discount && <Badge color={'primary'}>{`-${product.discount}%`}</Badge>}
                 <div className='productInfo'>
                     <h2 className="productCardTitle">{product.title}</h2>
                     <ProductPrice product={product} />
                 </div>
                 <div className="productActions">
-                    <CustomButton color="primary">Agregar al carrito</CustomButton>
+                    <CustomButton color="primary">Ver más</CustomButton>
                 </div>
             </Link>
         </div>

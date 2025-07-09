@@ -1,15 +1,17 @@
 import { FaRegClock } from "react-icons/fa";
 import { Badge } from '../../components/ui/Badge/Badge'
-import { mockProducts } from "../../utils/mockProducts";
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router";
 import { animateElements } from "../../hooks/gsapEffects";
 import { CustomList } from "../../components/ui/CustomList/CustomList";
 import { ProductCard } from "../../components/ProductDisplay/ProductCard/ProductCard";
+import type { RootState } from "../../store/store";
+import { useSelector } from "react-redux";
 import './_offersPage.scss'
 
 export const OffersPage = () => {
-    const discountedProducts = mockProducts.filter(product => product.discount && product.discount > 0);
+    const products = useSelector((state: RootState) => state.products.products);
+    const discountedProducts = products.filter(product => product.discount && product.discount > 0);
     const offersPageRef = useRef<HTMLDivElement | null>(null);
     const location = useLocation();
 

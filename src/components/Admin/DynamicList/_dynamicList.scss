@@ -1,104 +1,144 @@
 @use '@/styles/variables' as *;
+@use 'sass:color';
 
-.dynamicList {
+.dynamicListSection {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    margin: 1rem 0;
-    border: 1px solid $color-text-tertiary;
-    border-radius: 0.5rem;
 
-    .dynamicListTitle {
-        font-size: $font-size-medium;
-        font-weight: $font-weight-bold;
-        padding: 1rem;
+    .addButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background-color: $color-button;
+        color: $color-text-tertiary;
+        border: none;
+        text-decoration: none;
+        border-radius: 0.5rem;
+        padding: 0.5rem 1rem;
+        width: fit-content;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background-color: color.adjust($color-button, $lightness: -10%);
+        }
     }
 
-    .dynamicListCount {
-        font-size: $font-size-small;
-        font-weight: $font-weight-regular;
-        color: $color-text-secondary;
-        padding: 0 1rem 1rem 1rem;
-    }
-
-    .dynamicTable {
-        border-collapse: collapse;
-        padding: 1rem;
+    .dynamicList {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        margin: 1rem 0;
         border: 1px solid $color-text-tertiary;
         border-radius: 0.5rem;
 
-        th,
-        td {
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            padding: 0.5rem;
-        }
-
-        th:nth-child(1),
-        td:nth-child(1) {
-            // ID
-            width: 5%;
-        }
-
-        th:nth-child(2),
-        td:nth-child(2) {
-            // Title
-            width: 10%;
-        }
-
-        th:nth-child(3),
-        td:nth-child(3) {
-            // Category
-            width: 10%;
-        }
-
-        th:nth-child(4),
-        td:nth-child(4) {
-            // Price
-            width: 5%;
-        }
-
-        th:nth-child(5),
-        td:nth-child(5) {
-            // Stock
-            width: 5%;
-        }
-
-        th:nth-child(6),
-        td:nth-child(6) {
-            // isActive
-            width: 5%;
-        }
-
-        th:nth-child(7),
-        td:nth-child(7) {
-            // Actions
-            width: 10%;
-        }
-
-        tr,
-        th,
-        td {
+        .dynamicListTitle {
+            font-size: $font-size-medium;
+            font-weight: $font-weight-bold;
             padding: 1rem;
-            text-align: start;
-            border-bottom: 1px solid $color-text-tertiary;
-            font-size: $font-size-xsmall;
-            color: $color-text;
-            font-weight: $font-weight-regular;
-            transition: background-color 0.3s ease;
-
-            &:first-child {
-                text-align: left;
-            }
-
-            &:last-child {
-                text-align: right;
-            }
         }
 
-        tr:hover {
-            background-color: $color-text-tertiary;
+        .dynamicListCount {
+            font-size: $font-size-small;
+            font-weight: $font-weight-regular;
+            color: $color-text-secondary;
+            padding: 0 1rem 1rem 1rem;
+        }
+
+        .dynamicTable {
+            border-collapse: collapse;
+            padding: 1rem;
+            border: 1px solid $color-text-tertiary;
+            border-radius: 0.5rem;
+
+            th,
+            td {
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                padding: 0.5rem;
+            }
+
+            th:nth-child(1),
+            td:nth-child(1) {
+                // ID
+                width: 5%;
+            }
+
+            th:nth-child(2),
+            td:nth-child(2) {
+                // Title
+                width: 10%;
+            }
+
+            th:nth-child(3),
+            td:nth-child(3) {
+                // Category
+                width: 10%;
+            }
+
+            th:nth-child(4),
+            td:nth-child(4) {
+                // Price
+                width: 5%;
+            }
+
+            th:nth-child(5),
+            td:nth-child(5) {
+                // Stock
+                width: 5%;
+            }
+
+            th:nth-child(6),
+            td:nth-child(6) {
+                // isActive
+                width: 5%;
+            }
+
+            th:nth-child(7),
+            td:nth-child(7) {
+                // Actions
+                width: 10%;
+            }
+
+            tr,
+            th,
+            td {
+                padding: 1rem;
+                text-align: start;
+                border-bottom: 1px solid $color-text-tertiary;
+                font-size: $font-size-xsmall;
+                color: $color-text;
+                font-weight: $font-weight-regular;
+                transition: background-color 0.3s ease;
+
+                &:first-child {
+                    text-align: left;
+                }
+
+                &:last-child {
+                    text-align: right;
+                }
+            }
+
+            tr:hover {
+                background-color: $color-text-tertiary;
+            }
         }
     }
+}
+
+.dynamicListEmpty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    color: $color-text-secondary;
+    font-size: $font-size-medium;
+    text-align: center;
+    margin: 1rem 0;
+    border: 1px solid $color-text-tertiary;
+    border-radius: 0.5rem;
+    background-color: color.change($color-text-tertiary, $alpha: 0.1);
 }

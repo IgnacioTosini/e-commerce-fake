@@ -1,19 +1,17 @@
 import { useEffect, useRef } from 'react';
 import { Banner } from '../../components/ProductDisplay/Banner/Banner'
-import type { Product } from '../../types'
-import { mockProducts } from '../../utils/mockProducts'
 import { animateOnScroll } from '../../hooks/gsapEffects';
 import { CategoriesList } from '../../components/ProductDisplay/CategoriesList/CategoriesList';
 import { CustomList } from '../../components/ui/CustomList/CustomList';
 import { ProductCard } from '../../components/ProductDisplay/ProductCard/ProductCard';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../store/store';
 import './_homePage.scss'
-
-// Simulación de productos recientes (reemplaza esto por tus datos reales)
-const recentProducts: Product[] = mockProducts;
 
 export const HomePage = () => {
   const categoriesListRef = useRef<HTMLDivElement>(null);
   const customListRef = useRef<HTMLDivElement>(null);
+  const { products } = useSelector((state: RootState) => state.products);
 
   useEffect(() => {
     if (categoriesListRef.current) {
@@ -32,7 +30,7 @@ export const HomePage = () => {
       </div>
       <div ref={customListRef}>
         <CustomList flexOptions={{ direction: 'row', wrap: 'wrap' }} maxItems={4} as='div' className='homePageRecentProducts'>
-          {recentProducts.map((product, idx) => (
+          {products.map((product, idx) => (
             <ProductCard key={product.id || idx} product={product} onClick={() => { }} />
           ))}
         </CustomList>

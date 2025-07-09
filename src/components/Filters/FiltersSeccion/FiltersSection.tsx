@@ -1,12 +1,12 @@
+import { useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router';
 import { CustomFilterChecked } from '../CustomFilterChecked/CustomFilterChecked';
 import { sizeList } from '../../../utils/sizeList';
 import { useFilters } from '../../../context/useFilters';
-import { categories } from '../../../utils/mockCategories';
-import { mockProducts } from '../../../utils/mockProducts';
-import { useEffect, useRef } from 'react';
-import { useLocation } from 'react-router';
 import { animateElements } from '../../../hooks/gsapEffects';
 import { CustomButton } from '../../ui/CustomButton/CustomButton';
+import type { RootState } from '../../../store/store';
 import './_filtersSection.scss';
 
 export const FiltersSection = () => {
@@ -20,9 +20,10 @@ export const FiltersSection = () => {
             animateElements(elements as HTMLElement[], 0.5, 0.2, 30);
         }
     }, [location]);
+    const products = useSelector((state: RootState) => state.products.products);
 
     // Calcular colores únicos y sus cantidades
-    const colorCounts = mockProducts.reduce((acc, product) => {
+    const colorCounts = products.reduce((acc, product) => {
         if (product.colors) {
             product.colors.forEach(color => {
                 acc[color] = (acc[color] || 0) + 1;
@@ -32,14 +33,14 @@ export const FiltersSection = () => {
     }, {} as Record<string, number>);
 
     // Calcular categorías y sus cantidades
-    const categoryCounts = categories.reduce((acc, category) => {
-        acc[category.name] = mockProducts.filter(product => product.categoryName.name === category.name).length;
+    const categoryCounts = products.reduce((acc, product) => {
+        acc[product.categoryName] = (acc[product.categoryName] || 0) + 1;
         return acc;
     }, {} as Record<string, number>);
 
     // Calcular tallas y sus cantidades
     const sizeCounts = sizeList.reduce((acc, size) => {
-        acc[size] = mockProducts.filter(product => product.sizes?.includes(size)).length;
+        acc[size] = products.filter(product => product.sizes?.includes(size.toLowerCase())).length;
         return acc;
     }, {} as Record<string, number>);
 
@@ -50,7 +51,7 @@ export const FiltersSection = () => {
                 Limpiar Filtros
             </CustomButton>
             <CustomFilterChecked
-                array={categories.map((category) => category.name)}
+                array={products.map((product) => product.categoryName)}
                 onClick={(filter) => handleFilterChange('Categoria', filter)}
                 categoryName='Categoría'
                 selectedFilters={selectedFilters.Categoria}

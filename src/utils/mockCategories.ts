@@ -8,7 +8,7 @@ export const categories = [
         image: 'https://placehold.co/340',
         createdAt: '2025-01-01T00:00:00Z',
         updatedAt: '2025-01-01T00:00:00Z',
-        products: mockProducts.filter(product => product.categoryName.name === 'Ropa'),
+        products: mockProducts.filter(product => product.categoryName === 'Ropa'),
     },
     {
         id: '2',
@@ -16,7 +16,7 @@ export const categories = [
         image: 'https://placehold.co/340',
         createdAt: '2025-01-01T00:00:00Z',
         updatedAt: '2025-01-01T00:00:00Z',
-        products: mockProducts.filter(product => product.categoryName.name === 'Calzado'),
+        products: mockProducts.filter(product => product.categoryName === 'Calzado'),
     },
     {
         id: '3',
@@ -24,7 +24,7 @@ export const categories = [
         image: 'https://placehold.co/340',
         createdAt: '2025-01-01T00:00:00Z',
         updatedAt: '2025-01-01T00:00:00Z',
-        products: mockProducts.filter(product => product.categoryName.name === 'Accesorios'),
+        products: mockProducts.filter(product => product.categoryName === 'Accesorios'),
     },
     {
         id: '4',
@@ -32,7 +32,7 @@ export const categories = [
         image: 'https://placehold.co/340',
         createdAt: '2025-01-01T00:00:00Z',
         updatedAt: '2025-01-01T00:00:00Z',
-        products: mockProducts.filter(product => product.categoryName.name === 'Electrónica'),
+        products: mockProducts.filter(product => product.categoryName === 'Electrónica'),
     },
     {
         id: '5',
@@ -40,7 +40,7 @@ export const categories = [
         image: 'https://placehold.co/340',
         createdAt: '2025-01-01T00:00:00Z',
         updatedAt: '2025-01-01T00:00:00Z',
-        products: mockProducts.filter(product => product.categoryName.name === 'Hogar'),
+        products: mockProducts.filter(product => product.categoryName === 'Hogar'),
     },
     {
         id: '6',
@@ -48,6 +48,6 @@ export const categories = [
         image: 'https://placehold.co/340',
         createdAt: '2025-01-01T00:00:00Z',
         updatedAt: '2025-01-01T00:00:00Z',
-        products: mockProducts.filter(product => product.categoryName.name === 'Juguetes'),
+        products: mockProducts.filter(product => product.categoryName === 'Juguetes'),
     }
 ];

@@ -17,7 +17,7 @@ export const QuickActionCardList = () => {
             <QuickActionCard
                 title="Pedidos"
                 icon="orders"
-                links={[{ text: 'Ver Pedidos', url: '/admin/ordenes' }, { text: 'Añadir Pedido', url: '/admin/ordenes/nuevo' }]}
+                links={[{ text: 'Ver Pedidos', url: '/admin/pedidos' }]}
             />
         </div>
     )

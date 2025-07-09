@@ -12,3 +12,21 @@ body {
   background-color: #020817;
   color: #F8FAFC;
 }
+
+/* Estilos para scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: lighten(#94A3B8, 30%);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #94A3B8;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0F96D6;
+}

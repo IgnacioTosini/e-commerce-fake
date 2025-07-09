@@ -20,7 +20,7 @@ export const InformationCard = ({ data, type }: InformationCardProps) => {
                         </div>
                         <div className='subMenu'>
                             <h2>Categoría</h2>
-                            <p>{(data as Product)?.categoryName.name}</p>
+                            <p>{(data as Product)?.categoryName}</p>
                         </div>
                         <div className='subMenu'>
                             <h2>Marca</h2>

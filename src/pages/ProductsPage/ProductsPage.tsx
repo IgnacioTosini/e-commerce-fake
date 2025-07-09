@@ -1,17 +1,19 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router';
-import { mockProducts } from '../../utils/mockProducts';
 import { useFilters } from '../../context/useFilters';
 import { animateElements } from '../../hooks/gsapEffects';
 import { FiltersSection } from '../../components/Filters/FiltersSeccion/FiltersSection';
 import { CustomList } from '../../components/ui/CustomList/CustomList';
 import { ProductCard } from '../../components/ProductDisplay/ProductCard/ProductCard';
 import './_productsPage.scss'
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../store/store';
 
 export const ProductsPage = () => {
     const { handleFilteredProducts } = useFilters();
     const productsPageRef = useRef<HTMLDivElement | null>(null);
     const location = useLocation();
+    const products = useSelector((state: RootState) => state.products.products);
 
     useEffect(() => {
         if (productsPageRef.current) {
@@ -29,7 +31,7 @@ export const ProductsPage = () => {
                 <section className='productsPageProducts'>
                     <section className='productsPageProductsHeader'>
                         <p className='productsPageProductsCount'>
-                            Mostrando {handleFilteredProducts.length} productos de {mockProducts.length} disponibles
+                            Mostrando {handleFilteredProducts.length} productos de {products.length} disponibles
                         </p>
                     </section>
                     {handleFilteredProducts.length === 0 && (

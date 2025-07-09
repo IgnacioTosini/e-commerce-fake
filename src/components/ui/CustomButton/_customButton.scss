@@ -32,10 +32,22 @@
     }
 
     &--tertiary {
+        background-color: $primary-color;
         color: $color-text;
         border: 1px solid $color-text-tertiary;
 
         &:hover {
+            background-color: $color-hover-primary;
+        }
+    }
+
+    &--danger {
+        background-color: $color-text-secondary;
+        color: $color-text-tertiary;
+        border: 1px solid $color-text-tertiary;
+
+        &:hover {
+            color: $color-text;
             background-color: $color-hover-primary;
         }
     }

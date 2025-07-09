@@ -8,7 +8,7 @@ type CounterProps = {
     resetSelection?: boolean;
 };
 
-export const Counter = ({prevCant, stock, onChange, resetSelection }: CounterProps) => {
+export const Counter = ({ prevCant, stock, onChange, resetSelection }: CounterProps) => {
     const [cant, setCant] = useState(prevCant || 1);
 
     useEffect(() => {
@@ -16,6 +16,12 @@ export const Counter = ({prevCant, stock, onChange, resetSelection }: CounterPro
             setCant(1);
         }
     }, [resetSelection]);
+
+    useEffect(() => {
+        if (prevCant && prevCant !== cant) {
+            setCant(prevCant);
+        }
+    }, [prevCant, cant]);
 
     const handleDecrement = () => {
         if (cant > 1) {
@@ -33,6 +39,13 @@ export const Counter = ({prevCant, stock, onChange, resetSelection }: CounterPro
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = parseInt(e.target.value, 10);
+
+        // Permitir campo vacío mientras el usuario escribe
+        if (e.target.value === '') {
+            setCant(0);
+            return;
+        }
+
         if (!isNaN(value) && value >= 1 && value <= stock) {
             setCant(value);
             onChange(value);

@@ -1,8 +1,9 @@
 import { HiHeart } from 'react-icons/hi';
 import { BiCart } from 'react-icons/bi';
+import { FaHeartBroken } from "react-icons/fa";
 import './_customButton.scss';
 
-type IconType = 'cart' | 'heart';
+type IconType = 'cart' | 'heart' | 'heartFilled';
 
 type CustomButtonProps = {
     children: React.ReactNode;
@@ -23,6 +24,7 @@ export const CustomButton = ({
     const iconList = {
         cart: <BiCart />,
         heart: <HiHeart />,
+        heartFilled: <FaHeartBroken />
     };
 
     const classes = `customButton customButton--${color} ${className}`;

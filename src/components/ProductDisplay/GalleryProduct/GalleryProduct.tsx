@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './_galleryProduct.scss'
 
 type GalleryProductProps = {
@@ -7,6 +7,11 @@ type GalleryProductProps = {
 
 export const GalleryProduct = ({ images }: GalleryProductProps) => {
     const [mainImage, setMainImage] = useState<string>(images[0]);
+
+    // Actualizar la imagen principal cuando cambie el array de imágenes
+    useEffect(() => {
+        setMainImage(images[0]);
+    }, [images]);
 
     return (
         <div className='galleryProduct'>

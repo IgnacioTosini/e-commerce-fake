@@ -1,35 +1,65 @@
-import { createContext, useState } from 'react';
-import type { Product } from '../types';
-import { initialFavorites } from '../utils/initialFavorites';
-
-type FavoriteItem = Product;
+import { createContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import type { AppDispatch, RootState } from '../store/store';
+import { startAddFavorite, startRemoveFavorite } from '../store/user/thunks';
+import { toast } from 'react-toastify';
 
 type FavoritesContextType = {
-    favorites: FavoriteItem[];
-    addToFavorites: (item: FavoriteItem) => void;
-    removeFromFavorites: (id: string) => void;
+    favorites: string[];
+    addToFavorites: (productId: string) => void;
+    removeFromFavorites: (productId: string) => void;
     clearFavorites: () => void;
+    isFavorite: (productId: string) => boolean;
 };
 
 const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
 
 export const FavoritesProvider = ({ children }: { children: React.ReactNode }) => {
-    const [favorites, setFavorites] = useState<FavoriteItem[]>(initialFavorites); // Usar productos iniciales desde un archivo separado
+    const { favorites, user, loading } = useSelector((state: RootState) => state.user);
+    const dispatch = useDispatch<AppDispatch>();
 
-    const addToFavorites = (item: FavoriteItem) => {
-        setFavorites((prev) => [...prev, item]);
+    const addToFavorites = (productId: string) => {
+        if (!user) {
+            console.error('No user is logged in');
+            return;
+        }
+        dispatch(startAddFavorite(user.id, productId));
+        if (!loading) {
+            toast.success(`Producto añadido a favoritos`);
+        }
     };
 
-    const removeFromFavorites = (id: string) => {
-        setFavorites((prev) => prev.filter((item) => item.id !== id));
+    const removeFromFavorites = (productId: string) => {
+        if (!user) {
+            console.error('No user is logged in');
+            return;
+        }
+        dispatch(startRemoveFavorite(user.id, productId));
+        if (!loading) {
+            toast.success(`Producto eliminado de favoritos`);
+        }
     };
 
     const clearFavorites = () => {
-        setFavorites([]);
+        if (!user) {
+            console.error('No user is logged in');
+            return;
+        }
+        // Implementar clearFavorites si es necesario
+    };
+
+    const isFavorite = (productId: string) => {
+        return favorites.includes(productId);
     };
 
     return (
-        <FavoritesContext.Provider value={{ favorites, addToFavorites, removeFromFavorites, clearFavorites }}>
+        <FavoritesContext.Provider value={{
+            favorites,
+            addToFavorites,
+            removeFromFavorites,
+            clearFavorites,
+            isFavorite
+        }}>
             {children}
         </FavoritesContext.Provider>
     );

@@ -1,13 +1,16 @@
 import { useEffect, useRef } from 'react';
 import { OrderCard } from '../../components/ProductDisplay/OrderCard/OrderCard'
-import { mockOrders } from '../../utils/mockOrders'
 import { useLocation } from 'react-router';
 import { animateElements } from '../../hooks/gsapEffects';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../store/store';
 import './_ordersPage.scss'
 
 export const OrdersPage = () => {
+    const { orders } = useSelector((state: RootState) => state.orders);
     const ordersPageRef = useRef<HTMLDivElement | null>(null);
     const location = useLocation();
+    console.log(orders);
 
     useEffect(() => {
         if (ordersPageRef.current) {
@@ -23,7 +26,7 @@ export const OrdersPage = () => {
                 Consulta el estado y detalles de todos tus pedidos.
             </p>
             <div className="ordersPageContent">
-                {mockOrders.map((order, idx) => (
+                {orders.map((order, idx) => (
                     <OrderCard order={order} key={order.id || idx} />
                 ))}
             </div>

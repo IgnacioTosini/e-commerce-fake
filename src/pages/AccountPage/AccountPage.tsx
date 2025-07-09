@@ -2,10 +2,14 @@ import { useEffect, useRef } from 'react';
 import { CustomAccountCard } from '../../components/Miscellaneous/CustomAccountCard/CustomAccountCard'
 import { useLocation } from 'react-router';
 import { animateElements } from '../../hooks/gsapEffects';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../store/store';
 import './_accountPage.scss'
 
 export const AccountPage = () => {
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const { user } = useSelector((state: RootState) => state.user);
+  const authState = useSelector((state: RootState) => state.auth);
+
   const accountPageRef = useRef<HTMLDivElement | null>(null);
   const location = useLocation();
 
@@ -23,28 +27,28 @@ export const AccountPage = () => {
         <section className='accountPageSection'>
           <CustomAccountCard
             img="user"
-            title="Nombre del Usuario"
-            description="Correo Electrónico: usuario@example.com"
-            path="/perfil/datos-personales"
+            title={user?.name || authState.displayName || "Nombre del Usuario"}
+            description={`Correo Electrónico: ${user?.email || authState.email || "usuario@example.com"}`}
+            path={`/perfil/datos-personales/${user?.id || authState.uid || ''}`}
           />
           <CustomAccountCard
             img="orders"
             title="Mis Pedidos"
             description="Gestiona tus pedidos y envíos."
-            path="/perfil/mis-pedidos"
+            path={`/perfil/mis-pedidos/${user?.id || authState.uid || ''}`}
           />
           <CustomAccountCard
             img="heart"
             title="Mis Favoritos"
             description="Gestiona tus productos favoritos."
-            path="/perfil/mis-favoritos"
+            path={`/perfil/lista-deseos/${user?.id || authState.uid || ''}`}
           />
-          {user.role === 'admin' && (
+          {user?.role === 'admin' && (
             <CustomAccountCard
               img="admin"
               title="Panel de Administración"
               description="Accede al panel de administración."
-              path="/admin-panel"
+              path="/admin/admin-panel"
             />
           )}
         </section>

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
 import type { Product } from '../../../types'
-import { mockProducts } from '../../../utils/mockProducts'
 import { Badge } from '../../ui/Badge/Badge'
 import { ColorList } from '../../Filters/ColorList/ColorList'
 import { Counter } from '../../ui/Counter/Counter'
@@ -10,12 +9,15 @@ import { GalleryProduct } from '../GalleryProduct/GalleryProduct'
 import { ProductCard } from '../ProductCard/ProductCard'
 import { RatingStars } from '../RatingStars/RatingStars'
 import { SizeList } from '../../Filters/SizeList/SizeList'
-import { useCart } from '../../../context/useCart'
 import { toast } from 'react-toastify'
 import { ToastNotification } from '../../ui/ToastNotification/ToastNotification';
 import { animateElements } from '../../../hooks/gsapEffects'
 import { ProductPrice } from '../ProductPrice/ProductPrice'
 import { CustomList } from '../../ui/CustomList/CustomList'
+import { useDispatch, useSelector } from 'react-redux'
+import type { AppDispatch, RootState } from '../../../store/store'
+import { startAddToCart } from '../../../store/cart/thunks'
+import { startAddFavorite, startRemoveFavorite } from '../../../store/user/thunks'
 import './_productDetails.scss'
 
 type ProductDetailsProps = {
@@ -23,16 +25,22 @@ type ProductDetailsProps = {
 }
 
 export const ProductDetails = ({ product }: ProductDetailsProps) => {
-    const { addToCart } = useCart();
+    const dispatch = useDispatch<AppDispatch>();
+    const { uid } = useSelector((state: RootState) => state.auth);
+    const { products } = useSelector((state: RootState) => state.products);
+    const { favorites } = useSelector((state: RootState) => state.user);
     const [selectedColor, setSelectedColor] = useState<string | null>(null);
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
     const [quantity, setQuantity] = useState(1);
     const [randomProducts, setRandomProducts] = useState<Product[]>(
-        mockProducts.sort(() => Math.random() - 0.5).slice(0, 4)
+        [...products].sort(() => Math.random() - 0.5).slice(0, 4)
     );
     const [resetSelection, setResetSelection] = useState(false);
     const productDetailsContainerRef = useRef<HTMLDivElement | null>(null);
     const location = useLocation();
+
+    // Verificar si el producto está en favoritos
+    const isProductInFavorites = favorites.includes(product.id);
 
     useEffect(() => {
         if (productDetailsContainerRef.current) {
@@ -42,7 +50,7 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
     }, [location]);
 
     const updateRandomProducts = () => {
-        setRandomProducts(mockProducts.sort(() => Math.random() - 0.5).slice(0, 4));
+        setRandomProducts([...products].sort(() => Math.random() - 0.5).slice(0, 4));
     };
 
     const handleAddToCart = () => {
@@ -54,7 +62,12 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
             toast.error('Por favor selecciona una talla');
             return;
         }
-        addToCart({ ...product, color: selectedColor, size: selectedSize, quantity });
+        if (!uid) {
+            toast.error('Debes iniciar sesión para agregar productos al carrito');
+            return;
+        }
+
+        dispatch(startAddToCart(uid, product, quantity, selectedSize, selectedColor));
         toast.success(
             <ToastNotification
                 image={product.images[0]}
@@ -65,8 +78,41 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
         setSelectedColor(null);
         setSelectedSize(null);
         setQuantity(1);
-        setResetSelection(true); // Restablecer selección de color
-        setTimeout(() => setResetSelection(false), 0); // Reiniciar el estado
+        setResetSelection(true);
+        setTimeout(() => setResetSelection(false), 0);
+    };
+
+    const handleToggleFavorites = async () => {
+        if (!uid) {
+            toast.error('Debes iniciar sesión para gestionar favoritos');
+            return;
+        }
+
+        try {
+            if (isProductInFavorites) {
+                // Eliminar de favoritos
+                await dispatch(startRemoveFavorite(uid, product.id));
+                toast.success(
+                    <ToastNotification
+                        image={product.images[0]}
+                        message="Producto eliminado de favoritos"
+                        altText={product.title}
+                    />
+                );
+            } else {
+                // Agregar a favoritos
+                await dispatch(startAddFavorite(uid, product.id));
+                toast.success(
+                    <ToastNotification
+                        image={product.images[0]}
+                        message="Producto añadido a favoritos"
+                        altText={product.title}
+                    />
+                );
+            }
+        } catch {
+            toast.error('Error al actualizar favoritos');
+        }
     };
 
     return (
@@ -96,8 +142,16 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
                         <h3>Cantidad</h3>
                         <Counter stock={product.stock} onChange={setQuantity} resetSelection={resetSelection} />
                         <section className='productDetailsButtons'>
-                            <CustomButton color='primary' icon='cart' onClick={handleAddToCart}>Agregar al carrito</CustomButton>
-                            <CustomButton color='secondary' icon='heart'>Añadir a favoritos</CustomButton>
+                            <CustomButton color='primary' icon='cart' onClick={handleAddToCart}>
+                                Agregar al carrito
+                            </CustomButton>
+                            <CustomButton
+                                color={isProductInFavorites ? 'danger' : 'tertiary'}
+                                icon={isProductInFavorites ? 'heartFilled' : 'heart'}
+                                onClick={handleToggleFavorites}
+                            >
+                                {isProductInFavorites ? 'Eliminar de favoritos' : 'Añadir a favoritos'}
+                            </CustomButton>
                         </section>
                     </section>
                     <h3>Descripción</h3>

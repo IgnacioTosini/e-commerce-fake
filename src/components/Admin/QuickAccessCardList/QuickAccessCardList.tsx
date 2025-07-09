@@ -1,7 +1,10 @@
+import { useSelector } from 'react-redux'
 import { QuickAccessCard } from '../QuickAccessCard/QuickAccessCard'
 import './_quickAccessCardList.scss'
+import type { RootState } from '../../../store/store'
 
 export const QuickAccessCardList = () => {
+    const { user, orders, products } = useSelector((state: RootState) => state)
     return (
         <div className='adminPanelPageQuickAccess'>
             <QuickAccessCard
@@ -9,15 +12,15 @@ export const QuickAccessCardList = () => {
                 description="Gestionar usuarios."
                 link="/admin/usuarios"
                 icon="users"
-                total={100}
+                total={user.users.length}
                 subTitle="Usuarios registrados"
             />
             <QuickAccessCard
                 title="Pedidos"
                 description="Gestionar pedidos."
-                link="/admin/ordenes"
+                link="/admin/pedidos"
                 icon="orders"
-                total={50}
+                total={orders.orders.length}
                 subTitle="Total de pedidos"
             />
             <QuickAccessCard
@@ -25,7 +28,7 @@ export const QuickAccessCardList = () => {
                 description="Control de Stock."
                 link="/admin/productos"
                 icon="products"
-                total={200}
+                total={products.products.length}
                 subTitle="Total de productos"
             />
         </div>

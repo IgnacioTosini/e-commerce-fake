@@ -5,7 +5,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 70dvh;
+    margin: 1rem auto;
+    min-height: 70dvh;
 
     .loginForm {
         display: flex;

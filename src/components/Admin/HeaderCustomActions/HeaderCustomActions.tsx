@@ -3,6 +3,10 @@ import type { Product, User } from '../../../types';
 import { HiOutlinePencil } from 'react-icons/hi';
 import { IoTrashOutline } from 'react-icons/io5';
 import { FaAngleLeft } from "react-icons/fa6";
+import { useDispatch } from 'react-redux';
+import type { AppDispatch } from '../../../store/store';
+import { startDeletingProduct } from '../../../store/products/thunks';
+import { startDeletingUser } from '../../../store/user/thunks';
 import './_headerCustomActions.scss'
 
 type HeaderCustomActionsProps = {
@@ -12,6 +16,18 @@ type HeaderCustomActionsProps = {
 
 export const HeaderCustomActions = ({ type, data }: HeaderCustomActionsProps) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const handleDelete = () => {
+    if (type === 'product' && data) {
+      dispatch(startDeletingProduct(data.id));
+      navigate('/admin/productos');
+    }
+    if (type === 'user' && data) {
+      dispatch(startDeletingUser(data.id));
+      navigate('/admin/usuarios');
+    }
+  }
+
   return (
     <div className='headerCustomActions'>
       {type === 'product' && data && (
@@ -23,7 +39,7 @@ export const HeaderCustomActions = ({ type, data }: HeaderCustomActionsProps) =>
           </section>
           <div className='headerCustomActionsButtons'>
             <Link to={`/admin/productos/${data.id}/editar`}><HiOutlinePencil /> Editar</Link>
-            <button><IoTrashOutline /> Eliminar</button>
+            <button onClick={() => handleDelete()}><IoTrashOutline /> Eliminar</button>
           </div>
         </section>
       )}
@@ -36,7 +52,7 @@ export const HeaderCustomActions = ({ type, data }: HeaderCustomActionsProps) =>
           </section>
           <div className='headerCustomActionsButtons'>
             <Link to={`/admin/usuarios/${data.id}/editar`}><HiOutlinePencil /> Editar</Link>
-            <button><IoTrashOutline /> Eliminar</button>
+            <button onClick={() => handleDelete()} disabled={(data as User).role === 'admin'}><IoTrashOutline /> Eliminar</button>
           </div>
         </section>
       )}

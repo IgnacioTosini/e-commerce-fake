@@ -1,12 +1,14 @@
 import { useEffect, useRef } from 'react'
 import { CartItemCard } from '../../components/ProductDisplay/CartItemCard/CartItemCard'
 import { OrderSummary } from '../../components/Miscellaneous/OrderSummary/OrderSummary'
-import { mockCartItems } from '../../utils/mockCartItems'
 import { useLocation } from 'react-router'
 import { animateElements } from '../../hooks/gsapEffects'
+import { useSelector } from 'react-redux'
+import type { RootState } from '../../store/store'
 import './_cartPage.scss'
 
 export const CartPage = () => {
+    const { cart } = useSelector((state: RootState) => state.cart);
     const cartPageRef = useRef<HTMLDivElement | null>(null);
     const location = useLocation();
 
@@ -22,9 +24,9 @@ export const CartPage = () => {
             <h1 className='cartPageTitle'>Tu Carrito</h1>
             <section className='cartPageContent'>
                 <section className='cartPageContentItems'>
-                    <h2 className='cartPageSubtitle'>Artículos ({mockCartItems.length})</h2>
-                    {mockCartItems.length > 0 ? (
-                        mockCartItems.map((item, index) => (
+                    <h2 className='cartPageSubtitle'>Artículos ({cart?.items.length})</h2>
+                    {cart?.items.length ? (
+                        cart.items.map((item, index) => (
                             <CartItemCard key={index} cartItem={item} />
                         ))
                     ) : (

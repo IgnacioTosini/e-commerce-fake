@@ -2,24 +2,23 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore/lite";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyBPeQC-as_6t7TPRegwiebQXF0zO5XOIy8",
-    authDomain: "react-cursos-fd169.firebaseapp.com",
-    projectId: "react-cursos-fd169",
-    storageBucket: "react-cursos-fd169.firebasestorage.app",
-    messagingSenderId: "462553052589",
-    appId: "1:462553052589:web:24168d013e784f67f49d24",
-    measurementId: "G-VPQ8QVVFSF"
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID,
+    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
 export const FirebaseApp = initializeApp(firebaseConfig);
 export const FirebaseAuth = getAuth(FirebaseApp);
 export const FirebaseDB = getFirestore(FirebaseApp);
+export const FirebaseStorage = getStorage(FirebaseApp);
 export const FirebaseAnalytics = getAnalytics(FirebaseApp);

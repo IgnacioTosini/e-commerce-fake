@@ -17,7 +17,18 @@
         gap: 0.5rem;
 
         .userDisplayAvatar {
-            font-size: 1.5rem;
+            border-radius: 50%;
+
+            img {
+                width: 2.5rem;
+                height: 2.5rem;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            &:hover {
+                filter: brightness(0.8);
+            }
         }
 
         .userDisplayIcons,

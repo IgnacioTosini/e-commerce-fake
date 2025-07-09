@@ -1,0 +1,58 @@
+import * as Yup from 'yup';
+
+// Schema de validación combinado
+export const productCreateSchema = Yup.object().shape({
+    id: Yup.string().optional(),
+    // Información básica
+    name: Yup.string().required('El nombre es obligatorio'),
+    description: Yup.string().required('La descripción es obligatoria'),
+    brand: Yup.string().required('La marca es obligatoria'),
+    sku: Yup.string().required('El SKU es obligatorio'),
+    category: Yup.string().required('La categoría es obligatoria'),
+
+    // Precio y stock
+    price: Yup.number().min(0, 'El precio debe ser mayor a 0').required('El precio es obligatorio'),
+    stock: Yup.number().min(0, 'El stock debe ser mayor o igual a 0').required('El stock es obligatorio'),
+    discount: Yup.number().min(0).max(100, 'El descuento debe estar entre 0 y 100'),
+
+    // Variantes
+    colors: Yup.array()
+        .of(Yup.string())
+        .min(1, 'Debe tener al menos un color')
+        .max(10, 'Máximo 10 colores permitidos'),
+    sizes: Yup.array()
+        .of(Yup.string())
+        .min(1, 'Debe tener al menos una talla')
+        .max(10, 'Máximo 10 tallas permitidas'),
+
+    // Imágenes
+    images: Yup.array().of(Yup.string())
+});
+
+// Esquema para imágenes
+export const imagesSchema = Yup.object({
+    images: Yup.array()
+        .of(
+            Yup.string()
+                .test('is-url-or-base64', 'Debe ser una URL válida o imagen base64', (value) => {
+                    if (!value) return false;
+
+                    // Verificar si es base64
+                    if (value.startsWith('data:image/')) {
+                        return true;
+                    }
+
+                    // Verificar si es URL válida
+                    try {
+                        new URL(value);
+                        return true;
+                    } catch {
+                        return false;
+                    }
+                })
+                .required('URL o imagen requerida')
+        )
+        .min(1, 'Debe tener al menos una imagen')
+        .max(10, 'Máximo 10 imágenes permitidas')
+        .required('Las imágenes son requeridas')
+});

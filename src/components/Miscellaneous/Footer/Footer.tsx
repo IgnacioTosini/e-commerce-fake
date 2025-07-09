@@ -1,10 +1,13 @@
 import { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router'
 import { animateElements } from '../../../hooks/gsapEffects';
+import type { RootState } from '../../../store/store';
+import { useSelector } from 'react-redux';
 import './_footer.scss'
 
 export const Footer = () => {
-        const footerRef = useRef<HTMLDivElement | null>(null);
+    const { uid } = useSelector((state: RootState) => state.auth);
+    const footerRef = useRef<HTMLDivElement | null>(null);
     const location = useLocation();
 
     useEffect(() => {
@@ -32,15 +35,26 @@ export const Footer = () => {
                 </div>
                 <div className='footerLinksContainer'>
                     <h2>Cuenta</h2>
-                    <ul className='footerLinks'>
-                        <li><Link to='/mi-cuenta' onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Mi Cuenta</Link></li>
-                        <li><Link to='/mis-pedidos' onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Mis Pedidos</Link></li>
-                        <li><Link to='/lista-deseos' onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Lista de Deseos</Link></li>
-                    </ul>
+                    {!uid ? (
+                        <div className='footerUser'>
+                            <Link to='auth/login' className='navbarLink'>
+                                Iniciar Sesión
+                            </Link>
+                            <Link to='auth/register' className='navbarLink'>
+                                Registrarse
+                            </Link>
+                        </div>
+                    ) : (
+                        <ul className='footerLinks'>
+                            <li><Link to='perfil' onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Mi Cuenta</Link></li>
+                            <li><Link to={`perfil/mis-pedidos/${uid}`} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Mis Pedidos</Link></li>
+                            <li><Link to={`perfil/lista-deseos/${uid}`} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Lista de Deseos</Link></li>
+                        </ul>
+                    )}
                 </div>
             </div>
             <div className='footerReserved'>
-                <p>© {new Date().getFullYear()} Your Company. All rights reserved.</p>
+                <p>© {new Date().getFullYear()} EClothes. Todos los derechos reservados.</p>
             </div>
         </footer>
     )

@@ -1,0 +1,205 @@
+@use '@/styles/variables' as *;
+
+.categoryManager {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .categorySelect {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid $color-text-tertiary;
+        border-radius: 0.375rem;
+        background-color: $color-text-tertiary;
+        color: $color-text;
+        cursor: pointer;
+
+        &:focus {
+            border-color: $color-text-quaternary;
+            outline: none;
+        }
+    }
+
+    .newCategoryContainer {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        .newCategoryInput {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid $color-text-tertiary;
+            border-radius: 0.375rem;
+            background-color: transparent;
+            color: $color-text;
+
+            &:focus {
+                border-color: $color-text-quaternary;
+                outline: none;
+            }
+        }
+
+        .categoryButtons {
+            display: flex;
+            gap: 0.25rem;
+
+            .btnConfirm,
+            .btnCancel {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 32px;
+                height: 32px;
+                border: none;
+                border-radius: 0.375rem;
+                cursor: pointer;
+                font-size: $font-size-xsmall;
+                font-weight: $font-weight-medium;
+                transition: all 0.2s ease;
+
+                &:disabled {
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                }
+            }
+
+            .btnConfirm {
+                background-color: #10b981;
+                color: white;
+
+                &:hover:not(:disabled) {
+                    background-color: #059669;
+                }
+            }
+
+            .btnCancel {
+                background-color: #ef4444;
+                color: white;
+
+                &:hover {
+                    background-color: #dc2626;
+                }
+            }
+        }
+    }
+
+    .categoryList {
+        overflow-y: auto;
+        max-height: 150px;
+
+        .categoryListTitle {
+            font-size: $font-size-small;
+            font-weight: $font-weight-medium;
+            color: $color-text;
+            margin-bottom: 0.5rem;
+        }
+
+        .categoryItem {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem;
+            border: 1px solid $color-text-tertiary;
+            border-radius: 0.375rem;
+            margin-bottom: 0.5rem;
+            background-color: rgba($color-text-tertiary, 0.1);
+
+            .categoryName {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-size: $font-size-small;
+                color: $color-text;
+
+                .productCount {
+                    font-size: $font-size-xsmall;
+                    color: $color-text-secondary;
+                    font-weight: $font-weight-regular;
+                }
+            }
+
+            .btnDelete {
+                background: none;
+                border: none;
+                cursor: pointer;
+                font-size: 16px;
+                padding: 0.25rem;
+                border-radius: 0.25rem;
+                transition: background-color 0.2s ease;
+
+                &:hover {
+                    background-color: rgba(#ef4444, 0.1);
+                }
+            }
+
+            .cannotDelete {
+                font-size: 16px;
+                color: $color-text-secondary;
+                cursor: help;
+            }
+        }
+    }
+
+    .deleteConfirmModal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+
+        .deleteConfirmContent {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            max-width: 400px;
+            width: 90%;
+
+            h3 {
+                margin: 0 0 1rem 0;
+                color: $color-text;
+            }
+
+            p {
+                margin: 0 0 1.5rem 0;
+                color: $color-text-secondary;
+            }
+
+            .deleteConfirmButtons {
+                display: flex;
+                gap: 0.5rem;
+                justify-content: flex-end;
+
+                .btnConfirmDelete {
+                    background-color: #ef4444;
+                    color: white;
+                    border: none;
+                    padding: 0.5rem 1rem;
+                    border-radius: 0.375rem;
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: #dc2626;
+                    }
+                }
+
+                .btnCancelDelete {
+                    background-color: $color-text-tertiary;
+                    color: $color-text;
+                    border: none;
+                    padding: 0.5rem 1rem;
+                    border-radius: 0.375rem;
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: $color-text-quaternary;
+                    }
+                }
+            }
+        }
+    }
+}

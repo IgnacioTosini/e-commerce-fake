@@ -15,6 +15,14 @@
 
 .formGroup {
     @extend .formGroup;
+
+    span {
+        font-size: $font-size-small;
+    }
+
+    .error {
+        color: red;
+    }
 }
 
 .formActions {

@@ -22,7 +22,7 @@ export const OrderCard = ({ order }: OrderCardProps) => {
             </div>
             <div className='orderCardBody'>
                 <p className='orderCardItemsInfo'>{order.items.length} artículo{order.items.length !== 1 ? 's' : ''} • Total: ${order.total.toFixed(2)}</p>
-                <CustomButton color='tertiary' className='orderCardDetailsButton' onClick={() => window.location.href = `/perfil/mis-pedidos/${order.id}`}>
+                <CustomButton color='tertiary' className='orderCardDetailsButton' onClick={() => window.location.href = `/perfil/mis-pedidos/${order.userId}/${order.id}`}>
                     Ver detalles
                 </CustomButton>
             </div>

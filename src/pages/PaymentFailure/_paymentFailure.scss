@@ -1,0 +1,25 @@
+@use '../PaymentSuccess/paymentSuccess.scss' as paymentSuccessStyles;
+
+.paymentFailurePage {
+    @extend .paymentSuccessPage;
+
+    .paymentFailurePageContainer {
+        @extend .paymentSuccessPageContainer;
+
+        .paymentFailureIcon {
+            @extend .paymentSuccessIcon;
+        }
+
+        .paymentFailureTitle {
+            @extend .paymentSuccessTitle;
+        }
+
+        .paymentFailureMessage {
+            @extend .paymentSuccessMessage;
+        }
+
+        .paymentFailureButton {
+            @extend .paymentSuccessButton;
+        }
+    }
+}

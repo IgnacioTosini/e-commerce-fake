@@ -11,7 +11,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ column, value }) => {
     let displayText = value;
 
     if (column === 'role') {
-        badgeClass = value === 'Admin' ? 'role-admin' : 'role-user';
+        badgeClass = value === 'admin' ? 'role-admin' : 'role-user';
     } else if (column === 'isActive') {
         badgeClass = value === 'true' ? 'status-active' : 'status-inactive';
         displayText = value === 'true' ? 'Activo' : 'Inactivo';

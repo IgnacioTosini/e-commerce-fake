@@ -1,13 +1,40 @@
 import { Link, useLocation } from 'react-router';
 import { CategoryCard } from '../CategoryCard/CategoryCard'
-import { categories } from '../../../utils/mockCategories';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 import { animateElements } from '../../../hooks/gsapEffects';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../../store/store';
+import type { Category } from '../../../types';
 import './_categoriesList.scss'
 
 export const CategoriesList = () => {
     const categoriesListRef = useRef<HTMLDivElement | null>(null);
     const location = useLocation();
+    const { products } = useSelector((state: RootState) => state.products);
+
+    // Crear categorías únicas desde los productos
+    const categories = useMemo((): Category[] => {
+        const uniqueCategories = new Set<string>();
+        const categoryList: Category[] = [];
+
+        products.forEach(product => {
+            if (!uniqueCategories.has(product.categoryName)) {
+                uniqueCategories.add(product.categoryName);
+
+                // Contar productos en esta categoría
+                const productsCount = products.filter(p => p.categoryName === product.categoryName).length;
+
+                categoryList.push({
+                    id: product.categoryName.toLowerCase().replace(/\s+/g, '-'),
+                    name: product.categoryName,
+                    image: product.images[0] || 'https://via.placeholder.com/300x200',
+                    productsCount
+                });
+            }
+        });
+
+        return categoryList;
+    }, [products]);
 
     useEffect(() => {
         if (categoriesListRef.current) {

@@ -25,7 +25,8 @@
 
     .headerLogoAside,
     .searchBar,
-    .asideNavbarList {
+    .asideNavbarList,
+    .asideNavbarUser {
         border-bottom: 1px solid $secondary-color;
     }
 
@@ -74,7 +75,8 @@
         }
     }
 
-    .asideNavbarList {
+    .asideNavbarList,
+    .asideNavbarUser {
         width: 100%;
         list-style: none;
         margin: 0;

@@ -1,19 +1,17 @@
-import { useState } from 'react';
-import { useParams } from 'react-router';
-import { mockProducts } from '../../../utils/mockProducts';
-import { mockOrders } from '../../../utils/mockOrders';
+import { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router';
 import { TableHeader } from '../TableHeader/TableHeader';
 import { TableRow } from '../TableRow/TableRow';
+import { IoMdAddCircle } from "react-icons/io";
+import { useSelector, useDispatch } from 'react-redux';
+import type { RootState, AppDispatch } from '../../../store/store';
+import { startLoadingProducts } from '../../../store/products/thunks';
+import { startLoadUsers } from '../../../store/user/thunks';
 import './_dynamicList.scss';
 
 const userColumns = ['id', 'name', 'email', 'role', 'isActive', 'actions'];
 const productColumns = ['id', 'title', 'category', 'price', 'stock', 'isActive', 'actions'];
 const orderColumns = ['id', 'userId', 'total', 'status', 'createdAt', 'actions'];
-
-const mockUsers = [
-    { id: '1', name: 'Juan Pérez', email: 'juan@example.com', role: 'Usuario', isActive: 'true' },
-    { id: '2', name: 'Ana López', email: 'ana@example.com', role: 'Admin', isActive: 'false' },
-];
 
 type TableData = {
     [key: string]: string | number;
@@ -45,18 +43,44 @@ export const DynamicList = () => {
     const { category } = useParams();
     const [activeRow, setActiveRow] = useState<string | null>(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { products, isLoading } = useSelector((state: RootState) => state.products);
+    const { users } = useSelector((state: RootState) => state.user);
+    const { orders } = useSelector((state: RootState) => state.orders);
+    const dispatch = useDispatch<AppDispatch>();
+
+    // Cargar productos automáticamente cuando se monta el componente o cambia la categoría
+    useEffect(() => {
+        if (category === 'productos' && products.length === 0) {
+            dispatch(startLoadingProducts());
+        }
+    }, [category, products.length, dispatch]);
+
+    useEffect(() => {
+        if (category === 'usuarios' && users.length === 0) {
+            dispatch(startLoadUsers());
+            console.log(users)
+        }
+    }, [category, users, dispatch]);
 
     const getTableData = (): TableConfig => {
         switch (category) {
             case 'usuarios':
-                return { columns: userColumns, data: mockUsers };
+                return {
+                    columns: userColumns, data: users.map(({ id, name, email, role, isActive }) => ({
+                        id,
+                        name,
+                        email,
+                        role,
+                        isActive: isActive ? 'true' : 'false', // Convertir booleano a string
+                    }))
+                };
             case 'productos':
                 return {
                     columns: productColumns,
-                    data: mockProducts.map(({ id, title, categoryName, price, stock, isActive }) => ({
+                    data: products.map(({ id, title, categoryName, price, stock, isActive }) => ({
                         id,
                         title,
-                        category: categoryName.name, // Extraer el valor de 'name' como string
+                        category: categoryName, // Extraer el valor de 'name' como string
                         price,
                         stock,
                         isActive: isActive ? 'true' : 'false', // Convertir booleano a string
@@ -65,7 +89,7 @@ export const DynamicList = () => {
             case 'pedidos':
                 return {
                     columns: orderColumns,
-                    data: mockOrders.map(({ id, userId, total, status, createdAt }) => ({
+                    data: orders.map(({ id, userId, total, status, createdAt }) => ({
                         id,
                         userId,
                         total,
@@ -79,8 +103,17 @@ export const DynamicList = () => {
     };
 
     const { columns, data } = getTableData();
-    if (data.length === 0) {
-        return <p className='dynamicListEmpty'>No hay datos disponibles para mostrar.</p>;
+
+    // Manejar diferentes estados de carga y datos vacíos
+    const shouldShowEmpty = data.length === 0 && !isLoading;
+
+    if (shouldShowEmpty) {
+        return (
+            <div className="dynamicListSection">
+                <h1 className='dynamicListTitle'>{category ? category.charAt(0).toUpperCase() + category.slice(1) : 'Lista'}</h1>
+                <p className='dynamicListEmpty'>No hay datos disponibles para mostrar.</p>
+            </div>
+        );
     }
 
     const handleActionClick = (rowId: string) => {
@@ -89,25 +122,30 @@ export const DynamicList = () => {
     };
 
     return (
-        <div className="dynamicList">
-            <h1 className='dynamicListTitle'>{category ? category.charAt(0).toUpperCase() + category.slice(1) : 'Lista'}</h1>
-            <p className='dynamicListCount'>Total de {data.length} elementos</p>
-            <table className="dynamicTable">
-                <TableHeader columns={columns} columnNamesMap={columnNamesMap} />
-                <tbody>
-                    {data.map((row, rowIndex) => (
-                        <TableRow
-                            key={rowIndex}
-                            row={row}
-                            columns={columns}
-                            category={category || ''}
-                            activeRow={activeRow}
-                            isMenuOpen={isMenuOpen}
-                            onActionClick={handleActionClick}
-                        />
-                    ))}
-                </tbody>
-            </table>
-        </div>
+        <section className="dynamicListSection">
+            {category === 'productos' && (
+                <Link to={`/admin/productos/nuevo`} className='addButton'><IoMdAddCircle />Agregar Producto</Link>
+            )}
+            <div className="dynamicList">
+                <h1 className='dynamicListTitle'>{category ? category.charAt(0).toUpperCase() + category.slice(1) : 'Lista'}</h1>
+                <p className='dynamicListCount'>Total de {data.length} elementos</p>
+                <table className="dynamicTable">
+                    <TableHeader columns={columns} columnNamesMap={columnNamesMap} />
+                    <tbody>
+                        {data.map((row, rowIndex) => (
+                            <TableRow
+                                key={rowIndex}
+                                row={row}
+                                columns={columns}
+                                category={category || ''}
+                                activeRow={activeRow}
+                                isMenuOpen={isMenuOpen}
+                                onActionClick={handleActionClick}
+                            />
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </section>
     );
 };

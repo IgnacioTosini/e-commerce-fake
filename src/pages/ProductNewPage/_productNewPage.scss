@@ -1,0 +1,15 @@
+@use '@/styles/variables' as *;
+@use '../ProductViewPage/_productViewPage' as *;
+
+.productNewPage {
+    @extend .productViewPage;
+
+    .productNewPageContent {
+        @extend .productViewPageContent;
+    }
+
+    .error {
+        font-size: $font-size-small;
+        color: red;
+    }
+}
