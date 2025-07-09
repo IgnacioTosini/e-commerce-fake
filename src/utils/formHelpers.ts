@@ -1,9 +1,9 @@
 import type { Product } from '../types';
-import type { 
-    InformationFormValues, 
-    PriceStockFormValues, 
-    VariantFormValues, 
-    ImagesFormValues 
+import type {
+    InformationFormValues,
+    PriceStockFormValues,
+    VariantFormValues,
+    ImagesFormValues
 } from '../types/formTypes';
 
 /**
