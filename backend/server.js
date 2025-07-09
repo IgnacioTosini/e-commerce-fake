@@ -10,8 +10,12 @@ app.use(express.urlencoded({ extended: true }));
 
 const admin = require('firebase-admin');
 if (!admin.apps.length) {
+    // En producción, lee el JSON de la variable de entorno
+    const serviceAccount = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON
+        ? JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON)
+        : require('./react-cursos-fd169-firebase-adminsdk-fbsvc-e08a0bfb1a.json');
     admin.initializeApp({
-        credential: admin.credential.cert(require('./react-cursos-fd169-firebase-adminsdk-fbsvc-e08a0bfb1a.json')),
+        credential: admin.credential.cert(serviceAccount),
     });
 }
 const db = admin.firestore();
