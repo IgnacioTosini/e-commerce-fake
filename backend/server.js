@@ -6,9 +6,15 @@ require('dotenv').config();
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-console.log('🌍 Entorno:', process.env.NODE_ENV || 'development');
-console.log('🔑 MercadoPago Access Token:', process.env.MERCADOPAGO_ACCESS_TOKEN ? 'Configurado' : 'NO CONFIGURADO');
+const admin = require('firebase-admin');
+if (!admin.apps.length) {
+    admin.initializeApp({
+        credential: admin.credential.cert(require('./react-cursos-fd169-firebase-adminsdk-fbsvc-e08a0bfb1a.json')),
+    });
+}
+const db = admin.firestore();
 
 // Configurar MercadoPago
 const client = new MercadoPagoConfig({
@@ -39,30 +45,21 @@ app.post('/api/mercadopago/create-preference', async (req, res) => {
             payer: {
                 email: req.body.payer.email
             },
-            back_urls: {
-                success: `${process.env.FRONTEND_URL}/payment/success`,
-                failure: `${process.env.FRONTEND_URL}/payment/failure`,
-                pending: `${process.env.FRONTEND_URL}/payment/pending`
-            },
-            auto_return: 'approved',
-            external_reference: req.body.external_reference,
-            notification_url: `${process.env.BACKEND_URL}/api/mercadopago/webhook`
+            // Sin back_urls para evitar problemas con localhost
+            external_reference: req.body.external_reference
         };
-
-        console.log('📦 Creando preferencia para producción');
-        console.log('🔗 Frontend URL:', process.env.FRONTEND_URL);
 
         const result = await preference.create({ body: preferenceData });
 
-        console.log('✅ Preferencia creada:', result.id);
-
         res.json({
             init_point: result.init_point,
-            preference_id: result.id,
-            test_mode: true // Indicar que es modo de prueba
+            preference_id: result.id
         });
     } catch (error) {
-        console.error('❌ Error:', error);
+        console.error('❌ Error completo:', error);
+        console.error('❌ Error message:', error.message);
+        console.error('❌ Error stack:', error.stack);
+
         res.status(500).json({
             error: 'Error creating preference',
             details: error.message,
@@ -71,7 +68,7 @@ app.post('/api/mercadopago/create-preference', async (req, res) => {
     }
 });
 
-// Webhook mejorado para producción
+// Webhook para recibir notificaciones de MercadoPago
 app.post('/api/mercadopago/webhook', async (req, res) => {
     try {
         console.log('🔔 Webhook recibido en producción:', JSON.stringify(req.body, null, 2));
@@ -80,12 +77,19 @@ app.post('/api/mercadopago/webhook', async (req, res) => {
 
         if (type === 'payment') {
             console.log('💳 Notificación de pago:', data);
-            
-            // Aquí podrías:
-            // 1. Verificar el pago con MercadoPago API
-            // 2. Actualizar tu base de datos Firebase
-            // 3. Enviar emails de confirmación
-            // 4. Actualizar inventario
+            // Depuración: mostrar status y external_reference
+
+            console.log('🟡 Estado del pago recibido:', data.status);
+            console.log('🟡 External Reference:', data.external_reference);
+
+            // Verificar si el pago fue aprobado
+            if (data.status === 'approved') {
+                console.log('🟢 ¡Pago aprobado! Bajando stock...');
+                const externalReference = data.external_reference; // ID de la orden
+                await updateProductStock(externalReference);
+            } else {
+                console.log('🔴 El pago NO está aprobado. No se baja stock.');
+            }
         }
 
         res.status(200).send('OK');
@@ -95,21 +99,58 @@ app.post('/api/mercadopago/webhook', async (req, res) => {
     }
 });
 
-// Health check para producción
-app.get('/api/health', (req, res) => {
+async function updateProductStock(orderId) {
+    try {
+        // 1. Obtener la orden por ID
+        const orderRef = db.collection('orders').doc(orderId);
+        const orderSnap = await orderRef.get();
+        if (!orderSnap.exists) {
+            console.error('Orden no encontrada:', orderId);
+            return;
+        }
+        const order = orderSnap.data();
+
+        // 2. Actualizar el stock de cada producto
+        const batch = db.batch();
+        for (const item of order.items) {
+            const productRef = db.collection('products').doc(item.productId);
+            const productSnap = await productRef.get();
+            if (!productSnap.exists) continue;
+            const currentStock = productSnap.data().stock || 0;
+            const newStock = Math.max(currentStock - item.quantity, 0);
+            batch.update(productRef, { stock: newStock, updatedAt: new Date().toISOString() });
+        }
+
+        // 3. Marcar la orden como 'paid'
+        batch.update(orderRef, { status: 'paid', updatedAt: new Date().toISOString() });
+
+        await batch.commit();
+        console.log('Stock actualizado y orden marcada como pagada');
+    } catch (error) {
+        console.error('Error actualizando stock:', error);
+    }
+}
+
+// Endpoint de prueba
+app.get('/api/test', (req, res) => {
     res.json({
-        status: 'OK',
+        message: 'Backend funcionando correctamente',
         timestamp: new Date().toISOString(),
-        environment: process.env.NODE_ENV || 'development',
         mercadopago: process.env.MERCADOPAGO_ACCESS_TOKEN ? 'Configurado' : 'NO CONFIGURADO',
-        frontend_url: process.env.FRONTEND_URL
+        tokenLength: process.env.MERCADOPAGO_ACCESS_TOKEN ? process.env.MERCADOPAGO_ACCESS_TOKEN.length : 0
     });
 });
 
 const PORT = process.env.PORT || 3001;
+
+// Selección automática de URL del frontend según entorno
+const FRONTEND_URL =
+    process.env.NODE_ENV === 'production'
+        ? process.env.FRONTEND_URL_PROD
+        : process.env.FRONTEND_URL;
+
 app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
-    console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`📡 Frontend URL: ${process.env.FRONTEND_URL}`);
-    console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
+    console.log(`📡 Frontend URL: ${FRONTEND_URL}`);
+    console.log(`🔗 Test endpoint: http://localhost:${PORT}/api/test`);
 });

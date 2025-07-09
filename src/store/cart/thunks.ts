@@ -39,7 +39,7 @@ export const startAddToCart = (
     return async (dispatch: AppDispatch) => {
         try {
             // 1. Actualizar estado local primero
-            dispatch(addToCartSlice({ product, quantity, size, color }));
+            dispatch(addToCartSlice({ product, quantity, size, color, stock: product.stock }));
 
             // 2. Actualizar en Firebase
             const cartDocRef = doc(FirebaseDB, 'carts', userId);
@@ -93,7 +93,7 @@ export const startUpdateCartItemQuantity = (
     productId: string,
     newQuantity: number,
     size: string,
-    color: string
+    color: string,
 ) => {
     return async (dispatch: AppDispatch) => {
         try {
@@ -130,7 +130,7 @@ export const startRemoveFromCart = (
     userId: string,
     productId: string,
     size: string,
-    color: string
+    color: string,
 ) => {
     return async (dispatch: AppDispatch) => {
         try {

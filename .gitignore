@@ -26,3 +26,5 @@ dist-ssr
 .env.*
 *.local
 *.local.*
+
+react-cursos-fd169-firebase-adminsdk-fbsvc-e08a0bfb1a.json

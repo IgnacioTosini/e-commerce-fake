@@ -42,14 +42,14 @@ export type Product = {
 }
 
 export type CartItem = {
-    product: Pick<Product, 'id' | 'title' | 'price' | 'images' | 'discount'>; // Información del producto
+    product: Pick<Product, 'id' | 'title' | 'price' | 'images' | 'discount' | 'stock'>; // Información del producto
     quantity: number;
     size: string; // Nuevo campo para el talle elegido
     color: string; // Nuevo campo para el color elegido
 }
 
 export type Cart = {
-    userId: Pick<User, 'id'>['id']; // ID del usuario al que pertenece el carritoquie
+    userId: Pick<User, 'id'>['id']; // ID del usuario al que pertenece el carrito
     items: CartItem[];
     createdAt: string; // Fecha de creación del carrito
     updatedAt: string; // Fecha de última actualización del carrito

@@ -29,7 +29,7 @@ export const createOrderAndInitiatePayment = createAsyncThunk(
         userName: string;
     }) => {
         const { orderData, userEmail, userName } = payload;
-        
+
         // 1. Crear la orden en Firebase
         const ordersCollection = collection(FirebaseDB, 'orders');
         const docRef = await addDoc(ordersCollection, orderData);
@@ -61,7 +61,7 @@ export const updateOrderStatus = createAsyncThunk(
         paymentDetails?: string;
     }) => {
         const { orderId, status, paymentDetails } = payload;
-        
+
         const orderRef = doc(FirebaseDB, 'orders', orderId);
         const updateData: Partial<Order> = {
             status,
@@ -70,7 +70,7 @@ export const updateOrderStatus = createAsyncThunk(
         };
 
         await updateDoc(orderRef, updateData);
-        
+
         return { orderId, ...updateData };
     }
 );

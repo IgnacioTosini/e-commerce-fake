@@ -38,7 +38,7 @@ export const CartItemCard = ({ cartItem }: CartItemCardProps) => {
                 cartItem.product.id,
                 newQuantity,
                 cartItem.size,
-                cartItem.color
+                cartItem.color,
             ));
         }
     };
@@ -50,7 +50,7 @@ export const CartItemCard = ({ cartItem }: CartItemCardProps) => {
                 uid,
                 cartItem.product.id,
                 cartItem.size,
-                cartItem.color
+                cartItem.color,
             ));
         }
     };

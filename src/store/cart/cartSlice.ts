@@ -35,7 +35,7 @@ export const cartSlice = createSlice({
             state.cart = action.payload
             state.error = null
         },
-        addToCart: (state, action: PayloadAction<{ product: Product, quantity: number, size: string, color: string }>) => {
+        addToCart: (state, action: PayloadAction<{ product: Product, quantity: number, size: string, color: string, stock: number }>) => {
             if (!state.cart) return
 
             const { product, quantity, size, color } = action.payload

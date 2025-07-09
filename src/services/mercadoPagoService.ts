@@ -1,5 +1,10 @@
 import type { Order } from '../types';
 
+const apiUrl =
+    import.meta.env.MODE === 'production'
+        ? import.meta.env.VITE_API_URL_PROD
+        : import.meta.env.VITE_API_URL;
+
 export const createMercadoPagoPreference = async (
     orderData: Order,
     userEmail: string,
@@ -33,13 +38,13 @@ export const createMercadoPagoPreference = async (
                 email: userEmail
             },
             external_reference: orderData.id,
-            notification_url: `${import.meta.env.VITE_API_URL}/api/mercadopago/webhook`
+            notification_url: `${apiUrl}/api/mercadopago/webhook`
         };
 
         console.log('📤 Enviando preferencia al backend:', preferenceData);
 
         // Llamar al backend
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/mercadopago/create-preference`, {
+        const response = await fetch(`${apiUrl}/api/mercadopago/create-preference`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
