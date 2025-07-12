@@ -17,7 +17,7 @@ const FavoritesContext = createContext<FavoritesContextType | undefined>(undefin
 export const FavoritesProvider = ({ children }: { children: React.ReactNode }) => {
     const { favorites, user, loading } = useSelector((state: RootState) => state.user);
     const dispatch = useDispatch<AppDispatch>();
-console.log('FavoritesProvider', favorites);
+
     const addToFavorites = (productId: string) => {
         if (!user) {
             console.error('No user is logged in');

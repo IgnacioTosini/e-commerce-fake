@@ -26,7 +26,6 @@ export const startNewProduct = (formData: Partial<Product>) => {
                 }
             }
 
-
             // Generar SKU automáticamente para cada variante
             const productSlug = slugify(formData.title || '', { lower: true, strict: true });
             const variantsWithSku = (formData.variants || []).map(variant => ({
@@ -134,7 +133,7 @@ export const startUpdateProduct = (formData: Partial<Product>, productId: string
 
             dispatch(updateProduct(completeProduct));
             toast.success("Producto actualizado correctamente");
-
+            dispatch(setLoading(false));
         } catch (error) {
             console.error('Error al actualizar producto:', error);
             toast.error("Error al actualizar el producto");
@@ -150,6 +149,7 @@ export const startDeletingProduct = (productId: string) => {
             await deleteDoc(docRef);
             dispatch(deleteProduct(productId));
             toast.success("Producto eliminado correctamente");
+            dispatch(setLoading(false));
         } catch (error) {
             console.error('Error al eliminar producto:', error);
             toast.error("Error al eliminar el producto");
@@ -160,7 +160,6 @@ export const startDeletingProduct = (productId: string) => {
 export const startLoadingProducts = () => {
     return async (dispatch: AppDispatch): Promise<void> => {
         const products = await loadProducts();
-
         dispatch(setProducts(products));
     };
 }

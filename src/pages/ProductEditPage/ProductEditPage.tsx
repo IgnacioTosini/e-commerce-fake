@@ -21,8 +21,6 @@ const initialValues = {
     price: 0,
     discount: 0,
     variants: [] as ProductVariant[],
-    colors: [] as string[],
-    sizes: [] as string[],
     images: [] as string[],
 };
 
@@ -42,8 +40,6 @@ export const ProductEditPage = () => {
         price: product.price || 0,
         discount: product.discount || 0,
         variants: product.variants || [],
-        colors: product.colors || [],
-        sizes: product.sizes || [],
         images: product.images || [],
     } : initialValues;
 
@@ -64,8 +60,6 @@ export const ProductEditPage = () => {
             price: values.price,
             variants: variantsWithId,
             discount: values.discount,
-            colors: values.colors,
-            sizes: values.sizes,
             images: values.images,
             rating: product?.rating || 0,
             createdAt: product?.createdAt || '',

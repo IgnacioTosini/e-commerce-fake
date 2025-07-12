@@ -7,8 +7,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import type { RootState, AppDispatch } from '../../../store/store';
 import { startLoadingProducts } from '../../../store/products/thunks';
 import { startLoadUsers } from '../../../store/user/thunks';
-import './_dynamicList.scss';
 import { DynamicListSkeleton } from './DynamicListSkeleton';
+import './_dynamicList.scss';
 
 const userColumns = ['id', 'name', 'email', 'role', 'isActive', 'actions'];
 const productColumns = ['id', 'title', 'category', 'price', 'totalStock', 'isActive', 'actions'];
@@ -48,6 +48,10 @@ export const DynamicList = () => {
     const { users, loading: userLoading } = useSelector((state: RootState) => state.user);
     const { orders, loading: orderLoading } = useSelector((state: RootState) => state.orders);
     const dispatch = useDispatch<AppDispatch>();
+    const isCurrentLoading =
+        (category === 'productos' && isLoading) ||
+        (category === 'usuarios' && userLoading) ||
+        (category === 'pedidos' && orderLoading);
 
     // Cargar productos automáticamente cuando se monta el componente o cambia la categoría
     useEffect(() => {
@@ -122,7 +126,7 @@ export const DynamicList = () => {
         setIsMenuOpen(activeRow !== rowId);
     };
 
-    if (isLoading || userLoading || orderLoading) {
+    if (isCurrentLoading) {
         return <div className="dynamicListSection"><DynamicListSkeleton category={category} /></div>;
     }
 
