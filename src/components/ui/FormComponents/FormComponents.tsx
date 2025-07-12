@@ -1,5 +1,13 @@
 import { Field, ErrorMessage } from 'formik';
-import type { BaseFormComponentProps } from '../../../types/validationTypes';
+
+export interface BaseFormComponentProps {
+    label?: string;
+    placeholder?: string;
+    helpText?: string;
+    required?: boolean;
+    disabled?: boolean;
+    readonly?: boolean;
+}
 
 /**
  * Props para el componente FormField genérico

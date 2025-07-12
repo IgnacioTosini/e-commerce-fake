@@ -2,7 +2,7 @@ import type { Product } from '../../../types';
 import './_productPrice.scss';
 
 type ProductPriceProps = {
-    product: Product;
+    product: Pick<Product, 'price' | 'discount'>;
 };
 
 export const ProductPrice = ({ product }: ProductPriceProps) => {

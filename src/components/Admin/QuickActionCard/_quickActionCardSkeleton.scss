@@ -1,0 +1,70 @@
+@use '@/styles/variables' as *;
+
+.quickActionCardSkeleton {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 300px;
+    padding: 1rem;
+    border: 1px solid $color-text-tertiary;
+    border-radius: 1rem;
+
+    .quickActionCardHeaderSkeleton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: fit-content;
+        margin-bottom: 1rem;
+        border-radius: 0.5rem;
+        animation: skeleton-loading 1.2s infinite linear alternate;
+
+        .quickActionCardIcon {
+            font-size: $font-size-large;
+            margin-bottom: 0.5rem;
+
+            svg {
+                width: 1.5rem;
+                height: 1.5rem;
+                fill: $color-text;
+            }
+        }
+    }
+
+    .quickActionCardLinksSkeleton {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+
+        .quickActionCardLinkSkeleton {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: $color-text;
+            font-size: $font-size-xsmall;
+            width: 100%;
+            height: 2rem;
+            padding: 0.5rem;
+            border: 1px solid $color-text-tertiary;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease-in-out;
+            animation: skeleton-loading 1.2s infinite linear alternate;
+        }
+    }
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-color: $color-text-tertiary;
+    }
+    100% {
+        background-color: $color-text-quaternary;
+    }
+}

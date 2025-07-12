@@ -10,7 +10,6 @@ export const OrdersPage = () => {
     const { orders } = useSelector((state: RootState) => state.orders);
     const ordersPageRef = useRef<HTMLDivElement | null>(null);
     const location = useLocation();
-    console.log(orders);
 
     useEffect(() => {
         if (ordersPageRef.current) {

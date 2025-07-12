@@ -9,28 +9,21 @@ import { ImagesInformationCard } from '../../components/Admin/Custom/ImagesInfor
 import type { AppDispatch, RootState } from '../../store/store';
 import { productCreateSchema } from '../../schemas/productFormSchemas';
 import { startUpdateProduct } from '../../store/products/thunks';
+import type { ProductVariant } from '../../types';
 import './_productEditPage.scss'
 
-// Valores iniciales
+// Valores iniciales adaptados al nuevo tipo Product
 const initialValues = {
-    // Información básica
-    name: '',
+    title: '',
     description: '',
     brand: '',
-    sku: '',
-    category: '',
-
-    // Precio y stock
+    categoryName: '',
     price: 0,
-    stock: 0,
     discount: 0,
-
-    // Variantes
+    variants: [] as ProductVariant[],
     colors: [] as string[],
     sizes: [] as string[],
-
-    // Imágenes
-    images: [] as string[]
+    images: [] as string[],
 };
 
 export const ProductEditPage = () => {
@@ -42,37 +35,34 @@ export const ProductEditPage = () => {
 
     // Mapear los valores del producto a los nombres de campos del formulario
     const mappedInitialValues = product ? {
-        // Información básica - mapear correctamente
-        name: product.title || '',
+        title: product.title || '',
         description: product.description || '',
         brand: product.brand || '',
-        sku: product.sku || '',
-        category: product.categoryName || '',
-
-        // Precio y stock
+        categoryName: product.categoryName || '',
         price: product.price || 0,
-        stock: product.stock || 0,
         discount: product.discount || 0,
-
-        // Variantes
+        variants: product.variants || [],
         colors: product.colors || [],
         sizes: product.sizes || [],
-
-        // Imágenes
-        images: product.images || []
+        images: product.images || [],
     } : initialValues;
 
+
     const handleSubmit = async (values: typeof initialValues) => {
-        // Crear objeto compatible con el thunk existente
+        // Generar IDs únicos para variantes si no existen
+        const variantsWithId = (values.variants || []).map(variant => ({
+            ...variant,
+            id: variant.id || `${product?.id || 'new'}-${variant.color}-${variant.size}`
+        }));
+
         const productData = {
             id: product?.id || '',
-            title: values.name,
+            title: values.title,
             description: values.description,
             brand: values.brand,
-            sku: values.sku,
-            categoryName: values.category,
+            categoryName: values.categoryName,
             price: values.price,
-            stock: values.stock,
+            variants: variantsWithId,
             discount: values.discount,
             colors: values.colors,
             sizes: values.sizes,
@@ -82,8 +72,10 @@ export const ProductEditPage = () => {
             updatedAt: product?.updatedAt || ''
         };
 
-        dispatch(startUpdateProduct(productData, product?.id || ''));
-        if (!isLoading) {
+        // Esperar a que la acción termine antes de navegar
+        await dispatch(startUpdateProduct(productData, product?.id || ''));
+        // Navegar solo si no está cargando y hay producto
+        if (!isLoading && productData.id) {
             navigate('/admin/productos');
         }
     };

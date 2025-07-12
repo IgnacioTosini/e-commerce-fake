@@ -1,0 +1,24 @@
+@use '@/styles/variables' as *;
+
+.sizeItemSkeleton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border: 1px solid $color-text-quaternary;
+    border-radius: 0.25rem;
+    transition: all 0.3s ease-in-out;
+    animation: skeleton-loading 1.2s infinite linear alternate;
+
+    &:hover {
+        background-color: $color-text-tertiary;
+        cursor: pointer;
+    }
+
+    &.active {
+        background-color: $color-text-quaternary;
+        border-color: $color-text-quaternary;
+        color: $color-text;
+    }
+}

@@ -34,12 +34,12 @@ export const startAddToCart = (
     product: Product,
     quantity: number,
     size: string,
-    color: string
+    color: string,
 ) => {
     return async (dispatch: AppDispatch) => {
         try {
             // 1. Actualizar estado local primero
-            dispatch(addToCartSlice({ product, quantity, size, color, stock: product.stock }));
+            dispatch(addToCartSlice({ product, quantity, size, color }));
 
             // 2. Actualizar en Firebase
             const cartDocRef = doc(FirebaseDB, 'carts', userId);
@@ -47,10 +47,22 @@ export const startAddToCart = (
 
             if (cartDoc.exists()) {
                 const cartData = cartDoc.data() as Cart;
+                // Buscar la variante seleccionada
+                const selectedVariant = product.variants.find(v => v.size === size && v.color === color);
+                if (!selectedVariant) return;
+
+                const simplifiedProduct = {
+                    id: product.id,
+                    title: product.title,
+                    price: product.price,
+                    images: product.images,
+                    discount: product.discount || 0
+                };
+
                 const existingItemIndex = cartData.items.findIndex(item =>
                     item.product.id === product.id &&
-                    item.size === size &&
-                    item.color === color
+                    item.variant && item.variant.size === size &&
+                    item.variant.color === color
                 );
 
                 let updatedItems;
@@ -58,7 +70,19 @@ export const startAddToCart = (
                     updatedItems = [...cartData.items];
                     updatedItems[existingItemIndex].quantity += quantity;
                 } else {
-                    updatedItems = [...cartData.items, { product, quantity, size, color }];
+                    updatedItems = [
+                        ...cartData.items,
+                        {
+                            product: simplifiedProduct,
+                            quantity,
+                            variant: {
+                                id: selectedVariant.id,
+                                size: selectedVariant.size,
+                                color: selectedVariant.color,
+                                stock: selectedVariant.stock
+                            }
+                        }
+                    ];
                 }
 
                 await updateDoc(cartDocRef, {
@@ -107,9 +131,14 @@ export const startUpdateCartItemQuantity = (
             if (cartDoc.exists()) {
                 const cartData = cartDoc.data() as Cart;
                 const updatedItems = cartData.items.map(item => {
-                    if (item.product.id === productId &&
-                        item.size === size &&
-                        item.color === color) {
+                    if (
+                        item &&
+                        item.product &&
+                        item.product.id === productId &&
+                        item.variant &&
+                        item.variant.size === size &&
+                        item.variant.color === color
+                    ) {
                         return { ...item, quantity: newQuantity };
                     }
                     return item;
@@ -144,9 +173,12 @@ export const startRemoveFromCart = (
             if (cartDoc.exists()) {
                 const cartData = cartDoc.data() as Cart;
                 const updatedItems = cartData.items.filter(item => !(
+                    item &&
+                    item.product &&
                     item.product.id === productId &&
-                    item.size === size &&
-                    item.color === color
+                    item.variant &&
+                    item.variant.size === size &&
+                    item.variant.color === color
                 ));
 
                 await updateDoc(cartDocRef, {

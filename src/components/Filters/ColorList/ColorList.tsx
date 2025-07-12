@@ -20,6 +20,9 @@ export const ColorList = ({ colors, onColorSelect, resetSelection }: ColorListPr
     const handleColorClick = (color: string) => {
         setSelectedColor(color);
         onColorSelect(color);
+        if(selectedColor === color) {
+            setSelectedColor(null);
+        }
     };
 
     return (

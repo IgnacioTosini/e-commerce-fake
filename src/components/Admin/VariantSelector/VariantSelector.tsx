@@ -7,13 +7,17 @@ interface VariantSelectorProps {
     type: 'colors' | 'sizes';
     selectedItems: string[];
     onSelectionChange: (items: string[]) => void;
+    options?: string[]; // Opciones permitidas (sobrescribe las default)
+    singleSelect?: boolean; // Si true, solo permite seleccionar una opción
 }
 
-export const VariantSelector = ({ type, selectedItems, onSelectionChange }: VariantSelectorProps) => {
+export const VariantSelector = ({ type, selectedItems, onSelectionChange, options, singleSelect }: VariantSelectorProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
 
-    const availableItems = type === 'colors' ? AVAILABLE_COLORS : AVAILABLE_SIZES;
+    const availableItems = (options && options.length > 0)
+        ? options
+        : (type === 'colors' ? Object.keys(AVAILABLE_COLORS) : Object.values(AVAILABLE_SIZES));
     const label = type === 'colors' ? 'colores' : 'tallas';
 
     const filteredItems = availableItems.filter(item =>
@@ -21,10 +25,14 @@ export const VariantSelector = ({ type, selectedItems, onSelectionChange }: Vari
     );
 
     const handleItemToggle = (item: string) => {
-        const newSelection = selectedItems.includes(item)
-            ? selectedItems.filter(selected => selected !== item)
-            : [...selectedItems, item];
-
+        let newSelection: string[];
+        if (singleSelect) {
+            newSelection = selectedItems.includes(item) ? [] : [item];
+        } else {
+            newSelection = selectedItems.includes(item)
+                ? selectedItems.filter(selected => selected !== item)
+                : [...selectedItems, item];
+        }
         onSelectionChange(newSelection);
     };
 
@@ -71,7 +79,8 @@ export const VariantSelector = ({ type, selectedItems, onSelectionChange }: Vari
                             {filteredItems.map((item) => (
                                 <label key={item} className='variantSelectorOption'>
                                     <input
-                                        type="checkbox"
+                                        type={singleSelect ? 'radio' : 'checkbox'}
+                                        name={singleSelect ? `variant-${type}` : undefined}
                                         checked={selectedItems.includes(item)}
                                         onChange={() => handleItemToggle(item)}
                                     />

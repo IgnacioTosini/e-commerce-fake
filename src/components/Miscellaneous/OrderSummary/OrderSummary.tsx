@@ -7,6 +7,7 @@ import { createOrderAndInitiatePayment } from '../../../store/orders/thunks';
 import { clearCheckoutUrl } from '../../../store/orders/ordersSlice';
 import { startClearCart } from '../../../store/cart/thunks';
 import { toast } from 'react-toastify';
+import { MercadoPagoTestInfo } from '../MercadoPagoTestInfo/MercadoPagoTestInfo';
 import './_orderSummary.scss'
 
 export const OrderSummary = () => {
@@ -55,15 +56,15 @@ export const OrderSummary = () => {
             // Abrir MercadoPago en nueva ventana
             window.open(checkoutUrl, '_blank');
 
-            setTimeout(() => {
-                navigate('/');
+            if (checkoutUrl) {
                 dispatch(clearCheckoutUrl());
-            }, 2000);
+            }
         }
 
     }, [checkoutUrl, dispatch, navigate]);
 
     const handleCheckout = async () => {
+        console.log('Iniciando proceso de checkout...');
         if (!isUserDataComplete) {
             toast.error('Por favor completa tus datos personales antes de proceder al pago');
             return;
@@ -76,7 +77,6 @@ export const OrderSummary = () => {
 
         try {
             toast.info('Procesando orden...');
-
             // Crear los items para la orden
             const items: OrderItem[] = cart.items.map(item => ({
                 productId: item.product.id,
@@ -85,8 +85,8 @@ export const OrderSummary = () => {
                 images: item.product.images,
                 price: item.product.price,
                 quantity: item.quantity,
-                size: item.size,
-                color: item.color
+                size: item.variant.size,
+                color: item.variant.color
             }));
 
             const orderData = {
@@ -130,6 +130,9 @@ export const OrderSummary = () => {
                 </p>
             </section>
 
+            {/* Info de prueba MercadoPago solo en desarrollo */}
+            <MercadoPagoTestInfo />
+
             {!isUserDataComplete && (
                 <div className='orderSummaryWarning'>
                     <p>⚠️ Completa tus datos personales para continuar</p>
@@ -137,9 +140,9 @@ export const OrderSummary = () => {
             )}
 
             <button
-                className='orderSummaryCheckoutButton'
+                className={cart.items.length > 0 ? 'orderSummaryCheckoutButton' : 'orderSummaryCheckoutButton disabled'}
                 onClick={handleCheckout}
-                disabled={!isUserDataComplete || !cart?.items.length || loading}
+                disabled={!isUserDataComplete || cart.items.length === 0 || loading}
             >
                 {loading ? 'Procesando...' : 'Proceder al Pago'}
             </button>

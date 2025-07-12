@@ -8,6 +8,7 @@ import { CustomButton } from '../../ui/CustomButton/CustomButton';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '../../../store/store';
 import { setSelectedProduct } from '../../../store/products/productsSlice';
+import { ProductCardSkeleton } from './ProductCardSkeleton';
 import './_productCard.scss'
 
 type ProductCardProps = {
@@ -41,6 +42,10 @@ export const ProductCard = ({ product, onClick }: ProductCardProps) => {
         dispatch(setSelectedProduct(product));
     }
 
+    if (!product) {
+        return <ProductCardSkeleton />;
+    }
+
     return (
         <div className="productCard" onClick={handleClickProduct}>
             <div className='favoriteButton' onClick={handleFavorite}>
@@ -48,7 +53,7 @@ export const ProductCard = ({ product, onClick }: ProductCardProps) => {
             </div>
             <Link to={`/productos/${product.id}`} className="productCardLink" onClick={handleNavigation}>
                 <img src={image} alt={product.title} className='productImage' />
-                {product.discount && <Badge color={'primary'}>{`-${product.discount}%`}</Badge>}
+                {product.discount! > 0 && <Badge color={'primary'}>{`-${product.discount}%`}</Badge>}
                 <div className='productInfo'>
                     <h2 className="productCardTitle">{product.title}</h2>
                     <ProductPrice product={product} />

@@ -21,3 +21,13 @@ $font-size-xlarge: 48px;
 $font-weight-regular: 400;
 $font-weight-medium: 500;
 $font-weight-bold: 700;
+
+@keyframes skeleton-loading {
+    0% {
+        background-color: $color-text-tertiary;
+    }
+
+    100% {
+        background-color: $color-text-quaternary;
+    }
+}

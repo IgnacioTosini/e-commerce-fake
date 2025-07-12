@@ -35,30 +35,53 @@ export const cartSlice = createSlice({
             state.cart = action.payload
             state.error = null
         },
-        addToCart: (state, action: PayloadAction<{ product: Product, quantity: number, size: string, color: string, stock: number }>) => {
-            if (!state.cart) return
+        addToCart: (state, action: PayloadAction<{ product: Product, quantity: number, size: string, color: string }>) => {
+            if (!state.cart) return;
 
-            const { product, quantity, size, color } = action.payload
+            const { product, quantity, size, color } = action.payload;
+
+            const selectedVariant = product.variants.find(v =>
+                v.size === size && v.color === color
+            );
+
+            if (!selectedVariant) return; // Protección
+
+            // Seleccionar solo las propiedades necesarias según el tipo CartItem
+            const simplifiedProduct = {
+                id: product.id,
+                title: product.title,
+                price: product.price,
+                images: product.images,
+                discount: product.discount || 0
+            };
+
             const existingItemIndex = state.cart.items.findIndex(item =>
                 item.product.id === product.id &&
-                item.size === size &&
-                item.color === color
-            )
+                item.variant.size === size &&
+                item.variant.color === color
+            );
 
             if (existingItemIndex >= 0) {
-                // Si existe la misma combinación, solo aumentar cantidad
-                state.cart.items[existingItemIndex].quantity += quantity
+                state.cart.items[existingItemIndex].quantity += quantity;
             } else {
-                // Si es nueva combinación, agregar nuevo item
-                state.cart.items.push({ product, quantity, size, color })
+                state.cart.items.push({
+                    product: simplifiedProduct,  // Versión simplificada
+                    quantity,
+                    variant: {
+                        id: `${product.id}-${size}-${color}`,
+                        size,
+                        color,
+                        stock: selectedVariant.stock
+                    }
+                });
             }
 
-            state.cart.updatedAt = new Date().toISOString()
+            state.cart.updatedAt = new Date().toISOString();
         },
         clearCart: (state) => {
             if (state.cart) {
-                state.cart.items = []
-                state.cart.updatedAt = new Date().toISOString()
+                state.cart.items = [];
+                state.cart.updatedAt = new Date().toISOString();
             }
         },
         resetCart: (state) => {
@@ -79,8 +102,8 @@ export const cartSlice = createSlice({
             const { productId, newQuantity, size, color } = action.payload;
             const itemIndex = state.cart.items.findIndex(item =>
                 item.product.id === productId &&
-                item.size === size &&
-                item.color === color
+                item.variant.size === size &&
+                item.variant.color === color
             );
 
             if (itemIndex !== -1) {
@@ -97,8 +120,8 @@ export const cartSlice = createSlice({
             const { productId, size, color } = action.payload;
             state.cart.items = state.cart.items.filter(item => !(
                 item.product.id === productId &&
-                item.size === size &&
-                item.color === color
+                item.variant.size === size &&
+                item.variant.color === color
             ));
             state.cart.updatedAt = new Date().toISOString();
         }

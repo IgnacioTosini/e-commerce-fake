@@ -8,9 +8,10 @@ import type { RootState, AppDispatch } from '../../../store/store';
 import { startLoadingProducts } from '../../../store/products/thunks';
 import { startLoadUsers } from '../../../store/user/thunks';
 import './_dynamicList.scss';
+import { DynamicListSkeleton } from './DynamicListSkeleton';
 
 const userColumns = ['id', 'name', 'email', 'role', 'isActive', 'actions'];
-const productColumns = ['id', 'title', 'category', 'price', 'stock', 'isActive', 'actions'];
+const productColumns = ['id', 'title', 'category', 'price', 'totalStock', 'isActive', 'actions'];
 const orderColumns = ['id', 'userId', 'total', 'status', 'createdAt', 'actions'];
 
 type TableData = {
@@ -31,7 +32,7 @@ const columnNamesMap: { [key: string]: string } = {
     title: 'Título',
     category: 'Categoría',
     price: 'Precio',
-    stock: 'Inventario',
+    totalStock: 'Inventario',
     status: 'Estado',
     createdAt: 'Fecha de Creación',
     userId: 'ID Usuario',
@@ -44,8 +45,8 @@ export const DynamicList = () => {
     const [activeRow, setActiveRow] = useState<string | null>(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { products, isLoading } = useSelector((state: RootState) => state.products);
-    const { users } = useSelector((state: RootState) => state.user);
-    const { orders } = useSelector((state: RootState) => state.orders);
+    const { users, loading: userLoading } = useSelector((state: RootState) => state.user);
+    const { orders, loading: orderLoading } = useSelector((state: RootState) => state.orders);
     const dispatch = useDispatch<AppDispatch>();
 
     // Cargar productos automáticamente cuando se monta el componente o cambia la categoría
@@ -77,12 +78,12 @@ export const DynamicList = () => {
             case 'productos':
                 return {
                     columns: productColumns,
-                    data: products.map(({ id, title, categoryName, price, stock, isActive }) => ({
+                    data: products.map(({ id, title, categoryName, price, totalStock, isActive }) => ({
                         id,
                         title,
                         category: categoryName, // Extraer el valor de 'name' como string
                         price,
-                        stock,
+                        totalStock: totalStock !== undefined ? totalStock : 0,
                         isActive: isActive ? 'true' : 'false', // Convertir booleano a string
                     })),
                 };
@@ -120,6 +121,10 @@ export const DynamicList = () => {
         setActiveRow(activeRow === rowId ? null : rowId);
         setIsMenuOpen(activeRow !== rowId);
     };
+
+    if (isLoading || userLoading || orderLoading) {
+        return <div className="dynamicListSection"><DynamicListSkeleton category={category} /></div>;
+    }
 
     return (
         <section className="dynamicListSection">

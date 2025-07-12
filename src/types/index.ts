@@ -21,6 +21,16 @@ export type Category = {
     productsCount?: number; // Cantidad de productos en la categoría
 }
 
+// Modelo profesional: producto con variantes (talle + color)
+export type ProductVariant = {
+    id: string; // ID único de la variante (puede ser generado como productId-talle-color)
+    size: string;
+    color: string;
+    stock: number;
+    sku: string; // SKU único por variante
+    image?: string; // Imagen específica de la variante (opcional)
+};
+
 export type Product = {
     id: string;
     title: string;
@@ -28,24 +38,21 @@ export type Product = {
     price: number;
     images: string[];
     categoryName: string; // Nombre de la categoría del producto
-    stock: number;
     rating: number;
-    sku: string; // SKU: identificador único de inventario para el producto
     brand: string;
     weight?: number;
     discount?: number;
     isActive?: boolean;
     createdAt: string; // Fecha de creación del producto
     updatedAt: string; // Fecha de última actualización del producto
-    sizes: string[]; // Arreglo opcional de tallas disponibles para el producto
-    colors: string[]; // Arreglo opcional de colores disponibles para el producto
+    variants: ProductVariant[]; // Variantes disponibles (talle + color + stock)
+    totalStock?: number; // Stock total del producto (suma de todas las variantes)
 }
 
 export type CartItem = {
-    product: Pick<Product, 'id' | 'title' | 'price' | 'images' | 'discount' | 'stock'>; // Información del producto
+    product: Pick<Product, 'id' | 'title' | 'price' | 'images' | 'discount'>;
+    variant: Pick<ProductVariant, 'id' | 'size' | 'color' | 'stock'>; // Información de la variante elegida
     quantity: number;
-    size: string; // Nuevo campo para el talle elegido
-    color: string; // Nuevo campo para el color elegido
 }
 
 export type Cart = {
@@ -62,8 +69,8 @@ export type OrderItem = {
     userId?: Pick<User, 'id'>['id']; // ID del usuario que realizó la compra
     quantity: number;
     price: number;
-    size: string; // Nuevo campo para el talle elegido
-    color: string; // Nuevo campo para el color elegido
+    size: string;
+    color: string;
 }
 
 export type Order = {
@@ -95,7 +102,6 @@ export type Icon = {
     image: string; // Nombre del icono
     alt: string; // Texto alternativo para el icono
 }
-
 export interface MercadoPagoPreferenceData {
     orderId: string;
     items: {

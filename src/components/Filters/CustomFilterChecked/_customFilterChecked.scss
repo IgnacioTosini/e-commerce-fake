@@ -58,8 +58,7 @@
         width: 100%;
         padding: 1rem;
         border-bottom: 1px solid $color-text-tertiary;
-
-        overflow: hidden;
+        overflow-y: auto;
         max-height: 0;
         opacity: 0;
         transition: max-height 0.5s ease, opacity 0.5s ease;

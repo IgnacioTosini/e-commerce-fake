@@ -2,11 +2,11 @@ import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
 import { CustomFilterChecked } from '../CustomFilterChecked/CustomFilterChecked';
-import { sizeList } from '../../../utils/sizeList';
 import { useFilters } from '../../../context/useFilters';
 import { animateElements } from '../../../hooks/gsapEffects';
 import { CustomButton } from '../../ui/CustomButton/CustomButton';
 import type { RootState } from '../../../store/store';
+import { AVAILABLE_SIZES } from '../../../utils/productVariants';
 import './_filtersSection.scss';
 
 export const FiltersSection = () => {
@@ -24,8 +24,9 @@ export const FiltersSection = () => {
 
     // Calcular colores únicos y sus cantidades
     const colorCounts = products.reduce((acc, product) => {
-        if (product.colors) {
-            product.colors.forEach(color => {
+        if (product.variants) {
+            product.variants.forEach(variant => {
+                const color = variant.color;
                 acc[color] = (acc[color] || 0) + 1;
             });
         }
@@ -39,8 +40,8 @@ export const FiltersSection = () => {
     }, {} as Record<string, number>);
 
     // Calcular tallas y sus cantidades
-    const sizeCounts = sizeList.reduce((acc, size) => {
-        acc[size] = products.filter(product => product.sizes?.includes(size.toLowerCase())).length;
+    const sizeCounts = AVAILABLE_SIZES.reduce((acc, size) => {
+        acc[size] = products.filter(product => product.variants?.some(variant => variant.size === size)).length;
         return acc;
     }, {} as Record<string, number>);
 
@@ -65,7 +66,7 @@ export const FiltersSection = () => {
                 cant={colorCounts} // Pasar las cantidades de colores
             />
             <CustomFilterChecked
-                array={sizeList}
+                array={AVAILABLE_SIZES}
                 onClick={(filter) => handleFilterChange('Talla', filter)}
                 categoryName='Talla'
                 selectedFilters={selectedFilters.Talla}

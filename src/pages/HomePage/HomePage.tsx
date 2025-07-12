@@ -7,11 +7,13 @@ import { ProductCard } from '../../components/ProductDisplay/ProductCard/Product
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../store/store';
 import './_homePage.scss'
+import { ProductCardSkeleton } from '../../components/ProductDisplay/ProductCard/ProductCardSkeleton';
+import { CategoriesListSkeleton } from '../../components/ProductDisplay/CategoriesList/CategoriesListSkeleton';
 
 export const HomePage = () => {
   const categoriesListRef = useRef<HTMLDivElement>(null);
   const customListRef = useRef<HTMLDivElement>(null);
-  const { products } = useSelector((state: RootState) => state.products);
+  const { products, isLoading } = useSelector((state: RootState) => state.products);
 
   useEffect(() => {
     if (categoriesListRef.current) {
@@ -21,6 +23,20 @@ export const HomePage = () => {
       animateOnScroll(customListRef.current, 40, 0.2);
     }
   }, []);
+
+  if (isLoading || !products) {
+    return (
+      <div className="homePage">
+        <div />
+        <CategoriesListSkeleton />
+        <div className="homePageRecentProducts" style={{ display: 'flex', gap: 16 }}>
+          {[1, 2, 3, 4].map((index) => (
+            <ProductCardSkeleton key={index} />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="homePage">

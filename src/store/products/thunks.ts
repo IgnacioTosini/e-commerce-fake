@@ -1,6 +1,7 @@
 import { collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore";
 import type { AppDispatch, RootState } from "../store";
 import { addProduct, deleteProduct, savingNewProduct, setLoading, setProducts, updateProduct, addCategory, removeCategory, setCategories } from "./productsSlice";
+import slugify from "slugify";
 import { FirebaseDB } from "../../firebase/config";
 import { loadProducts } from "../../helpers/loadProducts";
 import type { Product } from "../../types";
@@ -25,6 +26,14 @@ export const startNewProduct = (formData: Partial<Product>) => {
                 }
             }
 
+
+            // Generar SKU automáticamente para cada variante
+            const productSlug = slugify(formData.title || '', { lower: true, strict: true });
+            const variantsWithSku = (formData.variants || []).map(variant => ({
+                ...variant,
+                sku: `${productSlug}-${variant.color}-${variant.size}`
+            }));
+
             const newProduct: Product = {
                 id: "",
                 title: formData.title || "",
@@ -33,15 +42,13 @@ export const startNewProduct = (formData: Partial<Product>) => {
                 images: uploadedImages,
                 categoryName: formData.categoryName || "Sin categoría",
                 rating: formData.rating || 0,
-                stock: formData.stock || 0,
-                sku: formData.sku || "",
+                variants: variantsWithSku,
+                totalStock: variantsWithSku.reduce((acc, variant) => acc + (variant.stock || 0), 0),
                 brand: formData.brand || "",
                 discount: formData.discount || 0,
                 isActive: formData.isActive || true,
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString(),
-                sizes: formData.sizes || [],
-                colors: formData.colors || [],
             };
 
             const newDoc = doc(collection(FirebaseDB, `products`));
@@ -84,11 +91,23 @@ export const startUpdateProduct = (formData: Partial<Product>, productId: string
                 }
             }
 
+            // Generar SKU automáticamente para cada variante al editar
+            const productSlug = slugify(formData.title ?? '', { lower: true, strict: true });
+            const variantsWithSku = (formData.variants ?? []).map(variant => ({
+                ...variant,
+                sku: `${productSlug}-${variant.color}-${variant.size}`
+            }));
+
+            // Calcular el totalStock sumando los stocks de las variantes
+            const totalStock = variantsWithSku.reduce((acc, variant) => acc + (variant.stock || 0), 0);
+
             // Crear objeto de actualización
             const updatedData = {
                 ...formData,
                 images: finalImages,
                 updatedAt: new Date().toISOString(),
+                variants: variantsWithSku,
+                totalStock,
             };
 
             // Actualizar en Firebase
@@ -104,15 +123,13 @@ export const startUpdateProduct = (formData: Partial<Product>, productId: string
                 images: finalImages,
                 categoryName: formData.categoryName ?? "Sin categoría",
                 rating: formData.rating ?? 0,
-                stock: formData.stock ?? 0,
-                sku: formData.sku ?? "",
+                variants: variantsWithSku,
+                totalStock,
                 brand: formData.brand ?? "",
                 discount: formData.discount ?? 0,
                 isActive: formData.isActive ?? true,
                 createdAt: formData.createdAt ?? new Date().toISOString(),
                 updatedAt: new Date().toISOString(),
-                sizes: formData.sizes ?? [],
-                colors: formData.colors ?? [],
             };
 
             dispatch(updateProduct(completeProduct));

@@ -10,14 +10,14 @@ type CategoryCardProps = {
 export const CategoryCard = ({ category }: CategoryCardProps) => {
     const { handleFilterChange } = useFilters();
     const navigate = useNavigate();
+    const { name, productsCount } = category;
+    const image = category.image ? category.image : 'https://placehold.co/300x300'; // Imagen por defecto si no hay imágenes
 
     const handleClick = () => {
         handleFilterChange('Categoria', category.name);
         navigate(`/productos`);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
-
-    const { image, name, productsCount } = category;
 
     return (
         <div onClick={handleClick} className="categoryCard">

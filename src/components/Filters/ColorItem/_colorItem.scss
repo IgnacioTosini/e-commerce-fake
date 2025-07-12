@@ -7,10 +7,10 @@
     justify-content: center;
     width: 2.5rem;
     height: 2.5rem;
-    border: 2px solid transparent;
     border-radius: 50%;
     transition: all 0.3s ease-in-out;
     filter: brightness(0.4);
+    border: 2px solid $color-text;
 
     &:hover {
         filter: brightness(1);
@@ -19,9 +19,8 @@
 
     &.active {
         background-color: $color-text-quaternary;
-        border-color: $color-text;
+        border-color: $color-text-quaternary;
         box-shadow: 0 0 5px $color-text;
-        color: $color-text;
         filter: brightness(1);
     }
 }

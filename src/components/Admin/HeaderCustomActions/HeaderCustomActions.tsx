@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '../../../store/store';
 import { startDeletingProduct } from '../../../store/products/thunks';
 import { startDeletingUser } from '../../../store/user/thunks';
+import { HeaderCustomActionsSkeleton } from './HeaderCustomActionsSkeleton';
 import './_headerCustomActions.scss'
 
 type HeaderCustomActionsProps = {
@@ -28,6 +29,10 @@ export const HeaderCustomActions = ({ type, data }: HeaderCustomActionsProps) =>
     }
   }
 
+  if (!data) {
+    return <HeaderCustomActionsSkeleton />;
+  }
+
   return (
     <div className='headerCustomActions'>
       {type === 'product' && data && (
@@ -35,7 +40,7 @@ export const HeaderCustomActions = ({ type, data }: HeaderCustomActionsProps) =>
           <button type="button" className='headerCustomActionsBack' onClick={() => navigate(-1)}><FaAngleLeft /> Volver</button>
           <section className='headerCustomActionsInfo'>
             <h2>{(data as Product)?.title}</h2>
-            <p>{(data as Product)?.sku}</p>
+            <p>{(data as Product)?.variants[0]?.sku}</p>
           </section>
           <div className='headerCustomActionsButtons'>
             <Link to={`/admin/productos/${data.id}/editar`}><HiOutlinePencil /> Editar</Link>

@@ -5,6 +5,7 @@ import { CustomList } from '../../components/ui/CustomList/CustomList';
 import { useFavorites } from '../../context/useFavorites';
 import type { Product } from '../../types';
 import type { RootState } from '../../store/store';
+import { ProductCardSkeleton } from '../../components/ProductDisplay/ProductCard/ProductCardSkeleton';
 import './_wishListPage.scss';
 
 export const WishListPage = () => {
@@ -17,6 +18,23 @@ export const WishListPage = () => {
         const filtered = products.filter(product => favorites.includes(product.id));
         setFavoriteProducts(filtered);
     }, [favorites, products]);
+
+    if (!favoriteProducts) {
+        return <CustomList
+            flexOptions={{
+                direction: 'row',
+                justify: 'start',
+                wrap: 'wrap',
+                align: 'startAlign'
+            }}
+            maxItems={12}
+            as='div'
+        >
+            {[1, 2, 3].map((id) => (
+                <ProductCardSkeleton key={id} />
+            ))}
+        </CustomList>
+    }
 
     return (
         <div className='wishListPage'>

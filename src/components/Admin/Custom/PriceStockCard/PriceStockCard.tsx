@@ -33,22 +33,6 @@ export const PriceStockCard = ({ mode }: PriceStockCardProps) => {
                     </div>
 
                     <div className='priceStockCardInputGroup'>
-                        <label htmlFor='stock' className='priceStockCardLabel'>
-                            Stock *
-                        </label>
-                        <Field
-                            type='number'
-                            id='stock'
-                            name='stock'
-                            min='0'
-                            step='1'
-                            className='priceStockCardInput'
-                            placeholder={mode === 'create' ? 'Cantidad disponible' : '0'}
-                        />
-                        <ErrorMessage name='stock' component='span' className='error' />
-                    </div>
-
-                    <div className='priceStockCardInputGroup'>
                         <label htmlFor='discount' className='priceStockCardLabel'>
                             Descuento (%)
                         </label>

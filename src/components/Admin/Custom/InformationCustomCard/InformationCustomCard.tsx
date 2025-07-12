@@ -1,24 +1,32 @@
-import { Field, ErrorMessage, useFormikContext } from 'formik'
+
+import { Field, ErrorMessage, useFormikContext } from 'formik';
 import { CategoryManager } from '../../CategoryManager/CategoryManager';
-import './_informationCustomCard.scss'
+import { InformationCustomCardSkeleton } from './InformationCustomCardSkeleton';
+import type { RootState } from '../../../../store/store';
+import { useSelector } from 'react-redux';
+import './_informationCustomCard.scss';
 
 type SimpleInformationCardProps = {
     mode: 'create' | 'edit';
 }
 
 type InformationFormValues = {
-    name: string;
+    title: string;
     brand: string;
     description: string;
-    sku: string;
-    category: string;
+    categoryName: string;
 };
 
 export const InformationCustomCard = ({ mode }: SimpleInformationCardProps) => {
     const { setFieldValue, values } = useFormikContext<InformationFormValues>();
+    const { isLoading } = useSelector((state: RootState) => state.products);
+
+    if (isLoading) {
+        return <InformationCustomCardSkeleton />;
+    }
 
     const handleCategorySelect = (category: string) => {
-        setFieldValue('category', category);
+        setFieldValue('categoryName', category);
     };
 
     return (
@@ -31,17 +39,17 @@ export const InformationCustomCard = ({ mode }: SimpleInformationCardProps) => {
             <div className='informationCustomCardForm'>
                 <div className='informationCustomCardGroup'>
                     <div className='informationCustomCardInputGroup'>
-                        <label htmlFor='name' className='informationCustomCardLabel'>
+                        <label htmlFor='title' className='informationCustomCardLabel'>
                             Nombre del producto *
                         </label>
                         <Field
                             type='text'
-                            id='name'
-                            name='name'
+                            id='title'
+                            name='title'
                             className='informationCustomCardInput'
                             placeholder='Ej: iPhone 15 Pro Max'
                         />
-                        <ErrorMessage name='name' component='span' className='error' />
+                        <ErrorMessage name='title' component='span' className='error' />
                     </div>
 
                     <div className='informationCustomCardInputGroup'>
@@ -59,34 +67,20 @@ export const InformationCustomCard = ({ mode }: SimpleInformationCardProps) => {
                     </div>
                 </div>
 
-                <div className='informationCustomCardInputGroup'>
-                    <label htmlFor='description' className='informationCustomCardLabel'>
-                        Descripción *
-                    </label>
-                    <Field
-                        as='textarea'
-                        id='description'
-                        name='description'
-                        rows={4}
-                        className='informationCustomCardInput textArea'
-                        placeholder='Describe las características principales del producto...'
-                    />
-                    <ErrorMessage name='description' component='span' className='error' />
-                </div>
-
                 <div className='informationCustomCardGroup'>
                     <div className='informationCustomCardInputGroup'>
-                        <label htmlFor='sku' className='informationCustomCardLabel'>
-                            SKU *
+                        <label htmlFor='description' className='informationCustomCardLabel'>
+                            Descripción *
                         </label>
                         <Field
-                            type='text'
-                            id='sku'
-                            name='sku'
-                            className='informationCustomCardInput'
-                            placeholder='Ej: IPH15PM-128GB'
+                            as='textarea'
+                            id='description'
+                            name='description'
+                            rows={4}
+                            className='informationCustomCardInput textArea'
+                            placeholder='Describe las características principales del producto...'
                         />
-                        <ErrorMessage name='sku' component='span' className='error' />
+                        <ErrorMessage name='description' component='span' className='error' />
                     </div>
 
                     <div className='informationCustomCardInputGroup'>
@@ -95,18 +89,19 @@ export const InformationCustomCard = ({ mode }: SimpleInformationCardProps) => {
                         </label>
 
                         {/* Mostrar la categoría actual en modo edición */}
-                        {mode === 'edit' && values.category && (
+
+                        {mode === 'edit' && values.categoryName && (
                             <div className='previousValue'>
-                                <span className='previousValueLabel'>Categoría actual:</span> {values.category}
+                                <span className='previousValueLabel'>Categoría actual:</span> {values.categoryName}
                             </div>
                         )}
 
                         <CategoryManager
                             onCategorySelect={handleCategorySelect}
-                            selectedCategory={values.category || ''}
+                            selectedCategory={values.categoryName || ''}
                         />
 
-                        <ErrorMessage name='category' component='span' className='error' />
+                        <ErrorMessage name='categoryName' component='span' className='error' />
                     </div>
                 </div>
             </div>

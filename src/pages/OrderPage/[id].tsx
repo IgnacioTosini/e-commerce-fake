@@ -3,6 +3,7 @@ import { FaLongArrowAltLeft } from 'react-icons/fa';
 import { OrderStatusCard } from '../../components/ui/OrderStatusCard/OrderStatusCard';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../store/store';
+import { OrderPageSkeleton } from './[id]Skeleton';
 import './_orderPage.scss';
 
 export const OrderPage = () => {
@@ -12,7 +13,7 @@ export const OrderPage = () => {
     const order = orders.find(order => order.id === id);
 
     if (!order) {
-        return <p>Pedido no encontrado</p>;
+        return <OrderPageSkeleton />;
     }
 
     return (

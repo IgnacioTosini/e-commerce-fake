@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import type { RootState } from '../../../store/store';
 import type { Category } from '../../../types';
 import './_categoriesList.scss'
+import { CategoriesListSkeleton } from './CategoriesListSkeleton';
 
 export const CategoriesList = () => {
     const categoriesListRef = useRef<HTMLDivElement | null>(null);
@@ -42,6 +43,10 @@ export const CategoriesList = () => {
             animateElements(elements as HTMLElement[], 0.5, 0.2, 30);
         }
     }, [location]);
+
+    if(!categories || categories.length === 0) {
+        return <CategoriesListSkeleton />;
+    }
 
     return (
         <div className="categoriesListContainer" ref={categoriesListRef}>

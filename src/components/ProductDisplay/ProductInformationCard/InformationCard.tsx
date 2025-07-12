@@ -67,7 +67,7 @@ export const InformationCard = ({ data, type }: InformationCardProps) => {
                         </div>
                         <div className='subMenu'>
                             <h2>Stock</h2>
-                            <span>{(data as Product)?.stock}</span>
+                            <span>{(data as Product)?.totalStock}</span>
                         </div>
                     </>
                 ) : (

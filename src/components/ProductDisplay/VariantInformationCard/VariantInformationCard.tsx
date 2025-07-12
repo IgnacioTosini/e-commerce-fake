@@ -7,14 +7,19 @@ type VariantInformationCardProps = {
 };
 
 export const VariantInformationCard = ({ data }: VariantInformationCardProps) => {
+    // Solo si es producto y tiene variantes
+    const variants = (data as Product)?.variants || [];
+    const uniqueColors = Array.from(new Set(variants.map(v => v.color)));
+    const uniqueSizes = Array.from(new Set(variants.map(v => v.size)));
+
     return (
         <div className="variantInformationCard">
             <h2>Información de variantes</h2>
             <section className="variantInformationCardSection">
                 <h2>Colores</h2>
                 <span className='variantInformationCardColor'>
-                    {(data as Product)?.colors?.length ? (
-                        (data as Product)?.colors?.map((color, index) => (
+                    {uniqueColors.length ? (
+                        uniqueColors.map((color, index) => (
                             <Badge key={index} color='info'>{color}</Badge>
                         ))
                     ) : (
@@ -25,8 +30,8 @@ export const VariantInformationCard = ({ data }: VariantInformationCardProps) =>
             <section className="variantInformationCardSection">
                 <h2>Tallas</h2>
                 <span className='variantInformationCardSize'>
-                    {(data as Product)?.sizes?.length ? (
-                        (data as Product)?.sizes?.map((size, index) => (
+                    {uniqueSizes.length ? (
+                        uniqueSizes.map((size, index) => (
                             <Badge key={index} color='info'>{size}</Badge>
                         ))
                     ) : (

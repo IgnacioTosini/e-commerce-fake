@@ -9,28 +9,21 @@ import { startNewProduct } from '../../store/products/thunks';
 import { VariantInformationCard } from '../../components/Admin/Custom/VariantInformationCard/VariantInformationCard';
 import { productCreateSchema } from '../../schemas/productFormSchemas';
 import { ImagesInformationCard } from '../../components/Admin/Custom/ImagesInformationCard/ImagesInformationCard';
+import type { ProductVariant } from '../../types';
 import './_productNewPage.scss'
 
-// Valores iniciales
+// Valores iniciales Product
 const initialValues = {
-    // Información básica
-    name: '',
+    title: '',
     description: '',
     brand: '',
-    sku: '',
-    category: '',
-
-    // Precio y stock
+    categoryName: '',
     price: 0,
-    stock: 0,
     discount: 0,
-
-    // Variantes
+    variants: [] as ProductVariant[],
     colors: [] as string[],
     sizes: [] as string[],
-
-    // Imágenes
-    images: [] as string[]
+    images: [] as string[],
 };
 
 export const ProductNewPage = () => {
@@ -38,23 +31,29 @@ export const ProductNewPage = () => {
     const navigate = useNavigate();
 
     const handleSubmit = async (values: typeof initialValues) => {
-        // Crear objeto compatible con el thunk existente
+        // Generar IDs únicos para variantes si no existen
+        const variantsWithId = (values.variants || []).map(variant => ({
+            ...variant,
+            id: variant.id || `new-${variant.color}-${variant.size}`
+        }));
+
         const productData = {
-            title: values.name,
+            title: values.title,
             description: values.description,
             brand: values.brand,
-            sku: values.sku,
-            categoryName: values.category,
+            categoryName: values.categoryName,
             price: values.price,
-            stock: values.stock,
             discount: values.discount,
+            variants: variantsWithId,
             colors: values.colors,
             sizes: values.sizes,
-            images: values.images
+            images: values.images,
         };
 
-        dispatch(startNewProduct(productData));
-        if (productData) {
+        // Esperar a que la acción termine antes de navegar
+        await dispatch(startNewProduct(productData));
+        // Navegar solo si el producto tiene variantes y título
+        if (productData && productData.variants.length > 0 && productData.title) {
             navigate('/admin/productos');
         }
     };

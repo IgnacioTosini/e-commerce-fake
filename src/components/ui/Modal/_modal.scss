@@ -1,0 +1,58 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.699);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    height: 100dvh;
+
+    .modalWrapper {
+        border-radius: 8px;
+        padding: 2rem;
+        max-width: 500px;
+        width: 100%;
+        position: relative;
+
+        .modalMainImage {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .modalThumbnails {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            overflow-x: auto;
+
+            img {
+                width: 60px;
+                height: 60px;
+                object-fit: cover;
+                border-radius: 4px;
+                cursor: pointer;
+
+                &:hover {
+                    opacity: 0.8;
+                }
+            }
+        }
+    }
+
+    .modalClose {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+}

@@ -4,26 +4,30 @@ import * as Yup from 'yup';
 export const productCreateSchema = Yup.object().shape({
     id: Yup.string().optional(),
     // Información básica
-    name: Yup.string().required('El nombre es obligatorio'),
+    title: Yup.string().required('El nombre es obligatorio'),
     description: Yup.string().required('La descripción es obligatoria'),
     brand: Yup.string().required('La marca es obligatoria'),
-    sku: Yup.string().required('El SKU es obligatorio'),
-    category: Yup.string().required('La categoría es obligatoria'),
+    categoryName: Yup.string().required('La categoría es obligatoria'),
 
-    // Precio y stock
+    // Precio y descuento
     price: Yup.number().min(0, 'El precio debe ser mayor a 0').required('El precio es obligatorio'),
-    stock: Yup.number().min(0, 'El stock debe ser mayor o igual a 0').required('El stock es obligatorio'),
     discount: Yup.number().min(0).max(100, 'El descuento debe estar entre 0 y 100'),
 
-    // Variantes
-    colors: Yup.array()
-        .of(Yup.string())
-        .min(1, 'Debe tener al menos un color')
-        .max(10, 'Máximo 10 colores permitidos'),
-    sizes: Yup.array()
-        .of(Yup.string())
-        .min(1, 'Debe tener al menos una talla')
-        .max(10, 'Máximo 10 tallas permitidas'),
+    // Variantes (nuevo modelo)
+    variants: Yup.array()
+        .of(
+            Yup.object().shape({
+                id: Yup.string().required('ID de variante requerido'),
+                size: Yup.string().required('Talle requerido'),
+                color: Yup.string().required('Color requerido'),
+                stock: Yup.number().min(0, 'El stock debe ser mayor o igual a 0').required('Stock requerido'),
+                sku: Yup.string().optional(),
+            })
+        )
+        .min(1, 'Debe tener al menos una variante'),
+    // Campos informativos (opcional, según modelo)
+    colors: Yup.array().of(Yup.string()),
+    sizes: Yup.array().of(Yup.string()),
 
     // Imágenes
     images: Yup.array().of(Yup.string())

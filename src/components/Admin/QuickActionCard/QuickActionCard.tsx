@@ -1,12 +1,13 @@
 import { Link } from 'react-router';
 import { FaBox, FaRegUser, FaStore } from 'react-icons/fa';
+import { QuickActionCardSkeleton } from './QuickActionCardSkeleton';
 import './_quickActionCard.scss';
 
 type ImageSvgKey = 'users' | 'orders' | 'products';
 type QuickActionCardProps = {
     title: string;
     icon: ImageSvgKey;
-    links: { text: string, url:string }[];
+    links: { text: string, url: string }[];
 }
 
 export const QuickActionCard = (props: QuickActionCardProps) => {
@@ -17,11 +18,15 @@ export const QuickActionCard = (props: QuickActionCardProps) => {
         products: <FaStore className='productIcon' />,
     }
 
+    if (links.length === 0) {
+        return <QuickActionCardSkeleton />;
+    }
+
     return (
         <div className='quickActionCard'>
             <div className='quickActionCardHeader'>
-            <picture className='quickActionCardIcon'>{imageSvg[icon]}</picture>
-            <h2 className='quickActionCardTitle'>{title}</h2>
+                <picture className='quickActionCardIcon'>{imageSvg[icon]}</picture>
+                <h2 className='quickActionCardTitle'>{title}</h2>
             </div>
             <div className='quickActionCardLinks'>
                 {links.map((link, index) => (

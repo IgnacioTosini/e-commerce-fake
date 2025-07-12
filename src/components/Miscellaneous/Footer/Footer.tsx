@@ -22,7 +22,7 @@ export const Footer = () => {
                 <div className='footerLogo'>
                     <div className='footerLogoContent'>
                         <img src='/ecommerceFakeLogo.png' alt='Logo' />
-                        <h1>Logo</h1>
+                        <h1>EClothes</h1>
                     </div>
                     <p>Moda sostenible y de calidad para todos los estilos y ocasiones.</p>
                 </div>

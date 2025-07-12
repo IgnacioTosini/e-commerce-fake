@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { selectUniqueCategories, selectCategoryStats } from '../../../store/products/productsSlice';
 import { startAddingCategory, startDeletingCategory, startLoadingCategories } from '../../../store/products/thunks';
 import type { AppDispatch } from '../../../store/store';
+import { CategoryManagerSkeleton } from './CategoryManagerSkeleton';
 import './_categoryManager.scss';
 
 type CategoryManagerProps = {
@@ -88,6 +89,11 @@ export const CategoryManager = ({
             onCategorySelect(value);
         }
     };
+
+    // Mostrar skeleton si no hay categorías cargadas
+    if (!categories.length && !showNewCategoryInput) {
+        return <CategoryManagerSkeleton />;
+    }
 
     return (
         <div className='categoryManager'>

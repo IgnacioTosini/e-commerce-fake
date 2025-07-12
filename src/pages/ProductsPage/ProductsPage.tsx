@@ -5,9 +5,9 @@ import { animateElements } from '../../hooks/gsapEffects';
 import { FiltersSection } from '../../components/Filters/FiltersSeccion/FiltersSection';
 import { CustomList } from '../../components/ui/CustomList/CustomList';
 import { ProductCard } from '../../components/ProductDisplay/ProductCard/ProductCard';
-import './_productsPage.scss'
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../store/store';
+import './_productsPage.scss'
 
 export const ProductsPage = () => {
     const { handleFilteredProducts } = useFilters();

@@ -1,0 +1,49 @@
+@use '@/styles/variables' as *;
+
+.categoryManager.skeleton {
+    .skeleton-select {
+        height: 38px;
+        width: 100%;
+        background: $color-text-tertiary;
+        border-radius: 0.375rem;
+        margin-bottom: 1.2rem;
+        opacity: 0.25;
+        animation: skeleton-loading 1.2s infinite linear alternate;
+    }
+
+    .skeleton-list {
+        .skeleton-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.7rem;
+
+            .skeleton-category {
+                width: 160px;
+                height: 18px;
+                background: $color-text-tertiary;
+                border-radius: 0.375rem;
+                margin-right: 1rem;
+                opacity: 0.25;
+                animation: skeleton-loading 1.2s infinite linear alternate;
+            }
+
+            .skeleton-btn {
+                width: 32px;
+                height: 18px;
+                background: $color-text-tertiary;
+                border-radius: 0.375rem;
+                opacity: 0.25;
+                animation: skeleton-loading 1.2s infinite linear alternate;
+            }
+        }
+    }
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-color: $color-text-tertiary;
+    }
+    100% {
+        background-color: $color-text-quaternary;
+    }
+}

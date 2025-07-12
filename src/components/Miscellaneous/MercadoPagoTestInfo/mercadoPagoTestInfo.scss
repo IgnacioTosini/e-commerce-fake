@@ -1,0 +1,30 @@
+@use '@/styles/variables.scss' as *;
+
+.mpTestInfo {
+  border-radius: 6px;
+  padding: 1rem;
+  margin: 1rem 0;
+  color: $color-text;
+
+  h4 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    color: $color-text-quaternary;
+  }
+
+  ul {
+    margin: 0 0 0.5rem 0;
+    padding-left: 1.2rem;
+
+    li {
+      margin-bottom: 0.2rem;
+      color: $color-text-secondary;
+    }
+  }
+
+  p {
+    font-size: $font-size-xsmall;
+    color: $color-text-secondary;
+  }
+}

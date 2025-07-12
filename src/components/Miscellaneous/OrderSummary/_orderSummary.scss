@@ -55,4 +55,9 @@
             background-color: $color-hover-primary;
         }
     }
+
+    .disabled {
+        background-color: $color-text-secondary;
+        cursor: not-allowed;
+    }
 }

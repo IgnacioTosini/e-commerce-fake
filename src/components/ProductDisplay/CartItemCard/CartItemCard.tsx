@@ -37,8 +37,8 @@ export const CartItemCard = ({ cartItem }: CartItemCardProps) => {
                 uid,
                 cartItem.product.id,
                 newQuantity,
-                cartItem.size,
-                cartItem.color,
+                cartItem.variant.size,
+                cartItem.variant.color,
             ));
         }
     };
@@ -49,8 +49,8 @@ export const CartItemCard = ({ cartItem }: CartItemCardProps) => {
             dispatch(startRemoveFromCart(
                 uid,
                 cartItem.product.id,
-                cartItem.size,
-                cartItem.color,
+                cartItem.variant.size,
+                cartItem.variant.color,
             ));
         }
     };
@@ -66,16 +66,18 @@ export const CartItemCard = ({ cartItem }: CartItemCardProps) => {
                 <section className='cartItemCardDetails'>
                     <section className='cartItemCardInfo'>
                         <h2 className='cartItemCardTitle'>{cartItem.product.title}</h2>
-                        <span className='cartItemCardDescription'>Color: {cartItem.color || 'N/A'} • Talla: {cartItem.size || 'N/A'}</span>
+                        <span className='cartItemCardDescription'>Color: {cartItem.variant.color || 'N/A'} • Talla: {cartItem.variant.size || 'N/A'}</span>
                     </section>
-                    <section className='cartItemCardPriceContainer'>
-                        <span className='cartItemCardPrice'>{cartItem.product.discount && `$${priceDiscount.toFixed(2)}`}</span>
-                        <span className={cartItem.product.discount ? 'cartItemCardPrice discount' : 'cartItemCardPrice'}>${cartItem.product.price.toFixed(2)}</span>
-                    </section>
+                    {cartItem.product.discount! > 0 &&
+                        <section className='cartItemCardPriceContainer'>
+                            <span className='cartItemCardPrice'>{cartItem.product.discount && `$${priceDiscount.toFixed(2)}`}</span>
+                            <span className={cartItem.product.discount ? 'cartItemCardPrice discount' : 'cartItemCardPrice'}>${cartItem.product.price.toFixed(2)}</span>
+                        </section>
+                    }
                 </section>
                 <section className='cartItemCardActions'>
                     <Counter
-                        stock={cartItem.product.stock}
+                        stock={cartItem.variant.stock || 0}
                         onChange={handleQuantityChange}
                         prevCant={quantity}
                     />

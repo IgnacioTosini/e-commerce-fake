@@ -158,3 +158,7 @@ app.listen(PORT, () => {
     console.log(`📡 Frontend URL: ${FRONTEND_URL}`);
     console.log(`🔗 Test endpoint: http://localhost:${PORT}/api/test`);
 });
+
+app.get('/', (req, res) => {
+    res.send('API de e-commerce funcionando correctamente 🚀');
+});

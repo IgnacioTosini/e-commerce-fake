@@ -1,0 +1,79 @@
+@use '@/styles/variables' as *;
+
+.productDetailsContainerSkeleton {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    color: $color-text;
+    padding: 2rem;
+    gap: 2rem;
+    width: 100%;
+
+    .productDetailsSkeleton {
+        flex: 1;
+
+        .productDetailsActionsSkeleton,
+        .productDetailsInfoSkeleton {
+            margin-top: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid $color-text-tertiary;
+        }
+
+        .productDetailsInfoSkeleton {
+            .productDetailsTitleSkeleton {
+                font-size: $font-size-large;
+                font-weight: $font-weight-bold;
+                width: 20%;
+                height: 2rem;
+                border-radius: 1rem;
+                animation: skeleton-loading 1.2s infinite linear alternate;
+            }
+
+            .productDetailsRatingSkeleton {
+                display: flex;
+                align-items: center;
+                gap: .5rem;
+                margin-top: 4px;
+
+                .productDetailRatingSkeleton {
+                    font-size: $font-size-xsmall;
+                    font-weight: $font-weight-medium;
+                }
+            }
+        }
+
+        .productDetailsActionsSkeleton {
+            .productDetailsButtonsSkeleton {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                margin-top: 1rem;
+            }
+        }
+
+        h3 {
+            font-size: $font-size-normal;
+            font-weight: $font-weight-bold;
+            margin-top: .5rem;
+        }
+
+        .productDetailsDescriptionSkeleton {
+            font-size: $font-size-xsmall;
+            margin-top: 0.5rem;
+            color: $color-text-secondary;
+            width: 80%;
+            height: 4rem;
+            border-radius: 1rem;
+            animation: skeleton-loading 1.2s infinite linear alternate;
+        }
+    }
+}
+
+.relatedProductsTitle {
+    font-size: $font-size-large;
+    font-weight: $font-weight-bold;
+    margin-top: 1rem;
+    padding: 1rem;
+    color: $color-text;
+    width: 100%;
+}

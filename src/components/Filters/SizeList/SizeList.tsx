@@ -20,6 +20,9 @@ export const SizeList = ({ sizes, onSizeSelect, resetSelection }: SizeListProps)
     const handleSizeClick = (size: string) => {
         setSelectedSize(size);
         onSizeSelect(size);
+        if (selectedSize === size) {
+            setSelectedSize(null);
+        }
     };
 
     return (

@@ -1,9 +1,12 @@
 import { useRef } from 'react';
+import { ImagesInformationCardSkeleton } from './ImagesInformationCardSkeleton';
 import { FieldArray, ErrorMessage } from 'formik';
 import type { Product } from '../../../../types';
 import { GrUpload } from "react-icons/gr";
 import { TbTrash } from 'react-icons/tb';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../../../store/store';
 import './_imagesInformationCard.scss';
 
 interface ImagesInformationCardProps {
@@ -13,8 +16,12 @@ interface ImagesInformationCardProps {
 
 export const ImagesInformationCard = ({ mode }: ImagesInformationCardProps) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const { isLoading } = useSelector((state: RootState) => state.products);
 
-    // Función para manejar la subida de archivos (solo vista previa local)
+    if (isLoading) {
+        return <ImagesInformationCardSkeleton />;
+    }
+
     const handleFileUpload = (
         { target }: React.ChangeEvent<HTMLInputElement>,
         push: (value: string) => void
@@ -24,12 +31,10 @@ export const ImagesInformationCard = ({ mode }: ImagesInformationCardProps) => {
 
         Array.from(files).forEach(file => {
             if (file.type.startsWith('image/')) {
-                // Solo validar tamaño (5MB máximo)
                 if (file.size > 5 * 1024 * 1024) {
                     toast.error(`La imagen ${file.name} es demasiado grande. Máximo 5MB.`);
                     return;
                 }
-
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const result = e.target?.result as string;
@@ -46,8 +51,6 @@ export const ImagesInformationCard = ({ mode }: ImagesInformationCardProps) => {
                 toast.error('Solo se permiten archivos de imagen.');
             }
         });
-
-        // Limpiar el input
         if (fileInputRef.current) {
             fileInputRef.current.value = '';
         }
@@ -59,7 +62,6 @@ export const ImagesInformationCard = ({ mode }: ImagesInformationCardProps) => {
             <span className="imagesInformationCardSubtitle">
                 {mode === 'edit' ? 'Editar' : 'Agregar'} imágenes del producto
             </span>
-
             <div className="imagesInformationCardForm">
                 <FieldArray name="images">
                     {({ push, remove, form }) => (
@@ -99,10 +101,7 @@ export const ImagesInformationCard = ({ mode }: ImagesInformationCardProps) => {
                                     </div>
                                 )}
                             </div>
-
-                            {/* Controles para agregar imágenes */}
                             <div className="imageControls">
-                                {/* Input oculto para archivos */}
                                 <input
                                     type="file"
                                     ref={fileInputRef}
@@ -110,8 +109,6 @@ export const ImagesInformationCard = ({ mode }: ImagesInformationCardProps) => {
                                     style={{ display: 'none' }}
                                     onChange={(e) => handleFileUpload(e, push)}
                                 />
-
-                                {/* Botones de acción */}
                                 <div className="controlButtons">
                                     <button
                                         type="button"
@@ -125,8 +122,6 @@ export const ImagesInformationCard = ({ mode }: ImagesInformationCardProps) => {
                                         </span>
                                     </button>
                                 </div>
-
-                                {/* Información adicional */}
                                 <div className="imageInfo">
                                     <small>
                                         Imágenes: {form.values.images ? form.values.images.length : 0}/10 |
@@ -136,8 +131,6 @@ export const ImagesInformationCard = ({ mode }: ImagesInformationCardProps) => {
                                     </small>
                                 </div>
                             </div>
-
-                            {/* Mostrar errores de validación */}
                             <ErrorMessage name="images" component="span" className="error" />
                         </div>
                     )}

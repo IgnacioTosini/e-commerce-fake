@@ -1,0 +1,40 @@
+@use '@/styles/variables' as *;
+
+.categoriesListContainerSkeleton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 2rem 0;
+
+    @media screen and (max-width: 768px) {
+        align-items: flex-start;
+        padding: 1rem;
+    }
+
+    .categoriesListHeaderSkeleton, .categoriesListSkeleton {
+        width: 85dvw;
+        max-width: 1400px;
+    }
+
+    .categoriesListHeaderSkeleton {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0 1rem;
+    }
+
+    .categoriesListSkeleton {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 1rem;
+        padding: 2rem 1rem;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        scrollbar-width: thin;
+        scrollbar-color: $color-text-quaternary $primary-color;
+    }
+}
