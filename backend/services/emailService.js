@@ -10,9 +10,13 @@ const transporter = nodemailer.createTransport({
 });
 
 async function sendOrderConfirmationEmail(order) {
+    const recipient = order.userEmail || order.user?.email;
+    if (!recipient) {
+        throw new Error('No se encontró un email válido en la orden para enviar el correo.');
+    }
     const mailOptions = {
         from: '"Tu Tienda" <no-reply@tutienda.com>',
-        to: order.userEmail,
+        to: recipient,
         subject: '¡Compra realizada con éxito!',
         html: `
             <h2>¡Gracias por tu compra!</h2>

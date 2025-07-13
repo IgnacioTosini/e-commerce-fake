@@ -29,7 +29,7 @@ export const createMercadoPagoPreference = async (
         const [firstName, ...lastNameParts] = userName.split(' ');
         const lastName = lastNameParts.join(' ') || 'Apellido';
 
-        const backUrl =
+        let backUrl =
             import.meta.env.MODE === 'production'
                 ? import.meta.env.VITE_FRONTEND_URL_PROD
                 : import.meta.env.VITE_FRONTEND_URL;
@@ -37,6 +37,8 @@ export const createMercadoPagoPreference = async (
         if (!backUrl) {
             throw new Error('La variable de entorno VITE_FRONTEND_URL_PROD o VITE_FRONTEND_URL no está definida. backUrl es: ' + backUrl);
         }
+        // Limpiar barra final si existe
+        backUrl = backUrl.replace(/\/$/, '');
         console.log('🔗 backUrl usado para back_urls:', backUrl);
 
         const preferenceData = {
