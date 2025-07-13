@@ -87,17 +87,31 @@ app.post('/api/mercadopago/webhook', async (req, res) => {
 
         const { type, data } = req.body;
 
-        if (type === 'payment') {
+        if (type === 'payment' && data && data.id) {
             console.log('💳 Notificación de pago:', data);
-            // Depuración: mostrar status y external_reference
+            // Consultar a la API de MercadoPago para obtener status y external_reference
+            const paymentId = data.id;
+            const mpRes = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
+                headers: {
+                    Authorization: `Bearer ${process.env.MERCADOPAGO_ACCESS_TOKEN}`
+                }
+            });
+            if (!mpRes.ok) {
+                console.error('❌ Error consultando pago a MercadoPago:', await mpRes.text());
+                return res.status(500).json({ error: 'No se pudo consultar el pago a MercadoPago' });
+            }
+            const paymentData = await mpRes.json();
+            console.log('🔎 Datos completos del pago:', paymentData);
 
-            console.log('🟡 Estado del pago recibido:', data.status);
-            console.log('🟡 External Reference:', data.external_reference);
+            const status = paymentData.status;
+            const externalReference = paymentData.external_reference;
+
+            console.log('🟡 Estado del pago recibido:', status);
+            console.log('🟡 External Reference:', externalReference);
 
             // Verificar si el pago fue aprobado
-            if (data.status === 'approved') {
+            if (status === 'approved') {
                 console.log('🟢 ¡Pago aprobado! Bajando stock...');
-                const externalReference = data.external_reference; // ID de la orden
                 await updateProductStock(externalReference);
                 // Obtener la orden y enviar el email
                 const orderRef = db.collection('orders').doc(externalReference);
@@ -120,7 +134,7 @@ app.post('/api/mercadopago/webhook', async (req, res) => {
                 console.log('🔴 El pago NO está aprobado. No se baja stock.');
                 return res.status(200).json({
                     message: 'Pago no aprobado, no se actualiza stock ni se envía mail',
-                    status: data.status
+                    status: status
                 });
             }
         }
