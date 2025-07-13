@@ -9,6 +9,7 @@ export const OrderStatusCard = ({ order }: OrderStatusCardProps) => {
     const statusNames: Record<string, string> = {
         'pending': 'Pendiente',
         'shipped': 'Enviado',
+        'paid': 'Pagado',
         'delivered': 'En Camino',
         'cancelled': 'Cancelado',
     }
