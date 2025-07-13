@@ -32,18 +32,18 @@ export const ordersSlice = createSlice({
         },
         setOrders: (state, action: PayloadAction<Order[]>) => {
             if (state.userId) {
-                state.orders = action.payload.filter(order => order.userId === state.userId)
+                state.orders = action.payload.filter(order => order.user.id === state.userId)
             }
             state.error = null
         },
         addOrder: (state, action: PayloadAction<Order>) => {
-            if (state.userId && action.payload.userId === state.userId) {
+            if (state.userId && action.payload.user.id === state.userId) {
                 state.orders.unshift(action.payload)
             }
             state.error = null
         },
         updateOrder: (state, action: PayloadAction<Order>) => {
-            if (state.userId && action.payload.userId === state.userId) {
+            if (state.userId && action.payload.user.id === state.userId) {
                 const index = state.orders.findIndex(order => order.id === action.payload.id)
                 if (index >= 0) {
                     state.orders[index] = action.payload
@@ -75,7 +75,7 @@ export const ordersSlice = createSlice({
             })
             .addCase(createOrder.fulfilled, (state, action) => {
                 state.loading = false;
-                if (state.userId && action.payload.userId === state.userId) {
+                if (state.userId && action.payload.user.id === state.userId) {
                     state.orders.unshift(action.payload);
                 }
                 state.error = null;
@@ -90,7 +90,7 @@ export const ordersSlice = createSlice({
             })
             .addCase(createOrderAndInitiatePayment.fulfilled, (state, action) => {
                 state.loading = false;
-                if (state.userId && action.payload.order.userId === state.userId) {
+                if (state.userId && action.payload.order.user.id === state.userId) {
                     state.orders.unshift(action.payload.order);
                 }
                 state.checkoutUrl = action.payload.checkoutUrl;

@@ -94,9 +94,9 @@ export const DynamicList = () => {
             case 'pedidos':
                 return {
                     columns: orderColumns,
-                    data: orders.map(({ id, userId, total, status, createdAt }) => ({
+                    data: orders.map(({ id, user, total, status, createdAt }) => ({
                         id,
-                        userId,
+                        userId: user.id,
                         total,
                         status,
                         createdAt,

@@ -91,6 +91,7 @@ export const OrderSummary = () => {
 
             const orderData = {
                 userId: user.id,
+                user,
                 items,
                 total,
                 status: 'pending' as const,

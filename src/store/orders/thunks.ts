@@ -8,12 +8,21 @@ import { createMercadoPagoPreference } from '../../services/mercadoPagoService';
 
 export const createOrder = createAsyncThunk(
     'orders/createOrder',
-    async (orderData: Omit<Order, 'id'>) => {
+    async (orderData: Omit<Order, 'id'> & { userId?: string; userEmail?: string }) => {
+        // Si no viene el objeto user, lo armamos con los datos sueltos
+        let user = orderData.user;
+        if (!user) {
+            if (!orderData.userId || !orderData.userEmail) {
+                throw new Error('La orden debe incluir el usuario con id y email');
+            }
+            user = { id: orderData.userId, email: orderData.userEmail };
+        }
+        const orderDataWithUser = { ...orderData, user };
         const ordersCollection = collection(FirebaseDB, 'orders');
-        const docRef = await addDoc(ordersCollection, orderData);
+        const docRef = await addDoc(ordersCollection, orderDataWithUser);
 
         const newOrder: Order = {
-            ...orderData,
+            ...orderDataWithUser,
             id: docRef.id
         };
 
@@ -24,18 +33,28 @@ export const createOrder = createAsyncThunk(
 export const createOrderAndInitiatePayment = createAsyncThunk(
     'orders/createOrderAndInitiatePayment',
     async (payload: {
-        orderData: Omit<Order, 'id'>;
+        orderData: Omit<Order, 'id'> & { userId?: string; userEmail?: string };
         userEmail: string;
         userName: string;
     }) => {
         const { orderData, userEmail, userName } = payload;
 
+        // Si no viene el objeto user, lo armamos con los datos sueltos
+        let user = orderData.user;
+        if (!user) {
+            if (!orderData.userId || !orderData.userEmail) {
+                throw new Error('La orden debe incluir el usuario con id y email');
+            }
+            user = { id: orderData.userId, email: orderData.userEmail };
+        }
+        const orderDataWithUser = { ...orderData, user };
+
         // 1. Crear la orden en Firebase
         const ordersCollection = collection(FirebaseDB, 'orders');
-        const docRef = await addDoc(ordersCollection, orderData);
+        const docRef = await addDoc(ordersCollection, orderDataWithUser);
 
         const newOrder: Order = {
-            ...orderData,
+            ...orderDataWithUser,
             id: docRef.id
         };
 
@@ -82,12 +101,17 @@ export const loadUserOrders = (userId: string) => {
             dispatch(initializeOrders({ userId }));
 
             const ordersCollection = collection(FirebaseDB, 'orders');
-            const q = query(ordersCollection, where('userId', '==', userId));
+            // Buscar por el campo anidado 'user.id'
+            const q = query(ordersCollection, where('user.id', '==', userId));
             const querySnapshot = await getDocs(q);
 
             const orders: Order[] = [];
-            querySnapshot.forEach((doc) => {
-                orders.push({ id: doc.id, ...doc.data() } as Order);
+            querySnapshot.forEach((docSnap) => {
+                const data = docSnap.data();
+                // Si por alguna razón no tiene user, lo ignoramos
+                if (data.user && data.user.id) {
+                    orders.push({ id: docSnap.id, ...data } as Order);
+                }
             });
 
             dispatch(setOrders(orders));
