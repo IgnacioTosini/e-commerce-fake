@@ -19,7 +19,7 @@ async function sendOrderConfirmationEmail(order) {
         to: recipient,
         subject: '¡Compra realizada con éxito!',
         html: `
-            <h2>¡Gracias por tu compra!</h2>
+            <h2>¡Gracias por tu compra!, por el momento es de prueba</h2>
             <p>Tu orden <b>${order.id}</b> ha sido confirmada.</p>
             <ul>
                 ${order.items.map(item => `<li>${item.title} x${item.quantity}</li>`).join('')}

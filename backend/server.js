@@ -122,6 +122,7 @@ app.post('/api/mercadopago/webhook', async (req, res) => {
                 const orderSnap = await orderRef.get();
                 if (orderSnap.exists) {
                     const order = orderSnap.data();
+                    order.id = orderSnap.id; // Asegurarse de que el ID de la orden esté disponible
                     try {
                         await sendOrderConfirmationEmail(order);
                         console.log('✉️ Email de confirmación enviado a', order.userEmail);
