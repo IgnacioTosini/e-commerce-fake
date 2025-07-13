@@ -10,6 +10,25 @@
     margin: 0 auto;
     padding: 2rem;
 
+    .backArrow {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        color: $color-text;
+        font-size: $font-size-xsmall;
+        text-decoration: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        margin-bottom: 1rem;
+
+        &:hover {
+            color: $color-text-secondary;
+            text-decoration: underline;
+        }
+    }
+
     .ordersPageTitle {
         font-size: $font-size-large;
         font-weight: $font-weight-bold;

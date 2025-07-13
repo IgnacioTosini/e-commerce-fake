@@ -75,7 +75,7 @@ export type OrderItem = {
 
 export type Order = {
     id: string;
-    userId: Pick<User, 'id'>['id']; // ID del usuario que realizó la orden
+    user: Pick<User, 'id' | 'email'>; // Información del usuario que realizó la compra
     items: OrderItem[];
     total: number;
     status: 'pending' | 'paid' | 'shipped' | 'delivered';

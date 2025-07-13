@@ -6,7 +6,7 @@
     flex-direction: column;
     align-items: flex-start;
     color: $color-text;
-    padding: 5rem;
+    padding: clamp(1rem, 2rem, 5rem);
     width: 100%;
 
     .productsPageTitle {

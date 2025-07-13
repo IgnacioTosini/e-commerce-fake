@@ -3,12 +3,10 @@
 .orderPage {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 2rem;
+    align-items: stretch;
+    gap: clamp(1rem, 3vw, 2rem);
     width: 100%;
-    padding: 2rem;
+    padding: clamp(0.5rem, 2vw, 2rem);
 
     .backArrow {
         display: flex;
@@ -21,6 +19,7 @@
         background: none;
         border: none;
         cursor: pointer;
+        width: fit-content;
 
         &:hover {
             color: $color-text-secondary;
@@ -31,31 +30,33 @@
     .orderPageContainer {
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
         width: 100%;
-        max-width: 1200px;
-        padding: 1.5rem;
+        max-width: 100vw;
+        padding: clamp(0.5rem, 2vw, 1.5rem);
         margin: 0 auto;
 
         .orderPageHeader {
             display: flex;
+            flex-direction: row;
             align-items: center;
             justify-content: space-between;
-            gap: 0.5rem;
+            gap: clamp(0.5rem, 2vw, 1rem);
             width: 100%;
             padding-bottom: 1rem;
+            flex-wrap: wrap;
 
             .orderPageHeaderInfo {
                 display: flex;
                 flex-direction: column;
 
                 .orderPageTitle {
-                    font-size: $font-size-large;
+                    font-size: clamp(1.2rem, 2vw, 2rem);
                     font-weight: $font-weight-bold;
                 }
 
                 .orderPageDate {
-                    font-size: $font-size-normal;
+                    font-size: clamp(1rem, 1.5vw, 1.2rem);
                     color: $color-text-secondary;
                 }
             }
@@ -72,7 +73,7 @@
                 flex-direction: column;
                 gap: 1rem;
                 width: 100%;
-                padding: 1rem;
+                padding: clamp(0.5rem, 2vw, 1rem);
                 border: 1px solid $color-text-tertiary;
                 border-radius: 1rem;
 
@@ -84,13 +85,14 @@
 
                     li {
                         display: flex;
+                        flex-wrap: wrap;
                         align-items: center;
-                        gap: 1rem;
+                        gap: clamp(0.5rem, 2vw, 1rem);
                         padding: 0.5rem 0;
 
                         img {
-                            width: clamp(50px, 10dvw, 80px);
-                            height: clamp(50px, 10dvw, 80px);
+                            width: clamp(50px, 10vw, 80px);
+                            height: clamp(50px, 10vw, 80px);
                             object-fit: cover;
                             border-radius: 1rem;
                         }
@@ -102,12 +104,12 @@
                             gap: 0.5rem;
 
                             .orderPageProductTitle {
-                                font-size: $font-size-normal;
+                                font-size: clamp(1rem, 2vw, 1.2rem);
                                 font-weight: $font-weight-bold;
                             }
 
                             .productSizePrice {
-                                font-size: $font-size-xsmall;
+                                font-size: clamp(0.8rem, 1.5vw, 1rem);
                                 color: $color-text-secondary;
                             }
                         }

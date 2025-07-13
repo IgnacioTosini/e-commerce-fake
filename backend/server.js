@@ -91,6 +91,13 @@ app.post('/api/mercadopago/webhook', async (req, res) => {
                 console.log('🟢 ¡Pago aprobado! Bajando stock...');
                 const externalReference = data.external_reference; // ID de la orden
                 await updateProductStock(externalReference);
+                // Obtener la orden y enviar el email
+                const orderRef = db.collection('orders').doc(externalReference);
+                const orderSnap = await orderRef.get();
+                if (orderSnap.exists) {
+                    const order = orderSnap.data();
+                    await sendOrderConfirmationEmail(order);
+                }
             } else {
                 console.log('🔴 El pago NO está aprobado. No se baja stock.');
             }
