@@ -30,7 +30,6 @@ export const createMercadoPagoPreference = async (
         const lastName = lastNameParts.join(' ') || 'Apellido';
 
         const preferenceData = {
-            orderId: orderData.id,
             items,
             payer: {
                 name: firstName,
@@ -40,9 +39,7 @@ export const createMercadoPagoPreference = async (
             external_reference: orderData.id,
             notification_url: `${apiUrl}/api/mercadopago/webhook`
         };
-
-        console.log('📤 Enviando preferencia al backend:', preferenceData);
-
+        console.log('📄 Datos de la preferencia:', preferenceData);
         // Llamar al backend
         const response = await fetch(`${apiUrl}/api/mercadopago/create-preference`, {
             method: 'POST',

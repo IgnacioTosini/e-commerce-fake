@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { MercadoPagoConfig, Preference } = require('mercadopago');
+const { sendOrderConfirmationEmail } = require('./services/emailService');
 require('dotenv').config();
 
 const app = express();
@@ -38,19 +39,26 @@ app.post('/api/mercadopago/create-preference', async (req, res) => {
             throw new Error('Información del pagador es requerida');
         }
 
+        // Permitir notification_url desde el frontend
+        const notification_url = req.body.notification_url;
+
         const preferenceData = {
             items: req.body.items.map(item => ({
                 id: item.id,
                 title: item.title,
                 quantity: Number(item.quantity),
                 currency_id: 'ARS',
-                unit_price: Number(item.unit_price)
+                unit_price: Number(item.unit_price),
+                description: item.description,
+                picture_url: item.picture_url
             })),
             payer: {
-                email: req.body.payer.email
+                name: req.body.payer?.name,
+                surname: req.body.payer?.surname,
+                email: req.body.payer?.email
             },
-            // Sin back_urls para evitar problemas con localhost
-            external_reference: req.body.external_reference
+            external_reference: req.body.external_reference,
+            ...(notification_url && { notification_url })
         };
 
         const result = await preference.create({ body: preferenceData });
@@ -96,17 +104,31 @@ app.post('/api/mercadopago/webhook', async (req, res) => {
                 const orderSnap = await orderRef.get();
                 if (orderSnap.exists) {
                     const order = orderSnap.data();
-                    await sendOrderConfirmationEmail(order);
+                    try {
+                        await sendOrderConfirmationEmail(order);
+                        console.log('✉️ Email de confirmación enviado a', order.userEmail);
+                    } catch (mailErr) {
+                        console.error('❌ Error enviando email:', mailErr);
+                    }
                 }
+                // Responder éxito explícito
+                return res.status(200).json({
+                    message: 'Pago aprobado, stock actualizado y mail enviado',
+                    orderId: externalReference
+                });
             } else {
                 console.log('🔴 El pago NO está aprobado. No se baja stock.');
+                return res.status(200).json({
+                    message: 'Pago no aprobado, no se actualiza stock ni se envía mail',
+                    status: data.status
+                });
             }
         }
 
         res.status(200).send('OK');
     } catch (error) {
         console.error('❌ Error en webhook:', error);
-        res.status(500).send('Error');
+        res.status(500).json({ error: 'Error en webhook', details: error.message });
     }
 });
 
