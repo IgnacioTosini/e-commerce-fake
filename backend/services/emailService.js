@@ -1,6 +1,7 @@
-import { createTransport } from 'nodemailer';
 
-const transporter = createTransport({
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
     service: 'gmail', // O el servicio que uses
     auth: {
         user: process.env.EMAIL_USER,
@@ -25,4 +26,4 @@ async function sendOrderConfirmationEmail(order) {
     await transporter.sendMail(mailOptions);
 }
 
-export default { sendOrderConfirmationEmail };
+module.exports = { sendOrderConfirmationEmail };

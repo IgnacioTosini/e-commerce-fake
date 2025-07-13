@@ -39,8 +39,10 @@ app.post('/api/mercadopago/create-preference', async (req, res) => {
             throw new Error('Información del pagador es requerida');
         }
 
-        // Permitir notification_url desde el frontend
+        // Permitir notification_url, back_urls y auto_return desde el frontend
         const notification_url = req.body.notification_url;
+        const back_urls = req.body.back_urls;
+        const auto_return = req.body.auto_return;
 
         const preferenceData = {
             items: req.body.items.map(item => ({
@@ -58,7 +60,9 @@ app.post('/api/mercadopago/create-preference', async (req, res) => {
                 email: req.body.payer?.email
             },
             external_reference: req.body.external_reference,
-            ...(notification_url && { notification_url })
+            ...(notification_url && { notification_url }),
+            ...(back_urls && { back_urls }),
+            ...(auto_return && { auto_return })
         };
 
         const result = await preference.create({ body: preferenceData });

@@ -29,6 +29,11 @@ export const createMercadoPagoPreference = async (
         const [firstName, ...lastNameParts] = userName.split(' ');
         const lastName = lastNameParts.join(' ') || 'Apellido';
 
+        const backUrl =
+            import.meta.env.MODE === 'production'
+                ? import.meta.env.VITE_FRONTEND_URL_PROD
+                : import.meta.env.VITE_FRONTEND_URL;
+
         const preferenceData = {
             items,
             payer: {
@@ -37,7 +42,13 @@ export const createMercadoPagoPreference = async (
                 email: userEmail
             },
             external_reference: orderData.id,
-            notification_url: `${apiUrl}/api/mercadopago/webhook`
+            notification_url: `${apiUrl}/api/mercadopago/webhook`,
+            back_urls: {
+                success: backUrl,
+                failure: backUrl,
+                pending: backUrl
+            },
+            auto_return: 'approved'
         };
         console.log('📄 Datos de la preferencia:', preferenceData);
         // Llamar al backend
