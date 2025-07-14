@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router';
 import type { AppDispatch, RootState } from '../../store/store';
@@ -7,6 +8,7 @@ import { startUpdateUser } from '../../store/user/thunks';
 import { UserImageCard } from '../../components/Admin/Custom/UserImageCard';
 import { toast } from 'react-toastify';
 import { base64ToFile, fileUpload } from '../../helpers/fileUpload';
+import type { ProductImage } from '../../types';
 import './_userEditPage.scss'
 
 const initialValues = {
@@ -16,7 +18,7 @@ const initialValues = {
   phone: '',
   address: '',
   isActive: true,
-  image: '',
+  image: '' as string | ProductImage,
   photoURL: '',
 }
 
@@ -26,6 +28,12 @@ export const UserEditPage = () => {
   const { user, users, loading } = useSelector((state: RootState) => state.user);
   const selectedUser = users.find(user => user.id === userId);
   const dispatch = useDispatch<AppDispatch>();
+  const [originalImage, setOriginalImage] = useState(selectedUser?.image);
+
+  // Mantener sincronizada la imagen original si cambia el usuario seleccionado
+  useEffect(() => {
+    setOriginalImage(selectedUser?.image);
+  }, [selectedUser]);
 
   // Determinar si el usuario actual es admin
   const isAdmin = user?.role === 'admin' && location.pathname.includes('/admin');
@@ -38,25 +46,26 @@ export const UserEditPage = () => {
     phone: selectedUser.phone || '',
     address: selectedUser.address || '',
     isActive: selectedUser.isActive ?? true,
-    image: selectedUser.image || '',
+    image: (selectedUser.image as string | ProductImage) || '',
     photoURL: selectedUser.photoURL || '',
   } : initialValues;
 
   const handleSubmit = async (values: typeof initialValues) => {
     try {
-      let uploadedImageUrl = '';
+      let uploadedImageUrl: ProductImage = {
+        url: '',
+        public_id: '',
+      };
 
       // Si hay una imagen personalizada (base64), subirla a Cloudinary
-      if (values.image && values.image.startsWith('data:image/')) {
+      if (typeof values.image === 'string' && values.image.startsWith('data:image/')) {
         toast.info('Subiendo imagen, por favor espera...');
-
-        // Convertir base64 a File y subirlo usando tus funciones existentes
         const file = base64ToFile(values.image, `profile-${selectedUser?.id || Date.now()}.jpg`);
         uploadedImageUrl = await fileUpload(file);
-
-      } else if (values.image && !values.image.startsWith('data:image/')) {
+      } else if (typeof values.image === 'object' && values.image.url && !values.image.url.startsWith('data:image/')) {
         // Si ya es una URL (imagen ya subida), mantenerla
-        uploadedImageUrl = values.image;
+        uploadedImageUrl.url = values.image.url;
+        uploadedImageUrl.public_id = values.image.public_id;
       }
 
       // Crear objeto compatible con el thunk existente
@@ -71,7 +80,7 @@ export const UserEditPage = () => {
         photoURL: values.photoURL, // Mantener la imagen de Google
       };
 
-      await dispatch(startUpdateUser(selectedUser?.id || '', userData));
+      await dispatch(startUpdateUser(selectedUser?.id || '', userData, originalImage));
       toast.success('Perfil actualizado exitosamente');
       console.log('Perfil actualizado:', userData);
       window.history.back();

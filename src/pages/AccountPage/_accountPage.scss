@@ -7,7 +7,7 @@
     width: 100%;
     flex-wrap: wrap;
     min-height: 65dvh;
-    padding: 3rem;
+    padding: clamp(1rem, 5vw, 3rem);
 
     .accountPageContent {
         display: flex;

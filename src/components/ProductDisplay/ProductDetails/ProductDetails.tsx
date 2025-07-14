@@ -48,11 +48,15 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
     );
     const [resetSelection, setResetSelection] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [mainImage, setMainImage] = useState<string>(product.images[0]);
+    const [mainImage, setMainImage] = useState<string>(product.images[0].url);
     const productDetailsContainerRef = useRef<HTMLDivElement | null>(null);
     const location = useLocation();
     // Verificar si el producto está en favoritos
     const isProductInFavorites = favorites.includes(product.id);
+
+    useEffect(() => {
+        setMainImage(product.images[0].url);
+    }, [product.images]);
 
     useEffect(() => {
         if (productDetailsContainerRef.current) {
@@ -87,7 +91,7 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
         dispatch(startAddToCart(uid, product, quantity, selectedSize, selectedColor));
         toast.success(
             <ToastNotification
-                image={product.images[0]}
+                image={product.images.map(image => image.url)[0]}
                 message="Producto agregado al carrito"
                 altText={product.title}
             />
@@ -111,7 +115,7 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
                 await dispatch(startRemoveFavorite(uid, product.id));
                 toast.success(
                     <ToastNotification
-                        image={product.images[0]}
+                        image={product.images.map(image => image.url)[0]}
                         message="Producto eliminado de favoritos"
                         altText={product.title}
                     />
@@ -121,7 +125,7 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
                 await dispatch(startAddFavorite(uid, product.id));
                 toast.success(
                     <ToastNotification
-                        image={product.images[0]}
+                        image={product.images.map(image => image.url)[0]}
                         message="Producto añadido a favoritos"
                         altText={product.title}
                     />
@@ -136,7 +140,7 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
         <>
             <div className='productDetailsContainer' ref={productDetailsContainerRef}>
                 <GalleryProduct
-                    images={product.images}
+                    images={product.images.map(image => image.url)}
                     mainImage={mainImage}
                     setMainImage={setMainImage}
                     onMainImageClick={() => setIsModalOpen(true)}
@@ -207,7 +211,7 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
                 onClose={() => setIsModalOpen(false)}
                 mainImage={mainImage}
                 setMainImage={setMainImage}
-                images={product.images}
+                images={product.images.map(image => image.url)}
             />
         </>
     )

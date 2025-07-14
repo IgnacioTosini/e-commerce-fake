@@ -58,7 +58,7 @@ export const CartItemCard = ({ cartItem }: CartItemCardProps) => {
     return (
         <div className='cartItemCard' ref={cartItemCardRef}>
             <img
-                src={cartItem.product.images[0]}
+                src={cartItem.product.images[0].url}
                 alt={cartItem.product.title}
                 className='cartItemCardImage'
             />

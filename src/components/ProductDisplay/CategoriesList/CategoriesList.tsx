@@ -5,8 +5,8 @@ import { animateElements } from '../../../hooks/gsapEffects';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../../store/store';
 import type { Category } from '../../../types';
-import './_categoriesList.scss'
 import { CategoriesListSkeleton } from './CategoriesListSkeleton';
+import './_categoriesList.scss'
 
 export const CategoriesList = () => {
     const categoriesListRef = useRef<HTMLDivElement | null>(null);
@@ -28,7 +28,7 @@ export const CategoriesList = () => {
                 categoryList.push({
                     id: product.categoryName.toLowerCase().replace(/\s+/g, '-'),
                     name: product.categoryName,
-                    image: product.images[0] || 'https://via.placeholder.com/300x200',
+                    image: product.images[0].url || 'https://via.placeholder.com/300x200',
                     productsCount
                 });
             }

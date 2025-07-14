@@ -20,7 +20,7 @@ export const ProductCard = ({ product, onClick }: ProductCardProps) => {
     const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
     const dispatch = useDispatch<AppDispatch>();
     const isProductFavorite = isFavorite(product.id);
-    const image = product.images.length ? product.images[0] : 'https://placehold.co/300x300'; // Imagen por defecto si no hay imágenes
+    const image = product.images.length ? product.images[0].url : 'https://placehold.co/300x300'; // Imagen por defecto si no hay imágenes
 
     const handleFavorite = (e: React.MouseEvent) => {
         e.preventDefault();

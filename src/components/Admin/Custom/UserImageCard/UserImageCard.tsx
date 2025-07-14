@@ -59,9 +59,11 @@ export const UserImageCard = ({ mode, userName, googlePhotoURL }: UserImageCardP
                 <Field name="image">
                     {({ field, form }: FieldProps) => {
                         // Lógica de prioridad: Personalizada > Google > Placeholder
-                        const displayImage = field.value || googlePhotoURL;
-                        const isPersonalImage = !!field.value;
-                        const isGoogleImage = !field.value && !!googlePhotoURL;
+                        const displayImage = typeof field.value === 'string'
+                            ? field.value
+                            : field.value.url || googlePhotoURL;
+                        const isPersonalImage = !!field.value.public_id;
+                        const isGoogleImage = !field.value.url && !!googlePhotoURL;
                         return (
                             <div className="userImageCardSection">
                                 {/* Contenedor único de imagen */}

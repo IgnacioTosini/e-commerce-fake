@@ -4,7 +4,7 @@ export type User = {
     email: string;
     role: 'user' | 'admin';
     photoURL?: string; // URL de la imagen de Google/OAuth
-    image?: string; // URL de la imagen personalizada subida por el usuario
+    image?: ProductImage; // URL de la imagen personalizada subida por el usuario
     createdAt: string; // Fecha de creación del usuario
     updatedAt: string; // Fecha de última actualización del usuario
     address?: string;
@@ -31,12 +31,18 @@ export type ProductVariant = {
     image?: string; // Imagen específica de la variante (opcional)
 };
 
+// Tipo para imagen de producto en Cloudinary
+export type ProductImage = {
+    url: string;
+    public_id: string;
+};
+
 export type Product = {
     id: string;
     title: string;
     description: string;
     price: number;
-    images: string[];
+    images: ProductImage[];
     categoryName: string; // Nombre de la categoría del producto
     rating: number;
     brand: string;
@@ -65,7 +71,7 @@ export type Cart = {
 export type OrderItem = {
     productId: Pick<Product, 'id'>['id']; // ID del producto
     title: Pick<Product, 'title'>['title']; // Título del producto
-    images?: string[]; // Imágenes del producto
+    images?: ProductImage[]; // Imágenes del producto
     userId?: Pick<User, 'id'>['id']; // ID del usuario que realizó la compra
     quantity: number;
     price: number;

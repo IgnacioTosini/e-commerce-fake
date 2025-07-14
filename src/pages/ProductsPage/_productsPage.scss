@@ -1,12 +1,11 @@
 @use '@/styles/variables' as *;
 
-
 .productsPage {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     color: $color-text;
-    padding: clamp(1rem, 2rem, 5rem);
+    padding: clamp(1rem, 5vw, 2rem);
     width: 100%;
 
     .productsPageTitle {

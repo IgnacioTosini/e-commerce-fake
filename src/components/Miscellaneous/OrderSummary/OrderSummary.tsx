@@ -1,6 +1,6 @@
 import { useMemo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { type AppDispatch, type RootState } from '../../../store/store';
 import type { OrderItem } from '../../../types';
 import { createOrderAndInitiatePayment } from '../../../store/orders/thunks';
@@ -136,7 +136,7 @@ export const OrderSummary = () => {
 
             {!isUserDataComplete && (
                 <div className='orderSummaryWarning'>
-                    <p>⚠️ Completa tus datos personales para continuar</p>
+                    <p>⚠️ Completa tus datos personales en tu perfil para continuar (Ir a perfil <Link to='/perfil'>aquí</Link> y completar celular, dirección y otros datos)</p>
                 </div>
             )}
 

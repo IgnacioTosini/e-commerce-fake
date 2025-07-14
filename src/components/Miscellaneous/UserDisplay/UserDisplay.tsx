@@ -18,7 +18,7 @@ export const UserDisplay = () => {
     const { displayName, email, photoURL } = useSelector((state: RootState) => state.auth);
     const { user } = useSelector((state: RootState) => state.user);
     const menuRef = useRef<HTMLDivElement>(null);
-    const userImage = user?.image ? user.image : photoURL;
+    const userImage = user?.image?.url ? user.image.url : photoURL;
 
     useMenuAnimation(isMenuOpen, menuRef);
 
@@ -58,12 +58,16 @@ export const UserDisplay = () => {
                         <section className='userLinks'>
                             {Object.entries(icons).length > 0 && (
                                 <section className='userDisplayIcons'>
-                                    {Object.entries(icons).map(([key, { icon, path, name }]) => (
-                                        <Link to={path} key={key} className={`customIconAside ${key}`} onClick={() => setIsMenuOpen(false)}>
-                                            {icon || <span>❓</span>}
-                                            <p className='categoryName'>{name}</p>
-                                        </Link>
-                                    ))}
+                                    {Object.entries(icons).map(([key, { icon, path, name }]) => {
+                                        // Si el path contiene ':id', reemplazarlo por el user.id real
+                                        const finalPath = user && user.id ? path.replace(':id', user.id) : path;
+                                        return (
+                                            <Link to={finalPath} key={key} className={`customIconAside ${key}`} onClick={() => setIsMenuOpen(false)}>
+                                                {icon || <span>❓</span>}
+                                                <p className='categoryName'>{name}</p>
+                                            </Link>
+                                        );
+                                    })}
                                 </section>
                             )}
                             <section className='userDisplayLogout'>

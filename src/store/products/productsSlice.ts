@@ -7,7 +7,6 @@ type ProductsState = {
     formData: Partial<Product>;
     isLoading: boolean;
     error: string | null;
-    // Agregar estado para categorías si necesitas persistir datos adicionales
     categories: string[]; // Para categorías que no tienen productos aún
 };
 
@@ -85,7 +84,6 @@ export const productsSlice = createSlice({
         },
         updateCategory(state, action: PayloadAction<{ oldCategory: string; newCategory: string }>) {
             const { oldCategory, newCategory } = action.payload;
-
             // Actualizar en productos
             state.products = state.products.map(product =>
                 product.categoryName === oldCategory

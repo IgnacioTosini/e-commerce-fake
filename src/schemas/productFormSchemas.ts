@@ -29,8 +29,18 @@ export const productCreateSchema = Yup.object().shape({
     colors: Yup.array().of(Yup.string()),
     sizes: Yup.array().of(Yup.string()),
 
-    // Imágenes
-    images: Yup.array().of(Yup.string())
+    // Imágenes: aceptar string (base64/url) o ProductImage (objeto con url y public_id)
+    images: Yup.array().of(
+        Yup.mixed()
+            .test('is-string-or-productimage', 'Debe ser una URL, base64 o un objeto de imagen válido', (value) => {
+                if (typeof value === 'string') return true;
+                if (typeof value === 'object' && value !== null && 'url' in value && 'public_id' in value) {
+                    // Validar que url sea string y public_id string (puede ser vacío)
+                    return typeof value.url === 'string' && typeof value.public_id === 'string';
+                }
+                return false;
+            })
+    )
 });
 
 // Esquema para imágenes

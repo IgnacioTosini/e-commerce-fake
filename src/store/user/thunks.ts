@@ -3,6 +3,8 @@ import { FirebaseDB } from '../../firebase/config';
 import type { User } from '../../types';
 import type { AppDispatch } from '../store';
 import { addToFavorites, removeFromFavorites, setError, setLoading, setUser, setUsers, updateUserInList } from './userSlice';
+import { uploadBase64Images } from '../../helpers/fileUpload';
+import { deleteImagesFromCloudinary } from '../../store/products/thunks';
 
 export const createInitialUserCollections = async (userId: string) => {
     try {
@@ -59,13 +61,31 @@ export const loadUserData = (userId: string) => {
     };
 };
 
-export const startUpdateUser = (userId: string, updates: Partial<User>) => {
+export const startUpdateUser = (userId: string, updates: Partial<User>, originalImage?: { url: string; public_id: string }) => {
     return async (dispatch: AppDispatch) => {
         try {
             dispatch(setLoading(true));
 
+            let finalImage = updates.image;
+            // Si la imagen es un string (base64), subirla a Cloudinary
+            if (updates.image && typeof updates.image === 'string') {
+                const uploaded = await uploadBase64Images([updates.image]);
+                finalImage = uploaded[0];
+            }
+
+            // Si la imagen cambió y hay una original con public_id, eliminar la anterior de Cloudinary
+            if (
+                originalImage &&
+                originalImage.public_id &&
+                finalImage && typeof finalImage === 'object' &&
+                finalImage.public_id !== originalImage.public_id
+            ) {
+                await deleteImagesFromCloudinary([originalImage.public_id]);
+            }
+
             const updatedData = {
                 ...updates,
+                image: finalImage,
                 updatedAt: new Date().toISOString()
             };
 

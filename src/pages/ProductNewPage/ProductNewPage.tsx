@@ -9,7 +9,7 @@ import { startNewProduct } from '../../store/products/thunks';
 import { VariantInformationCard } from '../../components/Admin/Custom/VariantInformationCard/VariantInformationCard';
 import { productCreateSchema } from '../../schemas/productFormSchemas';
 import { ImagesInformationCard } from '../../components/Admin/Custom/ImagesInformationCard/ImagesInformationCard';
-import type { ProductVariant } from '../../types';
+import type { ProductImage, ProductVariant } from '../../types';
 import './_productNewPage.scss'
 
 // Valores iniciales Product
@@ -23,7 +23,7 @@ const initialValues = {
     variants: [] as ProductVariant[],
     colors: [] as string[],
     sizes: [] as string[],
-    images: [] as string[],
+    images: [] as ProductImage[],
 };
 
 export const ProductNewPage = () => {

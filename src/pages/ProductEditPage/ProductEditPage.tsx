@@ -9,8 +9,9 @@ import { ImagesInformationCard } from '../../components/Admin/Custom/ImagesInfor
 import type { AppDispatch, RootState } from '../../store/store';
 import { productCreateSchema } from '../../schemas/productFormSchemas';
 import { startUpdateProduct } from '../../store/products/thunks';
-import type { ProductVariant } from '../../types';
+import type { ProductImage, ProductVariant } from '../../types';
 import './_productEditPage.scss'
+import { useEffect, useState } from 'react';
 
 // Valores iniciales adaptados al nuevo tipo Product
 const initialValues = {
@@ -21,7 +22,7 @@ const initialValues = {
     price: 0,
     discount: 0,
     variants: [] as ProductVariant[],
-    images: [] as string[],
+    images: [] as ProductImage[],
 };
 
 export const ProductEditPage = () => {
@@ -30,6 +31,13 @@ export const ProductEditPage = () => {
     const product = products.find(product => product.id === id);
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
+    const [originalImages, setOriginalImages] = useState<ProductImage[]>([]);
+
+    useEffect(() => {
+        if (product && product.images) {
+            setOriginalImages(product.images);
+        }
+    }, [product]);
 
     // Mapear los valores del producto a los nombres de campos del formulario
     const mappedInitialValues = product ? {
@@ -42,7 +50,6 @@ export const ProductEditPage = () => {
         variants: product.variants || [],
         images: product.images || [],
     } : initialValues;
-
 
     const handleSubmit = async (values: typeof initialValues) => {
         // Generar IDs únicos para variantes si no existen
@@ -65,25 +72,22 @@ export const ProductEditPage = () => {
             createdAt: product?.createdAt || '',
             updatedAt: product?.updatedAt || ''
         };
+        console.log('Product data to update:', productData);
 
         // Esperar a que la acción termine antes de navegar
-        await dispatch(startUpdateProduct(productData, product?.id || ''));
+        await dispatch(startUpdateProduct(productData, product?.id || '', originalImages));
         // Navegar solo si no está cargando y hay producto
         if (!isLoading && productData.id) {
             navigate('/admin/productos');
         }
     };
-
-    if (!product) {
-        return null;
-    }
-        return (
-            <div className='productEditPage'>
-                <Formik
-                    initialValues={mappedInitialValues}
-                    validationSchema={productCreateSchema}
-                    onSubmit={handleSubmit}
-                    enableReinitialize={true}
+    return (
+        <div className='productEditPage'>
+            <Formik
+                initialValues={mappedInitialValues}
+                validationSchema={productCreateSchema}
+                onSubmit={handleSubmit}
+                enableReinitialize={true}
             >
                 <Form>
                     <HeaderCustomActions
@@ -102,7 +106,6 @@ export const ProductEditPage = () => {
                         />
                         <ImagesInformationCard
                             mode='edit'
-                            product={product}
                         />
                     </div>
                 </Form>

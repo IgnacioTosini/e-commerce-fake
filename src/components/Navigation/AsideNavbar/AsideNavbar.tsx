@@ -61,12 +61,16 @@ export const AsideNavbar = memo(({ isOpen, onClose }: AsideNavbarProps) => {
                 ) : (
                     Object.entries(icons).length > 0 && (
                         <div className='asideNavbarIcons'>
-                            {Object.entries(icons).map(([key, { icon, path, name }]) => (
-                                <Link to={path} key={key} className={`customIconAside ${key}`} onClick={onClose}>
-                                    {icon || <span>❓</span>}
-                                    <p className='categoryName'>{name}</p>
-                                </Link>
-                            ))}
+                            {Object.entries(icons).map(([key, { icon, path, name }]) => {
+                                // Si el path contiene ':id', reemplazarlo por el uid real
+                                const finalPath = uid ? path.replace(':id', uid) : path;
+                                return (
+                                    <Link to={finalPath} key={key} className={`customIconAside ${key}`} onClick={onClose}>
+                                        {icon || <span>❓</span>}
+                                        <p className='categoryName'>{name}</p>
+                                    </Link>
+                                );
+                            })}
                         </div>
                     )
                 )}

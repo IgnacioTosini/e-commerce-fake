@@ -38,7 +38,7 @@ export const OrderPage = () => {
                             {order?.items.map(item => {
                                 return (
                                     <li key={item.productId} className='orderPageProductItem'>
-                                        <img src={item.images?.[0]} alt={item.userId} />
+                                        <img src={item.images?.[0].url} alt={item.userId} />
                                         <section className='orderPageProductInfo'>
                                             <span className='orderPageProductTitle'>{item.title}</span>
                                             <span className='productSizePrice'>Talle: {item.size || 'N/A'} / ${item.price} x {item.quantity}</span>

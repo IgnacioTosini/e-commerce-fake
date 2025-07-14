@@ -183,6 +183,26 @@ async function updateProductStock(orderId) {
     }
 }
 
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'dtlzigqui',
+    api_key: process.env.CLOUDINARY_API_KEY || 'TU_API_KEY',
+    api_secret: process.env.CLOUDINARY_API_SECRET || 'TU_API_SECRET'
+});
+
+app.post('/api/delete-cloudinary-images', async (req, res) => {
+    const { publicIds } = req.body;
+    try {
+        const results = await Promise.all(
+            publicIds.map(id => cloudinary.uploader.destroy(id))
+        );
+        res.json({ success: true, results });
+    } catch (error) {
+        res.status(500).json({ success: false, error });
+    }
+});
+
 // Endpoint de prueba
 app.get('/api/test', (req, res) => {
     res.json({

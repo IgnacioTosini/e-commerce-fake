@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import './_galleryProduct.scss'
 
 type GalleryProductProps = {
@@ -9,10 +8,6 @@ type GalleryProductProps = {
 }
 
 export const GalleryProduct = ({ images, mainImage, setMainImage, onMainImageClick }: GalleryProductProps) => {
-    useEffect(() => {
-        setMainImage(images[0]);
-    }, [images, setMainImage]);
-
     return (
         <div className='galleryProduct'>
             <img

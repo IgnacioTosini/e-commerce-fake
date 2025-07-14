@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { ImagesInformationCardSkeleton } from './ImagesInformationCardSkeleton';
 import { FieldArray, ErrorMessage } from 'formik';
-import type { Product } from '../../../../types';
 import { GrUpload } from "react-icons/gr";
 import { TbTrash } from 'react-icons/tb';
 import { toast } from 'react-toastify';
@@ -11,7 +10,6 @@ import './_imagesInformationCard.scss';
 
 interface ImagesInformationCardProps {
     mode: 'create' | 'edit';
-    product?: Product | null;
 }
 
 export const ImagesInformationCard = ({ mode }: ImagesInformationCardProps) => {
@@ -68,10 +66,10 @@ export const ImagesInformationCard = ({ mode }: ImagesInformationCardProps) => {
                         <div className="imagesInformationCardSection">
                             <div className="imagesList">
                                 {form.values.images && form.values.images.length > 0 ? (
-                                    form.values.images.map((image: string, index: number) => (
+                                    form.values.images.map((image: { url: string }, index: number) => (
                                         <div key={index} className='imageContainer'>
                                             <img
-                                                src={image}
+                                                src={typeof image === 'string' ? image : image.url}
                                                 alt={`Imagen del producto ${index + 1}`}
                                                 className='image'
                                                 onError={(e) => {

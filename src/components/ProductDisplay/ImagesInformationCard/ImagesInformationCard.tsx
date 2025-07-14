@@ -20,7 +20,7 @@ export const ImagesInformationCard = ({ product }: ImagesInformationCardProps) =
             <div className="imagesInformationCardSection">
                 {product ? (
                     product.images.map((image, index) => (
-                        <img key={index} src={image} alt={`Product Image ${index + 1}`} />
+                        <img key={index} src={image.url} alt={`Product Image ${index + 1}`} />
                     ))
                 ) : (
                     <p>No hay imagenes</p>
