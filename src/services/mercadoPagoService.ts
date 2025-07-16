@@ -22,24 +22,31 @@ export const createMercadoPagoPreference = async (
             quantity: item.quantity,
             currency_id: 'ARS',
             unit_price: item.price,
-            picture_url: item.images?.[0] || ''
+            picture_url: item.images?.[0].url || ''
         }));
 
         // Separar nombre y apellido
         const [firstName, ...lastNameParts] = userName.split(' ');
         const lastName = lastNameParts.join(' ') || 'Apellido';
 
-        let backUrl =
-            import.meta.env.MODE === 'production'
-                ? import.meta.env.VITE_FRONTEND_URL_PROD
-                : import.meta.env.VITE_FRONTEND_URL;
+        const isProd = import.meta.env.MODE === 'production';
+        let backUrl = isProd
+            ? import.meta.env.VITE_FRONTEND_URL_PROD
+            : import.meta.env.VITE_FRONTEND_URL;
 
-        if (!backUrl) {
-            throw new Error('La variable de entorno VITE_FRONTEND_URL_PROD o VITE_FRONTEND_URL no está definida. backUrl es: ' + backUrl);
+        // Solo enviar back_urls si es producción y está definida
+        let backUrlsObj = {};
+        if (isProd && backUrl) {
+            backUrl = backUrl.replace(/\/$/, '');
+            console.log('🔗 backUrl usado para back_urls:', backUrl);
+            backUrlsObj = {
+                back_urls: {
+                    success: backUrl,
+                    failure: backUrl,
+                    pending: backUrl
+                }
+            };
         }
-        // Limpiar barra final si existe
-        backUrl = backUrl.replace(/\/$/, '');
-        console.log('🔗 backUrl usado para back_urls:', backUrl);
 
         const preferenceData = {
             items,
@@ -50,12 +57,8 @@ export const createMercadoPagoPreference = async (
             },
             external_reference: orderData.id,
             notification_url: `${apiUrl}/api/mercadopago/webhook`,
-            back_urls: {
-                success: backUrl,
-                failure: backUrl,
-                pending: backUrl
-            },
-            auto_return: 'approved'
+            ...backUrlsObj,
+            ...(Object.keys(backUrlsObj).length > 0 ? { auto_return: 'approved' } : {})
         };
         console.log('📄 Datos de la preferencia:', preferenceData);
         // Llamar al backend

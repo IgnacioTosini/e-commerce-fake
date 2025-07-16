@@ -271,7 +271,7 @@ export const startDeletingCategory = (categoryName: string) => {
 };
 
 export const deleteImagesFromCloudinary = async (publicIds: string[]) => {
-    await fetch(`${apiUrl}/api/delete-cloudinary-images`, {
+    await fetch(`${apiUrl}/api/cloudinary/delete-images`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ publicIds }),
