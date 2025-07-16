@@ -5,7 +5,6 @@ import { type AppDispatch, type RootState } from '../../../store/store';
 import type { OrderItem } from '../../../types';
 import { createOrderAndInitiatePayment } from '../../../store/orders/thunks';
 import { clearCheckoutUrl } from '../../../store/orders/ordersSlice';
-import { startClearCart } from '../../../store/cart/thunks';
 import { toast } from 'react-toastify';
 import { MercadoPagoTestInfo } from '../MercadoPagoTestInfo/MercadoPagoTestInfo';
 import './_orderSummary.scss'
@@ -106,10 +105,6 @@ export const OrderSummary = () => {
                 userEmail: user.email,
                 userName: user.name || 'Usuario'
             })).unwrap();
-
-            // Limpiar el carrito después de crear la orden
-            dispatch(startClearCart(user.id));
-
         } catch (error) {
             console.error('Error al procesar el pago:', error);
             toast.error('Error al procesar el pago. Por favor intenta nuevamente.');

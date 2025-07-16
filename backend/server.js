@@ -1,12 +1,15 @@
 const express = require('express');
 const cors = require('cors');
 const { MercadoPagoConfig } = require('mercadopago');
-const { sendOrderConfirmationEmail } = require('./services/emailService');
 const mercadoPagoRoutes = require('./routes/mercadopago');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
+const corsOptions = {
+    origin: ['https://e-commerce-fake-tawny.vercel.app', 'http://localhost:5173'],
+    credentials: true,
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -30,38 +33,6 @@ const client = new MercadoPagoConfig({
 // Inicializar rutas de MercadoPago y pasar dependencias
 mercadoPagoRoutes.init({ mercadoPagoClient: client, firestoreDb: db });
 app.use('/api/mercadopago', mercadoPagoRoutes.router);
-
-async function updateProductStock(orderId) {
-    try {
-        // 1. Obtener la orden por ID
-        const orderRef = db.collection('orders').doc(orderId);
-        const orderSnap = await orderRef.get();
-        if (!orderSnap.exists) {
-            console.error('Orden no encontrada:', orderId);
-            return;
-        }
-        const order = orderSnap.data();
-
-        // 2. Actualizar el stock de cada producto
-        const batch = db.batch();
-        for (const item of order.items) {
-            const productRef = db.collection('products').doc(item.productId);
-            const productSnap = await productRef.get();
-            if (!productSnap.exists) continue;
-            const currentStock = productSnap.data().stock || 0;
-            const newStock = Math.max(currentStock - item.quantity, 0);
-            batch.update(productRef, { stock: newStock, updatedAt: new Date().toISOString() });
-        }
-
-        // 3. Marcar la orden como 'paid'
-        batch.update(orderRef, { status: 'paid', updatedAt: new Date().toISOString() });
-
-        await batch.commit();
-        console.log('Stock actualizado y orden marcada como pagada');
-    } catch (error) {
-        console.error('Error actualizando stock:', error);
-    }
-}
 
 const cloudinary = require('cloudinary').v2;
 const cloudinaryRoutes = require('./routes/cloudinary');

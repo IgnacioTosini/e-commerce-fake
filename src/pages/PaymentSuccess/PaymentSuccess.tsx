@@ -30,27 +30,27 @@ export const PaymentSuccess = () => {
                     paymentDetails: `Pago ID: ${paymentId}`
                 }));
 
-                // Limpiar el carrito después del pago exitoso
+                // Limpiar el carrito solo si el pago fue exitoso
                 if (user?.id) {
                     dispatch(startClearCart(user.id));
                 }
 
                 toast.success('¡Pago exitoso! Tu pedido ha sido confirmado.');
-            } else if (status === 'pending') {
-                // Pago pendiente
+            } else {
+                // No vaciar el carrito si el pago no fue exitoso
                 dispatch(updateOrderStatus({
                     orderId: externalReference,
-                    status: 'pending',
-                    paymentDetails: `Pago pendiente ID: ${paymentId}`
+                    status: status === 'pending' ? 'pending' : 'failed',
+                    paymentDetails: `Pago ${status} ID: ${paymentId}`
                 }));
-                toast.info('Tu pago está siendo procesado.');
+                toast.info('Tu pago está siendo procesado o fue rechazado.');
             }
         }
 
         // Redirigir después de 3 segundos
         const timer = setTimeout(() => {
             navigate('/');
-        }, 3000);
+        }, 5000);
 
         return () => clearTimeout(timer);
     }, [searchParams, navigate, dispatch, user?.id]);

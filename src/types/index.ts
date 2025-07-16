@@ -84,7 +84,7 @@ export type Order = {
     user: Pick<User, 'id' | 'email'>; // Información del usuario que realizó la compra
     items: OrderItem[];
     total: number;
-    status: 'pending' | 'paid' | 'shipped' | 'delivered';
+    status: 'pending' | 'paid' | 'shipped' | 'delivered' | 'failed'; // Estado de la orden
     createdAt: string; // Fecha de creación de la orden
     updatedAt: string; // Fecha de última actualización de la orden
     shippingAddress: string;
@@ -95,15 +95,17 @@ export type Order = {
 
 export type Review = {
     id: string;
-    userId: Pick<User, 'id'>['id']; // ID del usuario que escribió la reseña
-    productId: Pick<Product, 'id'>['id']; // ID del producto reseñado
+    userId: Pick<User, 'id'>['id'];
+    productId: Pick<Product, 'id'>['id'];
     rating: number;
     comment: string;
-    createdAt: string; // Fecha de creación de la reseña
-    updatedAt: string; // Fecha de última actualización de la reseña
-    isVerified: boolean; // Indica si la reseña fue hecha por un usuario que realmente compró el producto
+    createdAt: string;
+    updatedAt: string;
+    isVerified: boolean;
+    likes?: number;
+    sellerReply?: string;
+    images?: string[]; // URLs de imágenes adjuntas
 }
-
 export type Icon = {
     image: string; // Nombre del icono
     alt: string; // Texto alternativo para el icono
