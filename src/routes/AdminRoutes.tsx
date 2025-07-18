@@ -13,7 +13,7 @@ const OrderPage = lazy(() => import("../pages/OrderPage/[id]"));
 
 export const AdminRoutes = () => {
     return (
-        <Suspense fallback={<AdminLayout><div>Cargando...</div></AdminLayout>}>
+        <Suspense fallback={null}>
             <Routes>
                 {/* Admin Routes */}
                 <Route path="/admin-panel" element={<AdminLayout><AdminPanelPage /></AdminLayout>} />

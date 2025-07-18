@@ -10,7 +10,7 @@ const UserEditPage = lazy(() => import("../pages/UserEditPage/UserEditPage"));
 
 export const ProfileRoutes = () => {
     return (
-        <Suspense fallback={<div>Cargando...</div>}>
+        <Suspense fallback={null}>
             <Routes>
                 <Route path="/" element={<AccountPage />} />
                 <Route path="/datos-personales/:userId" element={<UserEditPage />} />

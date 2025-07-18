@@ -5,7 +5,7 @@ const LoginPage = lazy(() => import("../pages/LoginPage/LoginPage"));
 const RegisterPage = lazy(() => import("../pages/RegisterPage/RegisterPage"));
 
 export const UnauthenticatedRoutes = () => (
-    <Suspense fallback={<div>Cargando...</div>}>
+    <Suspense fallback={null}>
         <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
