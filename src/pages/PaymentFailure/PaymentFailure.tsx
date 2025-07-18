@@ -5,7 +5,7 @@ import type { RootState } from '../../store/store';
 import { useSelector } from 'react-redux';
 import './_paymentFailure.scss';
 
-export const PaymentFailure = () => {
+const PaymentFailure = () => {
     const { uid } = useSelector((state: RootState) => state.auth);
     const navigate = useNavigate();
 
@@ -31,3 +31,5 @@ export const PaymentFailure = () => {
         </div>
     );
 };
+
+export default PaymentFailure;

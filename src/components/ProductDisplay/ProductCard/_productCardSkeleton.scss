@@ -20,7 +20,6 @@
         border-radius: .5rem;
         object-fit: cover;
         flex-shrink: 0;
-        border: 1px solid $color-text-tertiary;
         animation: skeleton-loading 1.2s infinite linear alternate;
     }
 }

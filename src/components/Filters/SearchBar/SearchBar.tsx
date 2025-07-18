@@ -11,9 +11,11 @@ export const SearchBar = () => {
     const searchBarRef = useRef<HTMLDivElement>(null);
 
     const handleClickOutside = useCallback((event: MouseEvent) => {
-        if (searchBarRef.current && !searchBarRef.current.contains(event.target as Node)) {
-            clearLocalQuery(); // Limpia el estado local y el contexto
-        }
+        setTimeout(() => {
+            if (searchBarRef.current && !searchBarRef.current.contains(event.target as Node)) {
+                clearLocalQuery(); // Limpia el estado local y el contexto
+            }
+        }, 1000);
     }, [clearLocalQuery]);
 
     useEffect(() => {

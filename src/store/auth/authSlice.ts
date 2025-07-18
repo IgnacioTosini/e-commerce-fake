@@ -7,9 +7,9 @@ export type AuthState = {
     email: string | null,
     displayName: string | null,
     photoURL: string | null,
-    phoneNumber?: string | null, // Opcional, si se maneja en el estado
-    createAt?: number | null, // Opcional, si se maneja en el estado
-    lastLoginAt?: number | null, // Opcional, si se maneja en el estado
+    phoneNumber?: string | null,
+    createAt?: number | null,
+    lastLoginAt?: number | null,
     errorMessage: string | null,
 }
 const initialState: AuthState = {
@@ -18,9 +18,9 @@ const initialState: AuthState = {
     email: null,
     displayName: null,
     photoURL: null,
-    phoneNumber: null, // Inicialmente nulo, se puede actualizar si se maneja
-    createAt: null, // Inicialmente nulo, se puede actualizar si se maneja
-    lastLoginAt: null, // Inicialmente nulo, se puede actualizar si se maneja
+    phoneNumber: null,
+    createAt: null,
+    lastLoginAt: null,
     errorMessage: null,
 }
 export const authSlice = createSlice({

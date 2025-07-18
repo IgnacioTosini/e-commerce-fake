@@ -23,3 +23,5 @@ export const UserViewPage = () => {
         </div>
     )
 }
+
+export default UserViewPage;

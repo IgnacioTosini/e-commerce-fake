@@ -53,3 +53,5 @@ export const OrderPage = () => {
         </section>
     );
 };
+
+export default OrderPage;

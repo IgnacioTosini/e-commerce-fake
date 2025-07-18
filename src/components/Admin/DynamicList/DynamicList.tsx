@@ -158,3 +158,5 @@ export const DynamicList = () => {
         </section>
     );
 };
+
+export default DynamicList;

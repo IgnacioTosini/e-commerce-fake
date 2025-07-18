@@ -8,3 +8,5 @@ export const CheckingAuth = () => {
         </div>
     )
 }
+
+export default CheckingAuth;

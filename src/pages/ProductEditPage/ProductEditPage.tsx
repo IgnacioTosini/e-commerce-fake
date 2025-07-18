@@ -113,3 +113,5 @@ export const ProductEditPage = () => {
         </div>
     )
 }
+
+export default ProductEditPage;

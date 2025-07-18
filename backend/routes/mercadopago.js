@@ -21,6 +21,28 @@ router.post('/create-preference', async (req, res) => {
         if (!req.body.payer || !req.body.payer.email) {
             throw new Error('Información del pagador es requerida');
         }
+
+        // Validar stock por variante antes de crear la preferencia
+        for (const item of req.body.items) {
+            const productRef = db.collection('products').doc(item.id);
+            const productSnap = await productRef.get();
+            if (!productSnap.exists) {
+                return res.status(400).json({ error: `Producto no encontrado: ${item.title}` });
+            }
+            const product = productSnap.data();
+            // Buscar variante específica por color y talla
+            if (!item.size || !item.color) {
+                return res.status(400).json({ error: `Faltan datos de variante para ${item.title}` });
+            }
+            const variant = (product.variants || []).find(v => v.size === item.size && v.color === item.color);
+            if (!variant) {
+                return res.status(400).json({ error: `Variante no encontrada para ${item.title} (${item.size}, ${item.color})` });
+            }
+            if ((variant.stock || 0) < Number(item.quantity)) {
+                return res.status(400).json({ error: `Stock insuficiente para ${item.title} (${item.size}, ${item.color})` });
+            }
+        }
+
         const notification_url = req.body.notification_url;
         const back_urls = req.body.back_urls;
         const auto_return = req.body.auto_return;
@@ -116,9 +138,17 @@ async function updateProductStock(orderId) {
             const productRef = db.collection('products').doc(item.productId);
             const productSnap = await productRef.get();
             if (!productSnap.exists) continue;
-            const currentStock = productSnap.data().stock || 0;
-            const newStock = Math.max(currentStock - item.quantity, 0);
-            batch.update(productRef, { stock: newStock, updatedAt: new Date().toISOString() });
+            const product = productSnap.data();
+            // Buscar variante específica por color y talla
+            if (!item.size || !item.color) continue;
+            const variants = product.variants || [];
+            const variantIndex = variants.findIndex(v => v.size === item.size && v.color === item.color);
+            if (variantIndex === -1) continue;
+            const variant = variants[variantIndex];
+            const newStock = Math.max((variant.stock || 0) - item.quantity, 0);
+            variants[variantIndex].stock = newStock;
+            // Actualizar variantes y updatedAt
+            batch.update(productRef, { variants, updatedAt: new Date().toISOString() });
         }
         batch.update(orderRef, { status: 'paid', updatedAt: new Date().toISOString() });
         await batch.commit();

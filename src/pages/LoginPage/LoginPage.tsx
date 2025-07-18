@@ -4,8 +4,8 @@ import { GrGoogle } from 'react-icons/gr'
 import { useDispatch, useSelector } from 'react-redux'
 import type { AppDispatch, RootState } from '../../store/store'
 import { startGoogleSignIn, startLoginWithEmailPassword } from '../../store/auth/thunks'
-import './_loginPage.scss'
 import { loginSchema } from '../../schemas'
+import './_loginPage.scss'
 
 // Valores iniciales
 const initialValues = {
@@ -16,7 +16,6 @@ const initialValues = {
 export const LoginPage = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { status, errorMessage } = useSelector((state: RootState) => state.auth);
-
     const onGoogleSignIn = () => {
         dispatch(startGoogleSignIn());
     };
@@ -63,7 +62,7 @@ export const LoginPage = () => {
                         </div>
 
                         <div className='formActions'>
-                            {errorMessage && <span className='error'>{errorMessage}</span>}
+                            {errorMessage !== '' && <span className='error'>{errorMessage}</span>}
                             <span>¿No tienes una cuenta? <a href="/auth/register">Regístrate</a></span>
 
                             <button
@@ -89,3 +88,5 @@ export const LoginPage = () => {
         </div>
     );
 };
+
+export default LoginPage;

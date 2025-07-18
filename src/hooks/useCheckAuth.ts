@@ -1,6 +1,6 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../store/store";
-import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { login, logout } from "../store/auth/authSlice";
 import { FirebaseAuth } from "../firebase/config";
@@ -14,10 +14,10 @@ export const useCheckAuth = () => {
             if (user) {
                 dispatch(login({ email: user.email || '', uid: user.uid || '', photoURL: user.photoURL || '', displayName: user.displayName || '' }));
             } else {
-                dispatch(logout({ errorMessage: 'No user is logged in' }));
+                dispatch(logout({ errorMessage: '' }));
             }
         });
-    }, []);
+    }, [dispatch]);
 
     return {
         status

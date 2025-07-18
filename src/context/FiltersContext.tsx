@@ -17,9 +17,9 @@ type FiltersContextProps = {
     handleClearFilters: () => void;
     handleFilterChange: (category: FilterCategory, filter: string) => void;
     filteredProducts: Product[];
+    uniqueCategories: string[];
 }
 
-// Crear un contexto para los filtros
 const FiltersContext = createContext<FiltersContextProps | undefined>(undefined);
 
 export const FiltersProvider = ({ children }: { children: ReactNode }): React.ReactElement => {
@@ -30,6 +30,10 @@ export const FiltersProvider = ({ children }: { children: ReactNode }): React.Re
     });
     const { products } = useSelector((state: RootState) => state.products);
 
+    // Lista única de categorías para los filtros
+    const uniqueCategories = useMemo(() => {
+        return Array.from(new Set(products.map(product => product.categoryName.trim())));
+    }, [products]);
 
     const colorList: string[] = Object.keys(AVAILABLE_COLORS);
 
@@ -45,7 +49,8 @@ export const FiltersProvider = ({ children }: { children: ReactNode }): React.Re
                 selectedFilters.Colores.some(color => {
                     // Normalizar color
                     const normalizedColor = colorList.find(c => c.toLowerCase() === color.toLowerCase()) || color;
-                    return product.variants && product.variants.some(variant => variant.color.toLowerCase() === normalizedColor.toLowerCase());
+                    const normalizedColorLower = normalizedColor.toLowerCase();
+                    return product.variants && product.variants.some(variant => variant.color.toLowerCase() === normalizedColorLower);
                 });
 
             // Comparar talla con la lista oficial y con las variantes
@@ -82,7 +87,8 @@ export const FiltersProvider = ({ children }: { children: ReactNode }): React.Re
             handleFilteredProducts,
             handleClearFilters,
             handleFilterChange,
-            filteredProducts: handleFilteredProducts
+            filteredProducts: handleFilteredProducts,
+            uniqueCategories
         }}>
             {children}
         </FiltersContext.Provider>

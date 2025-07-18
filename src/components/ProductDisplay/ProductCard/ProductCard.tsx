@@ -39,6 +39,7 @@ export const ProductCard = ({ product, onClick }: ProductCardProps) => {
     };
 
     const handleClickProduct = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         dispatch(setSelectedProduct(product));
     }
 

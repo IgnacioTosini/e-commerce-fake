@@ -297,3 +297,5 @@ export const UserEditPage = () => {
     </div>
   )
 }
+
+export default UserEditPage;

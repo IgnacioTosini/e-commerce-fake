@@ -10,7 +10,7 @@ import { AVAILABLE_SIZES } from '../../../utils/productVariants';
 import './_filtersSection.scss';
 
 export const FiltersSection = () => {
-    const { selectedFilters, handleClearFilters, handleFilterChange } = useFilters();
+    const { selectedFilters, handleClearFilters, handleFilterChange, uniqueCategories } = useFilters();
     const filtersSectionRef = useRef<HTMLDivElement | null>(null);
     const location = useLocation();
 
@@ -52,7 +52,7 @@ export const FiltersSection = () => {
                 Limpiar Filtros
             </CustomButton>
             <CustomFilterChecked
-                array={products.map((product) => product.categoryName)}
+                array={uniqueCategories}
                 onClick={(filter) => handleFilterChange('Categoria', filter)}
                 categoryName='Categoría'
                 selectedFilters={selectedFilters.Categoria}
@@ -62,7 +62,7 @@ export const FiltersSection = () => {
                 array={Object.keys(colorCounts)}
                 onClick={(filter) => handleFilterChange('Colores', filter)}
                 categoryName='Colores'
-                selectedFilters={selectedFilters.Colores}
+                selectedFilters={selectedFilters.Colores.map(color => color)}
                 cant={colorCounts} // Pasar las cantidades de colores
             />
             <CustomFilterChecked

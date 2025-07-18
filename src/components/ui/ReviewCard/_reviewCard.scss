@@ -1,0 +1,58 @@
+@use '@/styles/variables' as *;
+
+.reviewCard {
+    border: 1px solid $color-text-quaternary;
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+
+    .reviewCardContent {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+
+        small {
+            color: $color-text-secondary;
+        }
+
+        img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 0.5rem;
+        }
+    }
+
+    .reviewCardFooter {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        border-top: 1px solid $color-text-quaternary;
+        padding: 0.5rem;
+
+        .reviewCardDetails {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        strong {
+            color: $color-text;
+        }
+
+        p {
+            color: $color-text;
+        }
+
+        .reviewCardActions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+    }
+}

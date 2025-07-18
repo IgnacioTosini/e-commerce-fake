@@ -1,10 +1,10 @@
-import { Suspense, useEffect, useRef } from "react";
+import { Suspense, useEffect, useRef, lazy } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router";
 import { fadeInUp } from "../hooks/gsapEffects";
-import { CheckingAuth } from "../components/ui/CheckingAuth/CheckingAuth";
+const CheckingAuth = lazy(() => import("../components/ui/CheckingAuth/CheckingAuth"));
 import { useCheckAuth } from "../hooks/useCheckAuth";
-import { AuthenticatedRoutes } from "./AuthenticatedRoutes";
-import { UnauthenticatedRoutes } from "./UnauthenticatedRoutes";
+const AuthenticatedRoutes = lazy(() => import("./AuthenticatedRoutes"));
+const UnauthenticatedRoutes = lazy(() => import("./UnauthenticatedRoutes"));
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from 'react-redux';
 import { startLoadingProducts } from '../store/products/thunks';

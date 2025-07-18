@@ -89,3 +89,5 @@ export const ProductNewPage = () => {
         </div>
     )
 }
+
+export default ProductNewPage;

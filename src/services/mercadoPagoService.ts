@@ -14,7 +14,7 @@ export const createMercadoPagoPreference = async (
         console.log('🔄 Iniciando creación de preferencia MercadoPago');
         console.log('📦 Datos de la orden:', orderData);
 
-        // Mapear items de la orden
+        // Mapear items de la orden, incluyendo size y color para variantes
         const items = orderData.items.map(item => ({
             id: item.productId,
             title: item.title,
@@ -22,7 +22,9 @@ export const createMercadoPagoPreference = async (
             quantity: item.quantity,
             currency_id: 'ARS',
             unit_price: item.price,
-            picture_url: item.images?.[0].url || ''
+            picture_url: item.images?.[0].url || '',
+            size: item.size,
+            color: item.color
         }));
 
         // Separar nombre y apellido

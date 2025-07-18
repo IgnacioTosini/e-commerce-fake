@@ -30,3 +30,5 @@ export const ProductViewPage = () => {
         </div>
     )
 }
+
+export default ProductViewPage;

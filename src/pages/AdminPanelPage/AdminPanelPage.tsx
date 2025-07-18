@@ -16,3 +16,5 @@ export const AdminPanelPage = () => {
         </div>
     )
 }
+
+export default AdminPanelPage;

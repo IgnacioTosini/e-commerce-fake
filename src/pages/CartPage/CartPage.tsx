@@ -4,12 +4,15 @@ import { OrderSummary } from '../../components/Miscellaneous/OrderSummary/OrderS
 import { useLocation } from 'react-router'
 import { animateElements } from '../../hooks/gsapEffects'
 import { useSelector } from 'react-redux'
+import { useRealtimeCart } from '../../hooks/useRealtimeCart';
 import type { RootState } from '../../store/store'
 import { CartItemCardSkeleton } from '../../components/ProductDisplay/CartItemCard/CartItemCardSkeleton'
 import './_cartPage.scss'
 
 export const CartPage = () => {
     const { cart, loading } = useSelector((state: RootState) => state.cart);
+    const { uid } = useSelector((state: RootState) => state.auth);
+    useRealtimeCart(uid!);
     const cartPageRef = useRef<HTMLDivElement | null>(null);
     const location = useLocation();
 
@@ -55,3 +58,5 @@ export const CartPage = () => {
         </div>
     );
 };
+
+export default CartPage;

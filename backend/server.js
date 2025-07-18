@@ -46,6 +46,10 @@ cloudinary.config({
 cloudinaryRoutes.init({ cloudinaryInstance: cloudinary });
 app.use('/api/cloudinary', cloudinaryRoutes.router);
 
+const reviewsRoutes = require('./routes/reviews');
+reviewsRoutes.init({ firestoreDb: db });
+app.use('/api/reviews', reviewsRoutes.router);
+
 // Endpoint de prueba
 app.get('/api/test', (req, res) => {
     res.json({

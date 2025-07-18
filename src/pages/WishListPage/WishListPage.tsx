@@ -65,3 +65,5 @@ export const WishListPage = () => {
         </div>
     );
 };
+
+export default WishListPage;

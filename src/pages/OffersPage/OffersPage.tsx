@@ -49,3 +49,5 @@ export const OffersPage = () => {
         </div>
     )
 }
+
+export default OffersPage;

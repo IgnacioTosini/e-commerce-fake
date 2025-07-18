@@ -25,7 +25,7 @@ export const CustomFilterCheckedItem = ({ item, index, onClick, categoryName, is
                 onChange={handleClick} // Asegura que el cambio del checkbox actualice los filtros
             />
             <label htmlFor={uniqueId} className="customFilterCheckedItemLabel">
-                {item}
+                {item.replace(/_/g, ' ')} {/* Reemplazar guiones bajos por espacios */}
             </label>
             <span>({cant})</span>
         </div>

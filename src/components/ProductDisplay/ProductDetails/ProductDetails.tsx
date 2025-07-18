@@ -20,6 +20,7 @@ import type { AppDispatch, RootState } from '../../../store/store'
 import { startAddToCart } from '../../../store/cart/thunks'
 import { startAddFavorite, startRemoveFavorite } from '../../../store/user/thunks'
 import { useProductVariantSelector } from '../../../hooks/useProductVariantSelector'
+import { ProductReviews } from '../../ui/ProductReviews/ProductReviews'
 import './_productDetails.scss'
 
 type ProductDetailsProps = {
@@ -200,6 +201,7 @@ export const ProductDetails = ({ product }: ProductDetailsProps) => {
                     <p className='productDetailsDescription'>{product.description}</p>
                 </section>
             </div>
+            <ProductReviews productId={product.id} />
             <h2 className='relatedProductsTitle'>También te puede interesar</h2>
             <CustomList flexOptions={{ direction: 'row', wrap: 'wrap' }} as='div' maxItems={4}>
                 {randomProducts.map((product, idx) => (

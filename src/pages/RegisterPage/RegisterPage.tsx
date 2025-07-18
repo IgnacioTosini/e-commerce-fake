@@ -4,8 +4,9 @@ import { GrGoogle } from 'react-icons/gr'
 import { useDispatch, useSelector } from 'react-redux'
 import type { AppDispatch, RootState } from '../../store/store'
 import { startGoogleSignIn, startCreatingUserWithEmailPassword } from '../../store/auth/thunks'
-import './_registerPage.scss'
 import { registerSchema } from '../../schemas'
+import './_registerPage.scss'
+import { Link } from 'react-router'
 
 // Valores iniciales
 const initialValues = {
@@ -97,7 +98,7 @@ export const RegisterPage = () => {
 
                         <div className='formActions'>
                             {errorMessage && <span className='error'>{errorMessage}</span>}
-                            <span>¿Ya tienes una cuenta? <a href="/auth/login">Inicia sesión</a></span>
+                            <span>¿Ya tienes una cuenta? <Link to="/auth/login">Inicia sesión</Link></span>
 
                             <button
                                 type='submit'
@@ -123,3 +124,5 @@ export const RegisterPage = () => {
         </div>
     );
 };
+
+export default RegisterPage;

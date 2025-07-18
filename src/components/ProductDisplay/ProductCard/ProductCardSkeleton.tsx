@@ -7,7 +7,7 @@ export const ProductCardSkeleton = () => {
             <div className='favoriteButton'>
             </div>
             <Link to='' className="productCardLink">
-                <img src={''} alt={''} className='productImage' />
+                <div className='productImage' />
                 <div className='productInfo'>
                 </div>
                 <div className="productActions">

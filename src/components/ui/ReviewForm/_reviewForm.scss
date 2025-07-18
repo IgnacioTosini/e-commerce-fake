@@ -1,0 +1,117 @@
+@use '@/styles/variables' as *;
+
+.reviewFormContainer {
+    background: $secondary-color;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    margin-top: 1rem;
+
+    .reviewForm {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+
+        .formGroup {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            color: $color-text-secondary;
+            font-weight: $font-weight-medium;
+            margin-bottom: 0.2rem;
+        }
+
+        .commentInput {
+            border: 1px solid $color-text-quaternary;
+            border-radius: 0.5rem;
+            padding: 0.7rem;
+            background: $primary-color;
+            color: $color-text;
+            font-size: $font-size-normal;
+            resize: vertical;
+            transition: border-color 0.2s;
+            min-height: 100px;
+            max-height: 200px;
+
+            &:focus {
+                border-color: $color-hover-primary;
+                outline: none;
+            }
+        }
+
+        .starsInput {
+            display: flex;
+            gap: 0.3rem;
+            font-size: 2rem;
+            margin-top: 0.2rem;
+        }
+
+        .star {
+            font-size: $font-size-medium;
+            cursor: pointer;
+            color: #b8b8b8;
+            transition: color 0.2s;
+            user-select: none;
+
+            &.filled {
+                color: #FFD600;
+                text-shadow: 0 0 4px #FFD600;
+            }
+
+            &:hover,
+            &:focus {
+                color: #FFD600;
+            }
+        }
+
+        .ratingGroup {
+            align-items: flex-start;
+        }
+
+        .submitBtn {
+            background: $color-hover-primary;
+            color: $color-text;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            font-size: $font-size-xsmall;
+            font-weight: $font-weight-bold;
+            width: fit-content;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 0.5rem;
+
+            &:hover:not(:disabled) {
+                background: $color-text-quaternary;
+            }
+
+            &:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
+        }
+
+        .errorMsg {
+            color: #FFD600;
+            font-size: $font-size-small;
+            margin-top: 0.2rem;
+        }
+
+        .loading {
+            color: $color-text-secondary;
+        }
+
+        .error {
+            color: $color-hover-primary;
+        }
+
+        .noReviews {
+            color: $color-text-secondary;
+            font-style: italic;
+            padding: 1rem;
+        }
+    }
+}

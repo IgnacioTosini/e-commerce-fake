@@ -14,7 +14,7 @@ export const AVAILABLE_COLORS = {
     Rosa: '#FFC0CB',
     Amarillo: '#FFFF00',
     Naranja: '#FFA500',
-    Violeta: '#800080'
+    Violeta: '#800080',
 };
 
 export const AVAILABLE_SIZES = [

@@ -1,0 +1,24 @@
+@use '@/styles/variables' as *;
+
+.productReviews {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 95%;
+    margin: 1rem;
+    padding: 1rem;
+    border: 1px solid $color-text-quaternary;
+    border-radius: 1rem;
+
+    h3 {
+        color: $color-text;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        overflow-y: auto;
+        max-height: 600px;
+    }
+}
