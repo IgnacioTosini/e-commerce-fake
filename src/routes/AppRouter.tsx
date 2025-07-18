@@ -78,7 +78,7 @@ export const AppRouter = () => {
     }
 
     return (
-        <Suspense fallback={<div>Cargando...</div>}>
+        <Suspense fallback={null}>
             <div ref={pageRef}>
                 <Routes>
                     {
