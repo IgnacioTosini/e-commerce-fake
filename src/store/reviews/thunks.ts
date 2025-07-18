@@ -1,3 +1,8 @@
+const getApiBaseUrl = () => {
+    return import.meta.env.PROD
+        ? import.meta.env.VITE_API_URL_PROD
+        : import.meta.env.VITE_API_URL;
+};
 import type { RootState } from './../store';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { AppDispatch } from '../store';
@@ -32,7 +37,8 @@ export const startFetchReviews = createAsyncThunk(
         const params = new URLSearchParams();
         if (productId) params.append('productId', productId);
         if (userId) params.append('userId', userId);
-        const res = await fetch(`/api/reviews?${params.toString()}`);
+        const apiUrl = getApiBaseUrl();
+        const res = await fetch(`${apiUrl}/api/reviews?${params.toString()}`);
         return await res.json();
     }
 );
@@ -43,7 +49,8 @@ export const startCreateReview = createAsyncThunk(
     async (review: Omit<Review, 'id' | 'createdAt' | 'updatedAt'>, { dispatch }) => {
         console.log('Creating review:', review);
         try {
-            const res = await fetch('/api/reviews', {
+            const apiUrl = getApiBaseUrl();
+            const res = await fetch(`${apiUrl}/api/reviews`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(review),
@@ -68,7 +75,8 @@ export const startCreateReview = createAsyncThunk(
 export const startUpdateReview = createAsyncThunk(
     'reviews/updateReview',
     async (review: Review, { dispatch }) => {
-        const res = await fetch(`/api/reviews/${review.id}`, {
+        const apiUrl = getApiBaseUrl();
+        const res = await fetch(`${apiUrl}/api/reviews/${review.id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(review),
@@ -89,7 +97,8 @@ export const startUpdateReview = createAsyncThunk(
 export const startDeleteReview = createAsyncThunk(
     'reviews/deleteReview',
     async (id: string, { dispatch, getState }) => {
-        const res = await fetch(`/api/reviews/${id}`, {
+        const apiUrl = getApiBaseUrl();
+        const res = await fetch(`${apiUrl}/api/reviews/${id}`, {
             method: 'DELETE',
         });
         const deleted = await res.json();
@@ -113,7 +122,8 @@ export const startDeleteReview = createAsyncThunk(
 export const startAddSellerReply = createAsyncThunk(
     'reviews/addSellerReply',
     async ({ reviewId, sellerReply }: { reviewId: string; sellerReply: string }) => {
-        const res = await fetch(`/api/reviews/${reviewId}/reply`, {
+        const apiUrl = getApiBaseUrl();
+        const res = await fetch(`${apiUrl}/api/reviews/${reviewId}/reply`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ sellerReply }),
