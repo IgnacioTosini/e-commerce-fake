@@ -12,6 +12,8 @@ import type { AppDispatch, RootState } from "../store/store";
 import { loadUserData, loadUserFavorites, startLoadUsers } from "../store/user/thunks";
 import { loadUserCart } from "../store/cart/thunks";
 import { loadUserOrders } from "../store/orders/thunks";
+import PaymentSuccess from "../pages/PaymentSuccess/PaymentSuccess";
+import PaymentFailure from "../pages/PaymentFailure/PaymentFailure";
 
 export const AppRouter = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -81,6 +83,8 @@ export const AppRouter = () => {
         <Suspense fallback={null}>
             <div ref={pageRef}>
                 <Routes>
+                    <Route path="/payment-success" element={<PaymentSuccess />} />
+                    <Route path="/payment-failure" element={<PaymentFailure />} />
                     {
                         status === 'authenticated' ? (
                             <Route path="/*" element={<AuthenticatedRoutes />} />

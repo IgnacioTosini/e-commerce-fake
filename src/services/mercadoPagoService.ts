@@ -40,11 +40,10 @@ export const createMercadoPagoPreference = async (
         let backUrlsObj = {};
         if (isProd && backUrl) {
             backUrl = backUrl.replace(/\/$/, '');
-            console.log('🔗 backUrl usado para back_urls:', backUrl);
             backUrlsObj = {
                 back_urls: {
-                    success: backUrl,
-                    failure: backUrl,
+                    success: `${backUrl}/payment-success`,
+                    failure: `${backUrl}/payment-failure`,
                     pending: backUrl
                 }
             };

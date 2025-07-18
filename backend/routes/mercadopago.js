@@ -104,6 +104,14 @@ router.post('/webhook', async (req, res) => {
                 if (orderSnap.exists) {
                     const order = orderSnap.data();
                     order.id = orderSnap.id;
+                    // Limpiar el carrito del usuario
+                    if (order.user && order.user.id) {
+                        try {
+                            await db.collection('carts').doc(order.user.id).set({ items: [] }, { merge: true });
+                        } catch (cartErr) {
+                            console.error('❌ Error limpiando el carrito:', cartErr);
+                        }
+                    }
                     try {
                         await sendOrderConfirmationEmail(order);
                     } catch (mailErr) {
@@ -111,7 +119,7 @@ router.post('/webhook', async (req, res) => {
                     }
                 }
                 return res.status(200).json({
-                    message: 'Pago aprobado, stock actualizado y mail enviado',
+                    message: 'Pago aprobado, stock actualizado, carrito limpiado y mail enviado',
                     orderId: externalReference
                 });
             } else {
