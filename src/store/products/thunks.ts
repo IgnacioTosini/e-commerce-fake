@@ -1,4 +1,4 @@
-import { collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, setDoc, getDoc } from "firebase/firestore";
 import type { AppDispatch, RootState } from "../store";
 import { addProduct, deleteProduct, savingNewProduct, setLoading, setProducts, updateProduct, addCategory, removeCategory, setCategories } from "./productsSlice";
 import slugify from "slugify";
@@ -178,14 +178,44 @@ export const startDeletingProduct = (productId: string) => {
     return async (dispatch: AppDispatch): Promise<void> => {
         try {
             dispatch(setLoading(true));
+
+            // Primero obtener el producto para acceder a sus imágenes
             const docRef = doc(FirebaseDB, 'products', productId);
-            await deleteDoc(docRef);
-            dispatch(deleteProduct(productId));
-            toast.success("Producto eliminado correctamente");
+            const productDoc = await getDoc(docRef);
+
+            if (productDoc.exists()) {
+                const productData = productDoc.data() as Product;
+
+                // Eliminar imágenes de Cloudinary si existen
+                if (productData.images && productData.images.length > 0) {
+                    const publicIds = productData.images
+                        .filter((img: ProductImage) => img.public_id && img.public_id.trim() !== '')
+                        .map((img: ProductImage) => img.public_id);
+
+                    if (publicIds.length > 0) {
+                        try {
+                            await deleteImagesFromCloudinary(publicIds);
+                            console.log(`Imágenes eliminadas de Cloudinary: ${publicIds.join(', ')}`);
+                        } catch (imageError) {
+                            console.error('Error al eliminar imágenes de Cloudinary:', imageError);
+                            // Continuar con la eliminación del producto aunque falle la eliminación de imágenes
+                        }
+                    }
+                }
+
+                // Eliminar el producto de Firestore
+                await deleteDoc(docRef);
+                dispatch(deleteProduct(productId));
+                toast.success("Producto eliminado correctamente");
+            } else {
+                toast.error("Producto no encontrado");
+            }
+
             dispatch(setLoading(false));
         } catch (error) {
             console.error('Error al eliminar producto:', error);
             toast.error("Error al eliminar el producto");
+            dispatch(setLoading(false));
         }
     };
 };
@@ -271,9 +301,26 @@ export const startDeletingCategory = (categoryName: string) => {
 };
 
 export const deleteImagesFromCloudinary = async (publicIds: string[]) => {
-    await fetch(`${apiUrl}/api/cloudinary/delete-images`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ publicIds }),
-    });
+    try {
+        const response = await fetch(`${apiUrl}/api/cloudinary/delete-images`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ publicIds }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error del servidor: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (!result.success) {
+            throw new Error('Error al eliminar imágenes de Cloudinary');
+        }
+
+        return result;
+    } catch (error) {
+        console.error('Error en deleteImagesFromCloudinary:', error);
+        throw error;
+    }
 };
