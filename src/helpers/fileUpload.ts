@@ -2,9 +2,9 @@ export const fileUpload = async (file: File) => {
     if (!file) throw new Error("No hay archivo para subir");
     const cloudUrl = `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'dt1wkwlxc'}/upload`;
     const formData = new FormData();
-    formData.append('upload_preset', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'lemarePreset');
+    formData.append('upload_preset', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || '');
     formData.append('file', file);
-    formData.append('folder', import.meta.env.VITE_CLOUDINARY_FOLDER || 'fakeClothes');
+    formData.append('folder', import.meta.env.VITE_CLOUDINARY_FOLDER || '');
 
     try {
         const response = await fetch(cloudUrl, {

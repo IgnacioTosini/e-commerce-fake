@@ -38,9 +38,9 @@ const cloudinary = require('cloudinary').v2;
 const cloudinaryRoutes = require('./routes/cloudinary');
 
 cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'dt1wkwlxc',
-    api_key: process.env.CLOUDINARY_API_KEY || '387599364247357',
-    api_secret: process.env.CLOUDINARY_API_SECRET || 'Bk19cg3n1kdm27b9WP5SRYwUu70'
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME || '',
+    api_key: process.env.CLOUDINARY_API_KEY || '',
+    api_secret: process.env.CLOUDINARY_API_SECRET || ''
 });
 
 cloudinaryRoutes.init({ cloudinaryInstance: cloudinary });
