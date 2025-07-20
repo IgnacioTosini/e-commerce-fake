@@ -67,7 +67,7 @@ export const AppRouter = () => {
         }
     }, [location]);
 
-    // 6. Redirección para usuarios autenticados
+    // 6. Redirección para usuarios autenticados en rutas de auth
     useEffect(() => {
         if (status === 'authenticated' && location.pathname.startsWith('/auth')) {
             navigate('/');
@@ -75,8 +75,26 @@ export const AppRouter = () => {
         }
     }, [status, location.pathname, navigate]);
 
+    // 7. Redirección para usuarios no autenticados en rutas protegidas
+    useEffect(() => {
+        if (status === 'not-authenticated' &&
+            (location.pathname.startsWith('/perfil') || location.pathname.startsWith('/admin'))) {
+            navigate('/auth/login');
+            toast.error('Debes iniciar sesión para acceder a esta página');
+        }
+    }, [status, location.pathname, navigate]);
+
     if (status === 'checking') {
         return <CheckingAuth />;
+    }
+
+    // Verificación inmediata para rutas protegidas
+    if (status === 'not-authenticated' &&
+        (location.pathname.startsWith('/perfil') || location.pathname.startsWith('/admin'))) {
+        // Redirigir inmediatamente al login
+        navigate('/auth/login', { replace: true });
+        toast.error('Debes iniciar sesión para acceder a esta página');
+        return <CheckingAuth />; // Mostrar loading mientras redirige
     }
 
     return (

@@ -13,10 +13,24 @@ type CustomIconProps = {
 export const CustomIcon = ({ typeOfIcon }: CustomIconProps) => {
     const { favorites, user: { id: userId } } = useSelector((state: RootState) => state.user);
     const { cart } = useSelector((state: RootState) => state.cart);
+    const { status } = useSelector((state: RootState) => state.auth);
+
+    // Si el usuario no está autenticado y es un icono que requiere autenticación
+    const requiresAuth = typeOfIcon === 'cart' || typeOfIcon === 'heart';
 
     // Reemplazar ':id' por el id del usuario si existe
     const iconPath = icons[typeOfIcon]?.path || '/';
-    const finalPath = userId ? iconPath.replace(':id', userId) : iconPath;
+    let finalPath = iconPath;
+
+    if (requiresAuth) {
+        if (status !== 'authenticated' || !userId) {
+            // Si no está autenticado, redirigir al login
+            finalPath = '/auth/login';
+        } else {
+            // Si está autenticado, usar su ID
+            finalPath = iconPath.replace(':id', userId);
+        }
+    }
 
     return (
         <Link to={finalPath} className={`customIcon ${typeOfIcon}`} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
