@@ -6,7 +6,7 @@ require('dotenv').config();
 
 const app = express();
 const corsOptions = {
-    origin: ['https://e-commerce-fake-tawny.vercel.app', 'http://localhost:5173'],
+    origin: ['https://e-commerce-fake-tawny.vercel.app', 'http://localhost:5173', 'https://eclothes-fake-store.vercel.app'],
     credentials: true,
 };
 app.use(cors(corsOptions));
